@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Thi GPLX</title>
+
+<style>
+
+/* ===== BACKGROUND ===== */
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+min-height:100vh;
+}
+
+/* ===== CARD ===== */
+#loginBox{
+background:#ffffff;
+padding:40px 35px;
+width:100%;
+max-width:420px;
+border-radius:20px;
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
+text-align:center;
+animation:fadeIn 0.5s ease;
+}
+
+/* ===== TITLE ===== */
+#loginBox h2{
+margin-bottom:25px;
+font-size:26px;
+font-weight:600;
+color:#222;
+}
+
+/* ===== INPUT ===== */
+#passwordInput{
+width:100%;
+padding:15px;
+border-radius:14px;
+border:1px solid #ddd;
+font-size:16px;
+outline:none;
+transition:0.3s;
+box-sizing:border-box;
+}
+
+#passwordInput:focus{
+border-color:#4e73df;
+box-shadow:0 0 0 3px rgba(78,115,223,0.15);
+}
+
+/* ===== BUTTON ===== */
+.primary-btn{
+margin-top:25px;
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+background:linear-gradient(135deg,#4e73df,#224abe);
+color:white;
+transition:0.3s;
+}
+
+.primary-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(34,74,190,0.3);
+}
+
+
+/* ===== ERROR ===== */
+#errorText{
+margin-top:15px;
+font-size:14px;
+color:#e74a3b;
+display:none;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(15px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.card{
+background:white;
+max-width:750px;
+margin:20px auto;
+padding:20px;
+border-radius:12px;
+box-shadow:0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* ===== BUTTON CHUNG ===== */
+button{
+padding:12px 22px;
+margin:8px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+font-size:14px;
+letter-spacing:0.5px;
+transition:all 0.25s ease;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Hover nổi */
+button:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Khi bấm */
+button:active{
+transform:scale(0.96);
+}
+
+/* ===== NÚT CHÍNH (Trang chủ) ===== */
+.primary-btn{
+background:linear-gradient(135deg,#1976d2,#42a5f5);
+color:white;
+}
+
+.primary-btn:hover{
+background:linear-gradient(135deg,#1565c0,#1e88e5);
+}
+
+/* ===== NÚT PHỤ ===== */
+.secondary-btn{
+background:#f1f3f6;
+color:#333;
+}
+
+.secondary-btn:hover{
+background:#e0e0e0;
+}
+
+/* ===== NÚT THOÁT ===== */
+.danger-btn{
+background:linear-gradient(135deg,#e53935,#ff5252);
+color:white;
+}
+
+.danger-btn:hover{
+background:linear-gradient(135deg,#c62828,#e53935);
+}
+
+.option{
+margin:12px 0;
+padding:14px 18px;
+border-radius:14px;
+cursor:pointer;
+font-weight:500;
+background:white;
+border:2px solid #e0e0e0;
+box-shadow:0 4px 10px rgba(0,0,0,0.06);
+transition:all 0.25s ease;
+}
+
+/* Hover */
+.option:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 18px rgba(0,0,0,0.12);
+border-color:#1976d2;
+}
+
+/* Khi click */
+.option:active{
+transform:scale(0.98);
+}
+
+/* Đáp án đã chọn (30 câu) */
+.selected{
+background:linear-gradient(135deg,#e3f2fd,#bbdefb);
+border-color:#1976d2;
+box-shadow:0 6px 18px rgba(25,118,210,0.3);
+}
+
+/* Đúng (500 câu) */
+.correct{
+background:linear-gradient(135deg,#e8f5e9,#c8e6c9);
+border-color:#2e7d32;
+box-shadow:0 6px 18px rgba(46,125,50,0.3);
+}
+
+/* Sai (500 câu) */
+.wrong{
+background:linear-gradient(135deg,#ffebee,#ffcdd2);
+border-color:#c62828;
+box-shadow:0 6px 18px rgba(198,40,40,0.3);
+}
+
+img{
+max-width:100%;
+margin:10px 0;
+border-radius:8px;
+}
+
+.watermark{
+position:fixed;
+bottom:10px;
+right:15px;
+opacity:0.5;
+color:white;
+font-weight:bold;
+}
+
+/* ===== HEADER 500 CÂU ĐẸP ===== */
+
+.header-wrap{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+padding:10px 18px;
+background:linear-gradient(135deg,#ffffff,#f1f6ff);
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* RIGHT STATUS */
+
+.right-status{
+text-align:right;
+min-width:230px;
+}
+
+.question-text{
+font-size:18px;
+font-weight:700;
+color:#1a237e;
+margin-bottom:8px;
+}
+
+/* ===== PROFESSIONAL SEARCH BAR ===== */
+
+.search-box{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+/* INPUT WRAP */
+
+.search-input-wrap{
+position:relative;
+}
+
+/* ICON */
+
+.search-icon{
+position:absolute;
+left:18px;
+top:50%;
+transform:translateY(-50%);
+font-size:15px;
+color:#64748b;
+pointer-events:none;
+}
+
+/* INPUT */
+
+.search-input-wrap input{
+width:180px;
+height:42px;
+padding:0 20px 0 45px;
+border:none;
+border-radius:14px;
+background:#f1f5f9;
+font-size:15px;
+font-weight:600;
+color:#1e293b;
+outline:none;
+transition:all 0.25s ease;
+box-shadow:inset 0 0 0 1px #e2e8f0;
+}
+
+/* FOCUS EFFECT */
+
+.search-input-wrap input:focus{
+background:white;
+box-shadow:
+0 6px 20px rgba(25,118,210,0.15),
+inset 0 0 0 2px #1976d2;
+transform:translateY(-2px);
+}
+
+/* BUTTON */
+
+.goto-btn{
+height:42px;
+padding:0 28px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+color:white;
+font-weight:700;
+font-size:14px;
+letter-spacing:0.5px;
+cursor:pointer;
+transition:all 0.25s ease;
+box-shadow:0 6px 18px rgba(37,99,235,0.3);
+}
+
+/* HOVER */
+
+.goto-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 12px 25px rgba(37,99,235,0.4);
+}
+
+/* CLICK ZOOM */
+
+.goto-btn:active{
+transform:scale(0.92);
+}
+
+/* ===== PROGRESS BAR CLEAN STYLE ===== */
+
+.mini-progress{
+height:10px;
+background:#dbe5ff;
+border-radius:50px;
+overflow:hidden;
+}
+
+.mini-fill{
+height:100%;
+background:linear-gradient(90deg,#1976d2,#00c6ff);
+border-radius:50px;
+transition:width 0.4s ease;
+}
+
+/* TEXT */
+
+.question-text{
+font-size:18px;
+font-weight:700;
+color:#1a237e;
+margin-bottom:10px;
+}
+
+/* ===== LAYOUT 2 CỘT CÂU HỎI ===== */
+
+.question-layout{
+display:flex;
+gap:40px;
+align-items:flex-start;
+margin-top:20px;
+}
+
+.question-left{
+flex:2;
+}
+
+.question-right{
+flex:1;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+/* Responsive */
+@media(max-width:900px){
+.question-layout{
+flex-direction:column;
+}
+}
+
+/* ===== ẢNH CÂU HỎI TO HƠN ===== */
+
+.question-left img{
+width:100%;
+max-width:100%;
+height:auto;
+border-radius:16px;
+box-shadow:0 12px 30px rgba(0,0,0,0.15);
+transition:transform 0.3s ease;
+}
+
+/* Hover nhẹ cho đẹp */
+.question-left img:hover{
+transform:scale(1.02);
+}
+
+.question-left img{
+min-height:420px;
+object-fit:contain;
+}
+
+.shake{
+animation:shake 0.4s;
+}
+
+@keyframes shake{
+0%{transform:translateX(0)}
+25%{transform:translateX(-5px)}
+50%{transform:translateX(5px)}
+75%{transform:translateX(-5px)}
+100%{transform:translateX(0)}
+}
+
+/* ===== NAV BUTTONS CENTER ===== */
+
+.nav-buttons{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:30px;
+margin-top:35px;
+flex-wrap:wrap;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="loginBox" class="card" style="max-width:400px;margin-top:100px">
+    <h2>🔒 Nhập mật khẩu</h2>
+    <input type="password" id="passwordInput" placeholder="Mật khẩu..."
+    style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin:15px 0">
+
+    <button class="primary-btn" onclick="checkPassword()">Vào hệ thống</button>
+
+    <p id="errorText" style="color:red;display:none;margin-top:10px">
+        Sai mật khẩu!
+    </p>
+</div>
+
+<div id="app" style="display:none">
+
+<div id="home" class="card">
+
+<h2>🚗 500 CÂU HỎI THI GPLX</h2>
+
+<button class="primary-btn" onclick="start500()">🚗 Thi 500 câu</button>
+<button class="primary-btn" onclick="start30()">📝 Thi bộ đề 30 câu</button>
+</div>
+
+<div id="quiz" class="card" style="display:none"></div>
+
+</div>
+
+<div class="watermark">TOANTUYEN</div>
+
+<script src="answers.js"></script>
+
+<script>
+
+const TOTAL=500;
+
+let quiz=[];
+let userAns=[];
+let current=0;
+let mode="";
+
+/* ===== START ===== */
+
+function start500(){
+mode="500";
+quiz=[...Array(TOTAL).keys()].map(i=>i+1);
+userAns=new Array(TOTAL);
+current=0;
+openQuiz();
+}
+
+function start30(){
+mode="30";
+
+quiz=[...Array(TOTAL).keys()]
+.map(i=>i+1)
+.sort(()=>0.5-Math.random())
+.slice(0,30);
+
+userAns=new Array(30);
+current=0;
+openQuiz();
+}
+
+function openQuiz(){
+document.getElementById("home").style.display="none";
+document.getElementById("quiz").style.display="block";
+render();
+}
+
+/* ===== HIỂN THỊ ===== */
+
+function render(){
+
+let q = quiz[current];
+let html="";
+
+if(mode==="500"){
+
+let percent = Math.round(((current+1)/quiz.length)*100);
+
+html+=`
+<div class="header-wrap">
+
+    <div class="search-box">
+    <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="number"
+        id="gotoInput"
+        min="1"
+        max="${quiz.length}"
+        placeholder="Nhập câu..."
+        onkeydown="if(event.key==='Enter') gotoQuestion()">
+    </div>
+    <button class="goto-btn" onclick="gotoQuestion()">Tới</button>
+</div>
+
+    <div class="right-status">
+        <div class="question-text">
+            Câu ${current+1}/${quiz.length}
+        </div>
+
+        <div class="mini-progress">
+            <div class="mini-fill" style="width:${percent}%"></div>
+        </div>
+    </div>
+
+</div>
+`;
+
+}else{
+
+html+=`<h3>Câu ${current+1}/${quiz.length}</h3>`;
+
+}
+
+html+=`
+<div class="question-layout">
+
+    <div class="question-left">
+        <img src="images/q${q}.png">
+    </div>
+
+    <div class="question-right">
+`;
+
+["1","2","3","4"].forEach((t,i)=>{
+
+let cls="";
+
+if(mode==="500" && userAns[current]!=null){
+    if(i===answers[q]) cls="correct";
+    else if(i===userAns[current]) cls="wrong";
+}
+
+if(mode==="30" && userAns[current]!=null){
+    if(i===userAns[current]) cls="selected";
+}
+
+html+=`
+<div class="option ${cls}"
+onclick="choose(${i})">
+Đáp án ${t}
+</div>`;
+});
+
+html+=`
+    </div>
+</div>
+`;
+
+html+=`
+<div class="nav-buttons">
+    <button class="secondary-btn" onclick="prev()">⬅ Câu trước</button>
+    <button class="secondary-btn" onclick="next()">Câu sau ➡</button>
+    <button class="danger-btn" onclick="exitHome()">🏠 Thoát</button>
+</div>
+`;
+
+if(mode==="30" && current===29){
+html+=`
+<br>
+<button style="background:#2e7d32;color:white"
+onclick="submit()">Nộp bài</button>
+`;
+}
+
+document.getElementById("quiz").innerHTML=html;
+}
+function gotoQuestion(){
+
+let num = parseInt(document.getElementById("gotoInput").value);
+
+if(isNaN(num) || num<1 || num>quiz.length){
+    alert("Số câu không hợp lệ!");
+    return;
+}
+
+current = num-1;
+render();
+}
+
+/* ===== CHỌN ===== */
+
+function choose(i){ userAns[current]=i; render(); }
+
+/* ===== NAV ===== */
+
+function next(){
+if(current<quiz.length-1){
+current++;
+render();
+}
+}
+
+function prev(){
+if(current>0){
+current--;
+render();
+}
+}
+
+/* ===== NỘP ===== */
+
+function submit(){
+
+let score=0;
+let html="<h2>Kết quả</h2>";
+
+quiz.forEach((q,i)=>{
+
+let user=userAns[i];
+let correct=answers[q];
+let ok=user===correct;
+
+if(ok) score++;
+
+html+=`
+<div style="margin-bottom:25px;padding:15px;border:1px solid #ddd;border-radius:10px;text-align:left">
+<h4>Câu ${i+1} ${ok?"✅ Đúng":"❌ Sai"}</h4>
+
+<img src="images/q${q}.png">
+
+<p><b>Bạn chọn:</b> ${
+user!=null?["1","2","3","4"][user]:"Chưa chọn"
+}</p>
+`;
+
+if(!ok){
+html+=`
+<p style="color:green">
+<b>Đáp án đúng:</b> ${["1","2","3","4"][correct]}
+</p>
+`;
+}
+
+html+=`</div>`;
+});
+
+html+=`
+<h3>🎯 Tổng điểm: ${score}/30</h3>
+<button onclick="exitHome()">Về màn hình chính</button>
+`;
+
+document.getElementById("quiz").innerHTML=html;
+}
+
+/* ===== EXIT ===== */
+
+function exitHome(){
+location.reload();
+}
+
+/* ===== PHÍM MŨI TÊN CHUYỂN CÂU ===== */
+
+document.addEventListener("keydown", function(event){
+
+// Nếu đang ở màn hình Home thì không làm gì
+if(document.getElementById("quiz").style.display === "none") return;
+
+// Nếu đang nhập trong input thì không xử lý
+if(document.activeElement.tagName === "INPUT") return;
+
+// Mũi tên phải → Câu sau
+if(event.key === "ArrowRight"){
+    event.preventDefault();
+    next();
+}
+
+// Mũi tên trái → Câu trước
+if(event.key === "ArrowLeft"){
+    event.preventDefault();
+    prev();
+}
+
+// ===== CHỌN ĐÁP ÁN BẰNG 1 2 3 4 =====
+
+if(["1","2","3","4"].includes(event.key)){
+    let index = parseInt(event.key) - 1;
+    choose(index);
+}
+
+});
+
+/* ===== MẬT KHẨU ===== */
+
+const PASSWORD = "toantuyen"; // 👈 đổi mật khẩu tại đây
+
+function checkPassword(){
+
+let input = document.getElementById("passwordInput").value;
+
+if(input === PASSWORD){
+
+	sessionStorage.setItem("loggedIn","true");
+
+    // Hiện app
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("app").style.display="block";
+
+}else{
+
+let box = document.getElementById("loginBox");
+
+box.classList.add("shake");
+
+setTimeout(()=>{
+box.classList.remove("shake");
+},400);
+
+document.getElementById("errorText").style.display="block";
+
+}
+
+}
+
+// Enter để đăng nhập
+document.getElementById("passwordInput")
+.addEventListener("keydown", function(e){
+if(e.key==="Enter") checkPassword();
+});
+
+// ===== TỰ ĐỘNG GIỮ ĐĂNG NHẬP KHI F5 =====
+
+window.addEventListener("load", function(){
+
+if(sessionStorage.getItem("loggedIn")==="true"){
+
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("app").style.display="block";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
