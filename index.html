@@ -471,15 +471,73 @@ openQuiz();
 }
 
 function start30(){
+
 mode="30";
 
-quiz=[...Array(TOTAL).keys()]
-.map(i=>i+1)
-.sort(()=>0.5-Math.random())
-.slice(0,30);
+function rand(min,max){
+return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function pick(rangeStart,rangeEnd,count){
+
+let arr=[];
+
+for(let i=rangeStart;i<=rangeEnd;i++){
+arr.push(i);
+}
+
+arr.sort(()=>0.5-Math.random());
+
+return arr.slice(0,count);
+}
+
+/* số câu theo tỉ lệ */
+
+let n1=rand(6,7);
+let n2=rand(6,7);
+let n3=rand(2,3);
+let n4=rand(3,4);
+let n5=rand(5,6);
+let n6=rand(3,4);
+let n7=rand(0,1);
+
+let total=n1+n2+n3+n4+n5+n6+n7;
+
+/* cân chỉnh cho đúng 30 */
+
+while(total>30){
+if(n5>5){n5--;total--;continue;}
+if(n4>3){n4--;total--;continue;}
+if(n6>3){n6--;total--;continue;}
+if(n3>2){n3--;total--;continue;}
+if(n2>6){n2--;total--;continue;}
+if(n1>6){n1--;total--;continue;}
+}
+
+while(total<30){
+n1++;
+total++;
+}
+
+/* random từng nhóm */
+
+quiz=[
+...pick(1,130,n1),
+...pick(131,240,n2),
+...pick(241,265,n3),
+...pick(266,345,n4),
+...pick(346,455,n5),
+...pick(456,490,n6),
+...pick(491,500,n7)
+];
+
+/* shuffle lại */
+
+quiz.sort(()=>0.5-Math.random());
 
 userAns=new Array(30);
 current=0;
+
 openQuiz();
 }
 
