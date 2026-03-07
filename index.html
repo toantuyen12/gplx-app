@@ -127,6 +127,7 @@ font-size:14px;
 letter-spacing:0.5px;
 transition:all 0.25s ease;
 box-shadow:0 4px 12px rgba(0,0,0,0.15);
+touch-action: manipulation;
 }
 
 /* Hover nổi */
@@ -768,7 +769,7 @@ html+=`
 
 <h3>${data.question}</h3>
 
-${data.img ? `<img src="${data.img}">` : ""}
+${data.img ? `<img src="${data.img}" loading="lazy">` : ""}
 
 </div>
 
@@ -817,6 +818,12 @@ onclick="submit()">Nộp bài</button>
 }
 
 document.getElementById("quiz").innerHTML=html;
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
 }
 function gotoQuestion(){
 
@@ -833,22 +840,56 @@ render();
 
 /* ===== CHỌN ===== */
 
-function choose(i){ userAns[current]=i; render(); }
+function choose(i){
+
+userAns[current] = i;
+
+if(mode === "500"){
+render();
+}else{
+highlightSelected();
+}
+
+}
+
+function highlightSelected(){
+
+document.querySelectorAll(".option").forEach((el,index)=>{
+
+el.classList.remove("selected");
+
+if(index === userAns[current]){
+el.classList.add("selected");
+}
+
+});
+
+}
 
 /* ===== NAV ===== */
 
 function next(){
+
 if(current<quiz.length-1){
+
 current++;
-render();
+
+requestAnimationFrame(render);
+
 }
+
 }
 
 function prev(){
+
 if(current>0){
+
 current--;
-render();
+
+requestAnimationFrame(render);
+
 }
+
 }
 
 /* ===== NỘP ===== */
@@ -872,7 +913,7 @@ html+=`
 <div style="margin-bottom:25px;padding:15px;border:1px solid #ddd;border-radius:10px;text-align:left">
 <h4>Câu ${i+1} ${ok?"✅ Đúng":"❌ Sai"}</h4>
 
-${questions[q-1].img ? `<img src="${questions[q-1].img}">` : ""}
+${questions[q-1].img ? `<img src="${questions[q-1].img}" loading="lazy">` : ""}
 
 <p><b>Bạn chọn:</b> ${
 user!=null?["1","2","3","4"][user]:"Chưa chọn"
