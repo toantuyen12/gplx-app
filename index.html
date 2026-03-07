@@ -599,6 +599,14 @@ tham gia giao thông.
 
 <script>
 
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+window.addEventListener("load", function(){
+  window.scrollTo(0,0);
+});
+
 const TOTAL=500;
 
 let quiz=[];
@@ -747,7 +755,7 @@ let seconds = timeLeft % 60;
 html+=`
 <h3>Câu ${current+1}/${quiz.length}</h3>
 <div style="font-size:18px;font-weight:bold;color:red">
-⏰ Thời gian còn: ${minutes}:${seconds.toString().padStart(2,"0")}
+⏰ Thời gian còn: <span id="timerText">${minutes}:${seconds.toString().padStart(2,"0")}</span>
 </div>
 `;
 
@@ -772,7 +780,7 @@ data.options.forEach((o,i)=>{
 let cls="";
 
 if(mode==="500" && userAns[current]!=null){
-    if(i===answers[q]) cls="correct";
+    if(i===answers[q-1]) cls="correct";
     else if(i===userAns[current]) cls="wrong";
 }
 
@@ -847,13 +855,15 @@ render();
 
 function submit(){
 
+clearInterval(timerInterval); // DỪNG TIMER
+
 let score=0;
 let html="<h2>Kết quả</h2>";
 
 quiz.forEach((q,i)=>{
 
 let user=userAns[i];
-let correct=answers[q];
+let correct=answers[q-1];
 let ok=user===correct;
 
 if(ok) score++;
@@ -951,10 +961,17 @@ if(timeLeft <= 0){
 clearInterval(timerInterval);
 alert("⏰ Hết thời gian!");
 submit();
+return;
 
 }
 
-render();
+let minutes = Math.floor(timeLeft/60);
+let seconds = timeLeft % 60;
+
+let el = document.getElementById("timerText");
+if(el){
+el.innerText = minutes + ":" + seconds.toString().padStart(2,"0");
+}
 
 },1000);
 
@@ -1004,13 +1021,15 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 
 <p>👁️ Lượt truy cập: <span id="visitorCount">Đang tải...</span></p>
 
-<p>© 2026 thigplx.netlify.app</p>
+<p>© 2026 thigplx.site</p>
 
 </footer>
 
 <script>
 
 window.onload = function(){
+
+window.scrollTo(0,0);
 
 fetch("https://api.countapi.xyz/hit/thigplx/visits")
 .then(res => res.json())
