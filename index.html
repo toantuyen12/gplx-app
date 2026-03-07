@@ -863,7 +863,7 @@ let html="<h2>Kết quả</h2>";
 quiz.forEach((q,i)=>{
 
 let user=userAns[i];
-let correct=answers[q-1];
+let correct=answers[q];
 let ok=user===correct;
 
 if(ok) score++;
