@@ -1,8 +1,24 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<title>Thi thử GPLX Online - 500 Câu Hỏi Sát Hạch Lái Xe</title>
+
+<meta name="description" content="Ôn tập 500 câu hỏi sát hạch lái xe mới nhất. Thi thử GPLX online với đề thi 30 câu giống kỳ thi thật.">
+
+<meta name="keywords" content="thi gplx, 500 câu hỏi sát hạch lái xe, thi thử bằng lái xe">
+
+<meta name="author" content="Thi GPLX Online">
 <meta charset="UTF-8">
-<title>Thi GPLX</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0H6210B896"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0H6210B896');
+</script>
 
 <style>
 
@@ -88,11 +104,12 @@ to{opacity:1;transform:translateY(0);}
 
 .card{
 background:white;
-max-width:750px;
+width:92%;
+max-width:1050px;
 margin:20px auto;
-padding:20px;
-border-radius:12px;
-box-shadow:0 8px 25px rgba(0,0,0,0.2);
+padding:30px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
 
 /* ===== BUTTON CHUNG ===== */
@@ -199,15 +216,6 @@ img{
 max-width:100%;
 margin:10px 0;
 border-radius:8px;
-}
-
-.watermark{
-position:fixed;
-bottom:10px;
-right:15px;
-opacity:0.5;
-color:white;
-font-weight:bold;
 }
 
 
@@ -346,24 +354,38 @@ color:#1a237e;
 margin-bottom:10px;
 }
 
-/* ===== LAYOUT 2 CỘT CÂU HỎI ===== */
+.question-left h3{
+font-size:22px;
+line-height:1.5;
+margin-bottom:12px;
+color:#111;
+}
+
+/* ===== LAYOUT CÂU HỎI ===== */
 
 .question-layout{
 display:flex;
-gap:40px;
-align-items:flex-start;
+flex-direction:column;
+gap:25px;
 margin-top:20px;
 }
 
 .question-left{
-flex:2;
+width:100%;
+background:#f8fafc;
+padding:20px;
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+margin-top:10px;
 }
 
+/* ===== ĐÁP ÁN HIỂN THỊ 2 CỘT ===== */
+
 .question-right{
-flex:1;
 display:flex;
 flex-direction:column;
 gap:15px;
+width:100%;
 }
 
 /* Responsive */
@@ -376,21 +398,24 @@ flex-direction:column;
 /* ===== ẢNH CÂU HỎI TO HƠN ===== */
 
 .question-left img{
+display:block;
 width:100%;
-max-width:100%;
+max-width:700px;
 height:auto;
-border-radius:16px;
-box-shadow:0 12px 30px rgba(0,0,0,0.15);
-transition:transform 0.3s ease;
+margin:10px auto;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+background:white;
+padding:8px;
 }
 
 /* Hover nhẹ cho đẹp */
 .question-left img:hover{
 transform:scale(1.02);
+transition:0.25s;
 }
 
 .question-left img{
-min-height:420px;
 object-fit:contain;
 }
 
@@ -417,40 +442,157 @@ margin-top:35px;
 flex-wrap:wrap;
 }
 
+
+.top-menu{
+    text-align:center;
+    padding:18px 0;
+    background:#ffffff;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.top-menu a{
+    margin:0 18px;
+    text-decoration:none;
+    font-size:17px;
+    font-weight:600;
+    color:#4a2ea6;
+    transition:0.3s;
+}
+
+.top-menu a:hover{
+    color:#2196f3;
+}
+
+.footer{
+    margin-top:80px;
+    padding:35px 20px;
+    text-align:center;
+    background:linear-gradient(135deg,#0f2027,#2c5364);
+    color:#ddd;
+    font-size:14px;
+}
+
+.footer a{
+    color:#b084ff;
+    text-decoration:none;
+    margin:0 8px;
+    font-weight:500;
+}
+
+.footer a:hover{
+    color:#ffffff;
+}
+
+.footer p{
+    margin-top:12px;
+    line-height:1.6;
+}
+
+
+.article-section{
+max-width:1000px;
+margin:60px auto;
+text-align:center;
+color:white;
+}
+
+.article-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+margin-top:30px;
+}
+
+.article-card{
+background:white;
+color:#333;
+padding:25px;
+border-radius:14px;
+text-decoration:none;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+transition:0.3s;
+}
+
+.article-card:hover{
+transform:translateY(-5px);
+box-shadow:0 15px 30px rgba(0,0,0,0.3);
+}
+
+.article-card h3{
+margin-top:0;
+color:#2c3e50;
+}
+
+.article-card p{
+font-size:14px;
+line-height:1.6;
+}
+
+
 </style>
 </head>
 
+
 <body>
 
-<div id="loginBox" class="card" style="max-width:400px;margin-top:100px">
-    <h2>🔒 Nhập mật khẩu</h2>
-    <input type="password" id="passwordInput" placeholder="Mật khẩu..."
-    style="width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin:15px 0">
 
-    <button class="primary-btn" onclick="checkPassword()">Vào hệ thống</button>
-
-    <p id="errorText" style="color:red;display:none;margin-top:10px">
-        Sai mật khẩu!
-    </p>
+<div class="top-menu">
+<a href="index.html">Trang chủ</a>
+<a href="about.html">Giới thiệu</a>
+<a href="privacy.html">Chính sách</a>
+<a href="contact.html">Liên hệ</a>
 </div>
 
-<div id="app" style="display:none">
+
+<div id="app">
 
 <div id="home" class="card">
 
-<h2>🚗 500 CÂU HỎI SÁT HẠCH LÁI XE Ô TÔ</h2>
+<h1>🚗 500 CÂU HỎI SÁT HẠCH LÁI XE Ô TÔ</h1>
 
 <button class="primary-btn" onclick="start500()">🚗 Ôn tập 500 câu</button>
 <button class="primary-btn" onclick="start30()">📝 Thi đề 30 câu</button>
+
+<div style="
+max-width:900px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:12px;
+line-height:1.7;
+box-shadow:0 6px 20px rgba(0,0,0,0.15);
+">
+
+<h2>Ôn tập 500 câu hỏi sát hạch lái xe ô tô</h2>
+
+<p>
+Bộ 500 câu hỏi sát hạch lái xe ô tô là tài liệu quan trọng giúp người học chuẩn bị
+cho kỳ thi lý thuyết khi thi giấy phép lái xe. Website thigplx.netlify.app cung cấp đầy đủ
+các câu hỏi theo bộ đề mới nhất để người học có thể ôn tập hiệu quả.
+</p>
+
+<p>
+Người dùng có thể lựa chọn ôn tập toàn bộ câu hỏi hoặc làm bài thi thử 30 câu giống
+như kỳ thi thật. Sau khi hoàn thành bài thi, hệ thống sẽ hiển thị kết quả và đáp án
+để người học dễ dàng rút kinh nghiệm.
+</p>
+
+<p>
+Việc luyện tập thường xuyên với bộ câu hỏi sẽ giúp người học ghi nhớ kiến thức
+về luật giao thông đường bộ, biển báo giao thông và các tình huống an toàn khi
+tham gia giao thông.
+</p>
+
+</div>
+
 </div>
 
 <div id="quiz" class="card" style="display:none"></div>
 
 </div>
 
-<div class="watermark">toantuyen</div>
-
 <script src="answers.js"></script>
+<script src="questions.js?v=2025"></script>
 
 <script>
 
@@ -460,6 +602,8 @@ let quiz=[];
 let userAns=[];
 let current=0;
 let mode="";
+let timeLeft = 0;
+let timerInterval = null;
 
 /* ===== START ===== */
 
@@ -539,6 +683,9 @@ quiz.sort(()=>0.5-Math.random());
 userAns=new Array(30);
 current=0;
 
+timeLeft = 20 * 60; // 20 phút
+startTimer();
+
 openQuiz();
 }
 
@@ -553,6 +700,7 @@ render();
 function render(){
 
 let q = quiz[current];
+let data = questions[q-1];
 let html="";
 
 if(mode==="500"){
@@ -590,21 +738,33 @@ html+=`
 
 }else{
 
-html+=`<h3>Câu ${current+1}/${quiz.length}</h3>`;
+let minutes = Math.floor(timeLeft/60);
+let seconds = timeLeft % 60;
+
+html+=`
+<h3>Câu ${current+1}/${quiz.length}</h3>
+<div style="font-size:18px;font-weight:bold;color:red">
+⏰ Thời gian còn: ${minutes}:${seconds.toString().padStart(2,"0")}
+</div>
+`;
 
 }
 
 html+=`
 <div class="question-layout">
 
-    <div class="question-left">
-        <img src="images/q${q}.png">
-    </div>
+   <div class="question-left">
+
+<h3>${data.question}</h3>
+
+${data.img ? `<img src="${data.img}">` : ""}
+
+</div>
 
     <div class="question-right">
 `;
 
-["1","2","3","4"].forEach((t,i)=>{
+data.options.forEach((o,i)=>{
 
 let cls="";
 
@@ -620,7 +780,7 @@ if(mode==="30" && userAns[current]!=null){
 html+=`
 <div class="option ${cls}"
 onclick="choose(${i})">
-Đáp án ${t}
+<b>${i+1}.</b> ${o}
 </div>`;
 });
 
@@ -699,7 +859,7 @@ html+=`
 <div style="margin-bottom:25px;padding:15px;border:1px solid #ddd;border-radius:10px;text-align:left">
 <h4>Câu ${i+1} ${ok?"✅ Đúng":"❌ Sai"}</h4>
 
-<img src="images/q${q}.png">
+${questions[q-1].img ? `<img src="${questions[q-1].img}">` : ""}
 
 <p><b>Bạn chọn:</b> ${
 user!=null?["1","2","3","4"][user]:"Chưa chọn"
@@ -762,44 +922,6 @@ if(["1","2","3","4"].includes(event.key)){
 
 });
 
-/* ===== MẬT KHẨU ===== */
-
-const PASSWORD = "toantuyen"; // 👈 đổi mật khẩu tại đây
-
-function checkPassword(){
-
-let input = document.getElementById("passwordInput").value;
-
-if(input === PASSWORD){
-
-	sessionStorage.setItem("loggedIn","true");
-
-    // Hiện app
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("app").style.display="block";
-
-}else{
-
-let box = document.getElementById("loginBox");
-
-box.classList.add("shake");
-
-setTimeout(()=>{
-box.classList.remove("shake");
-},400);
-
-document.getElementById("errorText").style.display="block";
-
-}
-
-}
-
-// Enter để đăng nhập
-document.getElementById("passwordInput")
-.addEventListener("keydown", function(e){
-if(e.key==="Enter") checkPassword();
-});
-
 // ===== TỰ ĐỘNG GIỮ ĐĂNG NHẬP KHI F5 =====
 
 window.addEventListener("load", function(){
@@ -811,6 +933,84 @@ if(sessionStorage.getItem("loggedIn")==="true"){
 
 }
 
+});
+
+function startTimer(){
+
+clearInterval(timerInterval);
+
+timerInterval = setInterval(()=>{
+
+timeLeft--;
+
+if(timeLeft <= 0){
+
+clearInterval(timerInterval);
+alert("⏰ Hết thời gian!");
+submit();
+
+}
+
+render();
+
+},1000);
+
+}
+
+
+</script>
+
+<div class="article-section">
+
+<h2>Bài viết hữu ích</h2>
+
+<div class="article-grid">
+
+<a class="article-card" href="meo-thi-gplx.html">
+<h3>Mẹo thi lý thuyết GPLX</h3>
+<p>Các mẹo giúp bạn ghi nhớ nhanh và vượt qua kỳ thi lý thuyết lái xe dễ dàng.</p>
+</a>
+
+<a class="article-card" href="bien-bao-giao-thong.html">
+<h3>Các loại biển báo giao thông</h3>
+<p>Tổng hợp các nhóm biển báo quan trọng trong luật giao thông đường bộ.</p>
+</a>
+
+<a class="article-card" href="kinh-nghiem-hoc-gplx.html">
+<h3>Kinh nghiệm học lý thuyết GPLX</h3>
+<p>Những kinh nghiệm giúp việc ôn tập 500 câu hỏi hiệu quả hơn.</p>
+</a>
+
+</div>
+
+</div>
+
+<footer class="footer">
+
+<div>
+<a href="index.html">Trang chủ</a> |
+<a href="about.html">Giới thiệu</a> |
+<a href="privacy.html">Chính sách bảo mật</a> |
+<a href="contact.html">Liên hệ</a>
+</div>
+
+<p>
+Bộ câu hỏi được tổng hợp từ tài liệu ôn tập sát hạch lái xe trong lực lượng Công an nhân dân,
+chỉ phục vụ mục đích học tập và ôn luyện.
+</p>
+
+<p>👁️ Lượt truy cập: <span id="visitorCount">Đang tải...</span></p>
+
+<p>© 2026 thigplx.netlify.app</p>
+
+</footer>
+
+<script>
+
+fetch("https://api.countapi.xyz/hit/thigplx.netlify.app/visits")
+.then(res => res.json())
+.then(res => {
+document.getElementById("visitorCount").innerText = res.value;
 });
 
 </script>
