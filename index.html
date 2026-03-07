@@ -1007,11 +1007,18 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 
 <script>
 
-fetch("https://api.countapi.xyz/hit/thigplx.netlify.app/visits")
+window.onload = function(){
+
+fetch("https://api.countapi.xyz/hit/thigplx/visits")
 .then(res => res.json())
-.then(res => {
-document.getElementById("visitorCount").innerText = res.value;
+.then(data => {
+document.getElementById("visitorCount").innerText = data.value;
+})
+.catch(()=>{
+document.getElementById("visitorCount").innerText = "0";
 });
+
+}
 
 </script>
 
