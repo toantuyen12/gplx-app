@@ -181,13 +181,16 @@ background:white;
 border:2px solid #e0e0e0;
 box-shadow:0 4px 10px rgba(0,0,0,0.06);
 transition:all 0.25s ease;
+touch-action: manipulation;
 }
 
 /* Hover */
+@media (hover:hover){
 .option:hover{
 transform:translateY(-3px);
 box-shadow:0 8px 18px rgba(0,0,0,0.12);
 border-color:#1976d2;
+}
 }
 
 /* Khi click */
@@ -842,7 +845,8 @@ if(mode==="30" && userAns[current]!=null){
 
 html+=`
 <div class="option ${cls}"
-onclick="choose(${i})">
+onclick="choose(${i})"
+ontouchstart="choose(${i})">
 <b>${i+1}.</b> ${o}
 </div>`;
 });
