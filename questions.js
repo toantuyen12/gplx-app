@@ -782,7 +782,7 @@ const questions = [
     "options": [
       "Xe được kéo phải có người điều khiển và hệ thống lái của xe đó phải còn hiệu lực.",
       "Xe kéo nối với xe được kéo phải bảo đảm chắc chắn, an toàn; trường hợp hệ thống hãm của xe được kéo không còn hiệu lực thì xe kéo nhau phải nối bằng thanh nối cứng.",
-      "Phía trước của xe kéo và phía sau của xe được kéo phải có biển báo hiệu, có đèn cảnh báo nhấp nháy màu vàng. moudy ons m",
+      "Phía trước của xe kéo và phía sau của xe được kéo phải có biển báo hiệu, có đèn cảnh báo nhấp nháy màu vàng.",
       "Cả ba ý trên."
     ]
   },
