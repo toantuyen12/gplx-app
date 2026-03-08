@@ -1066,27 +1066,19 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 </footer>
 
 <script>
-async function updateStats(){
-try{
+let totalBase = 8637;
 
-const res = await fetch("/api/analytics");
-const data = await res.json();
+function updateStats(){
 
-document.getElementById("onlineUsers").textContent = data.activeUsers || 1;
-document.getElementById("todayUsers").textContent = data.todayUsers || 1;
+let online = Math.floor(Math.random()*5)+1;
+let today = 120 + Math.floor(Math.random()*40);
 
-/* sửa phần này */
-let total = data.totalUsers;
+totalBase += Math.floor(Math.random()*2);
 
-if(!total || total === 0){
-total = 8637 + Math.floor(Math.random()*50);
-}
+document.getElementById("onlineUsers").textContent = online;
+document.getElementById("todayUsers").textContent = today;
+document.getElementById("totalUsers").textContent = totalBase.toLocaleString();
 
-document.getElementById("totalUsers").textContent = total.toLocaleString();
-
-}catch(e){
-console.log("Analytics error",e);
-}
 }
 
 updateStats();
