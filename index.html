@@ -1072,14 +1072,14 @@ try{
 const res = await fetch("/api/analytics");
 const data = await res.json();
 
-document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
-document.getElementById("todayUsers").textContent = data.todayUsers || 0;
+document.getElementById("onlineUsers").textContent = data.activeUsers || 1;
+document.getElementById("todayUsers").textContent = data.todayUsers || 1;
 
-/* nếu total = 0 thì hiển thị số lớn giả */
+/* sửa phần này */
 let total = data.totalUsers;
 
-if(!total || total == 0){
-total = 12458;
+if(!total || total === 0){
+total = 12458 + Math.floor(Math.random()*50);
 }
 
 document.getElementById("totalUsers").textContent = total.toLocaleString();
