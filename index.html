@@ -1062,17 +1062,13 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 </footer>
 
 <script>
-window.addEventListener("load", function(){
-
-fetch("https://api.countapi.xyz/hit/thigplx-site/visits?nocache=" + Date.now())
+fetch("https://countapi.xyz/hit/thigplx-site/visits")
 .then(res => res.json())
 .then(data => {
 document.getElementById("visitorCount").innerText = data.value;
 })
 .catch(()=>{
 document.getElementById("visitorCount").innerText = "0";
-});
-
 });
 </script>
 
