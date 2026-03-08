@@ -1066,7 +1066,13 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 </footer>
 
 <script>
-let totalBase = 8637;
+let totalBase = localStorage.getItem("totalUsers");
+
+if(!totalBase){
+  totalBase = 8637;
+}else{
+  totalBase = parseInt(totalBase);
+}
 
 function updateStats(){
 
@@ -1074,6 +1080,8 @@ let online = Math.floor(Math.random()*5)+1;
 let today = 120 + Math.floor(Math.random()*40);
 
 totalBase += Math.floor(Math.random()*2);
+
+localStorage.setItem("totalUsers", totalBase);
 
 document.getElementById("onlineUsers").textContent = online;
 document.getElementById("todayUsers").textContent = today;
