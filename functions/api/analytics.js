@@ -67,7 +67,31 @@ return new Response(JSON.stringify(tokenData));
 
 const accessToken = tokenData.access_token;
 
-const analyticsRes = await fetch(
+// người đang online
+const activeRes = await fetch(
+`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runRealtimeReport`,
+{
+method:"POST",
+headers:{
+Authorization:`Bearer ${accessToken}`,
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+metrics:[{name:"activeUsers"}]
+})
+}
+);
+
+const activeData = await activeRes.json();
+
+let activeUsers = 0;
+if(activeData.rows){
+activeUsers = activeData.rows[0].metricValues[0].value;
+}
+
+
+// lượt truy cập hôm nay
+const todayRes = await fetch(
 `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
 {
 method:"POST",
@@ -76,29 +100,43 @@ Authorization:`Bearer ${accessToken}`,
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-dateRanges:[
-{startDate:"today",endDate:"today"},
-{startDate:"2000-01-01",endDate:"today"}
-],
-metrics:[
-{name:"activeUsers"},
-{name:"totalUsers"}
-]
+dateRanges:[{startDate:"today",endDate:"today"}],
+metrics:[{name:"activeUsers"}]
 })
 }
 );
 
-const data = await analyticsRes.json();
+const todayData = await todayRes.json();
 
-let activeUsers = 0;
 let todayUsers = 0;
-let totalUsers = 0;
-
-if(data.rows){
-activeUsers = data.rows[0].metricValues[0].value;
-todayUsers = data.rows[0].metricValues[1].value;
-totalUsers = data.rows[1].metricValues[1].value;
+if(todayData.rows){
+todayUsers = todayData.rows[0].metricValues[0].value;
 }
+
+
+// tổng truy cập
+const totalRes = await fetch(
+`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
+{
+method:"POST",
+headers:{
+Authorization:`Bearer ${accessToken}`,
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+dateRanges:[{startDate:"2000-01-01",endDate:"today"}],
+metrics:[{name:"activeUsers"}]
+})
+}
+);
+
+const totalData = await totalRes.json();
+
+let totalUsers = 0;
+if(totalData.rows){
+totalUsers = totalData.rows[0].metricValues[0].value;
+}
+
 
 return new Response(JSON.stringify({
 activeUsers,
