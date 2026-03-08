@@ -814,7 +814,7 @@ const questions = [
   },
   {
     "id": 90,
-    "question": "Câu 90: Cá nhân vi phạm pháp luật về trật tự, an toàn giao thông đường bộ mà chưa thực hiện xong yêu cầu của cơ quan nhà nước có thẩm quyền về giải quyết vụ việc vi phạm hành chính có được giải quyết việc đăng ký, đăng kiểm phương tiện vi |phạm không?",
+    "question": "Câu 90: Cá nhân vi phạm pháp luật về trật tự, an toàn giao thông đường bộ mà chưa thực hiện xong yêu cầu của cơ quan nhà nước có thẩm quyền về giải quyết vụ việc vi phạm hành chính có được giải quyết việc đăng ký, đăng kiểm phương tiện vi phạm không?",
     "options": [
       "Chưa được giải quyết.",
       "Được giải quyết.",
@@ -880,7 +880,7 @@ const questions = [
   },
   {
     "id": 97,
-    "question": "Câu 97: Hàng siêu trường, siêu trọng là hàng không thể chia nhỏ, tháo rời, khi vận chuyển trên đường bộ làm cho phương tiện hoặc tổ hợp phương tiện bị vượt quá giới hạn cho phép tham |gia giao thông đường bộ về kích thước, khối lượng theo quy định của pháp luật, đúng hay sai?",
+    "question": "Câu 97: Hàng siêu trường, siêu trọng là hàng không thể chia nhỏ, tháo rời, khi vận chuyển trên đường bộ làm cho phương tiện hoặc tổ hợp phương tiện bị vượt quá giới hạn cho phép tham gia giao thông đường bộ về kích thước, khối lượng theo quy định của pháp luật, đúng hay sai?",
     "options": [
       "Đúng.",
       "Sai."
