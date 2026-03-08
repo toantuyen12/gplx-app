@@ -1,6 +1,6 @@
 export async function onRequestGet() {
 
-const propertyId = "386855850"
+const propertyId = "527488007"
 
 const clientEmail = "analytics-api@cellular-ratio-489414-e1.iam.gserviceaccount.com"
 
