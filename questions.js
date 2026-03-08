@@ -354,7 +354,7 @@ const questions = [
   },
   {
     "id": 40,
-    "question": "Câu 40: Trường hợp nào dưới đây người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dừng lại để bảo",
+    "question": "Câu 40: Trường hợp nào dưới đây người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dừng lại để bảo đảm an toàn?",
     "options": [
       "Có biển báo cấm vượt.",
       "Có biển cấm dừng xe, đỗ xe.",
@@ -364,7 +364,7 @@ const questions = [
   },
   {
     "id": 41,
-    "question": "Câu 41: Trường hợp nào dưới đây người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dùng lại để bảo",
+    "question": "Câu 41: Trường hợp nào dưới đây người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dùng lại để bảo đảm an toàn?",
     "options": [
       "Khu vực đang tổ chức kiểm soát giao thông đường bộ.",
       "Có vật nuôi đi trên đường hoặc chăn thả ở ven đường.",
