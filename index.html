@@ -1085,5 +1085,10 @@ updateStats();
 // cập nhật mỗi 30 giây
 setInterval(updateStats,30000);
 </script>
+
+<script>
+fetch("/api/track",{method:"POST"});
+</script>
+
 </body>
 </html>
