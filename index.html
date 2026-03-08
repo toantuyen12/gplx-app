@@ -1055,42 +1055,35 @@ Bộ câu hỏi được tổng hợp từ tài liệu ôn tập sát hạch lá
 chỉ phục vụ mục đích học tập và ôn luyện.
 </p>
 
-<p>🔥 Người đang học: <span id="onlineUsers">...</span></p>
-<p>👁️ Lượt truy cập hôm nay: <span id="todayViews">...</span></p>
+<div id="visitorStats" style="font-size:16px;line-height:1.8">
+👥 Đang online: <span id="onlineUsers">0</span><br>
+📅 Lượt truy cập hôm nay: <span id="todayUsers">0</span><br>
+🌍 Tổng lượt truy cập: <span id="totalUsers">0</span>
+</div>
 
 <p>© 2026 thigplx.site</p>
 
 </footer>
 
 <script>
-
-async function loadStats(){
-
+async function updateStats(){
 try{
-
 const res = await fetch("/api/analytics");
 const data = await res.json();
 
-const online = data.rows[0].metricValues[0].value;
-const views = data.rows[0].metricValues[1].value;
-
-document.getElementById("onlineUsers").innerText = online;
-document.getElementById("todayViews").innerText =
-Number(views).toLocaleString();
+document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
+document.getElementById("todayUsers").textContent = data.todayUsers || 0;
+document.getElementById("totalUsers").textContent = data.totalUsers || 0;
 
 }catch(e){
-
-document.getElementById("onlineUsers").innerText="0";
-document.getElementById("todayViews").innerText="0";
-
+console.log("Analytics error",e);
+}
 }
 
-}
+updateStats();
 
-loadStats();
-setInterval(loadStats,30000);
-
+// cập nhật mỗi 30 giây
+setInterval(updateStats,30000);
 </script>
-
 </body>
 </html>
