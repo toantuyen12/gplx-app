@@ -11,26 +11,43 @@ body{
     font-family:Arial, sans-serif;
     background:linear-gradient(135deg,#0f2027,#2c5364);
 }
+/* HEADER */
 
-/* menu */
-
-.top-menu{
-    text-align:center;
-    padding:18px;
-    background:white;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+header{
+background:#0f2027;
+padding:15px 0;
+box-shadow:0 2px 10px rgba(0,0,0,0.3);
+position:sticky;
+top:0;
+z-index:1000;
 }
 
-.top-menu a{
-    margin:0 18px;
-    text-decoration:none;
-    font-size:17px;
-    font-weight:600;
-    color:#4a2ea6;
+.nav-container{
+width:90%;
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-.top-menu a:hover{
-    color:#2196f3;
+.logo{
+color:white;
+font-size:20px;
+font-weight:bold;
+text-decoration:none;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+font-size:15px;
+transition:0.3s;
+}
+
+nav a:hover{
+color:#00d4ff;
 }
 
 /* nội dung */
@@ -82,13 +99,23 @@ body{
 
 <body>
 
-<div class="top-menu">
+<header>
+
+<div class="nav-container">
+
+<a href="index.html" class="logo">Thi GPLX Online</a>
+
+<nav>
 <a href="index.html">Trang chủ</a>
 <a href="about.html">Giới thiệu</a>
 <a href="privacy.html">Chính sách</a>
 <a href="terms.html">Điều khoản</a>
 <a href="contact.html">Liên hệ</a>
+</nav>
+
 </div>
+
+</header>
 
 <div class="page-box">
 
