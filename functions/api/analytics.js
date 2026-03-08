@@ -76,9 +76,13 @@ Authorization:`Bearer ${accessToken}`,
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-dateRanges:[{startDate:"today",endDate:"today"}],
+dateRanges:[
+{startDate:"today",endDate:"today"},
+{startDate:"2000-01-01",endDate:"today"}
+],
 metrics:[
-{name:"activeUsers"}
+{name:"activeUsers"},
+{name:"totalUsers"}
 ]
 })
 }
@@ -86,14 +90,20 @@ metrics:[
 
 const data = await analyticsRes.json();
 
-let users = 0;
+let activeUsers = 0;
+let todayUsers = 0;
+let totalUsers = 0;
 
 if(data.rows){
-users = data.rows[0].metricValues[0].value;
+activeUsers = data.rows[0].metricValues[0].value;
+todayUsers = data.rows[0].metricValues[1].value;
+totalUsers = data.rows[1].metricValues[1].value;
 }
 
 return new Response(JSON.stringify({
-activeUsers: users
+activeUsers,
+todayUsers,
+totalUsers
 }),{
 headers:{ "content-type":"application/json"}
 });
