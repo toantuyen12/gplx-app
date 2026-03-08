@@ -1,5 +1,21 @@
 export async function onRequest(context) {
 
+const url = new URL(context.request.url);
+
+// nếu gọi /api/track
+if(url.pathname === "/api/track"){
+return track(context);
+}
+
+// nếu gọi /api/analytics
+if(url.pathname === "/api/analytics"){
+return analytics(context);
+}
+
+}
+
+async function analytics(context) {
+
 const clientEmail = context.env.GA_CLIENT_EMAIL;
 const privateKey = context.env.GA_PRIVATE_KEY.replace(/\\n/g,"\n");
 const propertyId = context.env.GA_PROPERTY_ID;
@@ -176,4 +192,16 @@ return btoa(binary)
 .replace(/\+/g,"-")
 .replace(/\//g,"_")
 .replace(/=+$/,"");
+}
+async function track(context){
+
+const ip = context.request.headers.get("CF-Connecting-IP");
+
+return new Response(JSON.stringify({
+status:"tracked",
+ip:ip
+}),{
+headers:{ "content-type":"application/json"}
+});
+
 }
