@@ -552,7 +552,7 @@ line-height:1.6;
 
 <div id="home" class="card">
 
-<h1>🚗 500 CÂU HỎI SÁT HẠCH LÁI XE Ô TÔ</h1>
+<h1>Thi thử GPLX Online - 500 Câu Hỏi Sát Hạch Lái Xe Mới Nhất</h1>
 
 <button class="primary-btn" onclick="start500()">🚗 Ôn tập 500 câu</button>
 <button class="primary-btn" onclick="start30()">📝 Thi đề 30 câu</button>
@@ -1062,12 +1062,9 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 </footer>
 
 <script>
-
 window.addEventListener("load", function(){
 
-window.scrollTo(0,0);
-
-fetch("https://api.countapi.xyz/hit/thigplx/visits")
+fetch("https://api.countapi.xyz/hit/thigplx.site/visits")
 .then(res => res.json())
 .then(data => {
 document.getElementById("visitorCount").innerText = data.value;
@@ -1077,7 +1074,6 @@ document.getElementById("visitorCount").innerText = "0";
 });
 
 });
-
 </script>
 
 </body>
