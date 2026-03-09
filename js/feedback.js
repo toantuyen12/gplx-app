@@ -44,10 +44,26 @@ alert("Cảm ơn bạn đã góp ý!");
 
 document.getElementById("feedbackForm").reset();
 
+rating=0;
+
+document.querySelectorAll(".star").forEach(s=>{
+s.classList.remove("active");
+});
+
 closeFeedback();
 
 });
 
+}
+
+});
+
+window.addEventListener("click",function(e){
+
+let modal=document.getElementById("feedbackModal");
+
+if(e.target===modal){
+closeFeedback();
 }
 
 });
