@@ -1,0 +1,49 @@
+<div class="feedback-modal" id="feedbackModal">
+
+<div class="feedback-box">
+
+<h3>💬 Gửi góp ý cho website</h3>
+
+<form id="feedbackForm">
+
+<label>Loại góp ý</label>
+<select id="type">
+<option>Báo lỗi</option>
+<option>Đề xuất tính năng</option>
+<option>Góp ý nội dung</option>
+<option>Giao diện</option>
+<option>Hiệu suất</option>
+<option>Khác</option>
+</select>
+
+<label>Tiêu đề</label>
+<input id="title" required>
+
+<label>Nội dung góp ý</label>
+<textarea id="message" maxlength="1000" required></textarea>
+
+<label>Email (tùy chọn)</label>
+<input id="email" type="email">
+
+<label>Đánh giá</label>
+
+<div class="star-rating">
+<span class="star" onclick="rate(1)">★</span>
+<span class="star" onclick="rate(2)">★</span>
+<span class="star" onclick="rate(3)">★</span>
+<span class="star" onclick="rate(4)">★</span>
+<span class="star" onclick="rate(5)">★</span>
+</div>
+
+<div class="feedback-actions">
+
+<button type="button" onclick="closeFeedback()">Hủy</button>
+
+<button type="submit">📩 Gửi góp ý</button>
+
+</div>
+
+</form>
+
+</div>
+</div>

@@ -3,6 +3,14 @@
 
 <head>
 
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+(function(){
+emailjs.init("vfDO3cQJ9ZvT6cqeW");
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -100,6 +108,7 @@ line-height:1.8;
 <a href="privacy.html">Chính sách</a>
 <a href="terms.html">Điều khoản</a>
 <a href="contact.html">Liên hệ</a>
+<button onclick="openFeedback()">💬</button>
 </nav>
 
 </div>
@@ -152,6 +161,22 @@ line-height:1.8;
 <p>Với phương pháp học tập đúng đắn và sự kiên trì luyện tập, bạn hoàn toàn có thể vượt qua kỳ thi lý thuyết GPLX ngay từ lần đầu tiên.</p>
 
 </div>
+
+<div id="feedbackContainer"></div>
+
+<script>
+
+fetch("/feedback.html")
+.then(res=>res.text())
+.then(data=>{
+document.getElementById("feedbackContainer").innerHTML=data;
+});
+
+</script>
+
+<link rel="stylesheet" href="/css/feedback.css">
+
+<script src="/js/feedback.js"></script>
 
 </body>
 </html>

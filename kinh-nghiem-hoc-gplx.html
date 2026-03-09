@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+(function(){
+emailjs.init("vfDO3cQJ9ZvT6cqeW");
+})();
+</script>
+
 <meta charset="UTF-8">
 <title>Kinh nghiệm học lý thuyết GPLX hiệu quả</title>
 
@@ -108,6 +117,7 @@ color:#00d4ff;
 <a href="privacy.html">Chính sách</a>
 <a href="terms.html">Điều khoản</a>
 <a href="contact.html">Liên hệ</a>
+<button onclick="openFeedback()">💬</button>
 </nav>
 
 </div>
@@ -192,6 +202,22 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 <p>© 2026 thigplx.site</p>
 
 </footer>
+
+<div id="feedbackContainer"></div>
+
+<script>
+
+fetch("/feedback.html")
+.then(res=>res.text())
+.then(data=>{
+document.getElementById("feedbackContainer").innerHTML=data;
+});
+
+</script>
+
+<link rel="stylesheet" href="/css/feedback.css">
+
+<script src="/js/feedback.js"></script>
 
 </body>
 </html>

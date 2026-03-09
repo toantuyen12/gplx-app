@@ -1,0 +1,53 @@
+function openFeedback(){
+document.getElementById("feedbackModal").style.display="flex";
+}
+
+function closeFeedback(){
+document.getElementById("feedbackModal").style.display="none";
+}
+
+let rating=0;
+
+function rate(star){
+
+rating=star;
+
+document.querySelectorAll(".star").forEach((s,i)=>{
+s.classList.toggle("active", i<star);
+});
+
+}
+
+document.addEventListener("submit",function(e){
+
+if(e.target.id==="feedbackForm"){
+
+e.preventDefault();
+
+let data={
+
+type:document.getElementById("type").value,
+title:document.getElementById("title").value,
+message:document.getElementById("message").value,
+email:document.getElementById("email").value,
+rating:rating
+
+};
+
+emailjs.send(
+"service_08hnt39",
+"template_auvcrkf",
+data
+).then(function(){
+
+alert("Cảm ơn bạn đã góp ý!");
+
+document.getElementById("feedbackForm").reset();
+
+closeFeedback();
+
+});
+
+}
+
+});
