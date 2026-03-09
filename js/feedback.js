@@ -6,14 +6,14 @@ function closeFeedback(){
 document.getElementById("feedbackModal").style.display="none";
 }
 
-let rating=0;
+let rating = 0;
 
 function rate(star){
 
-rating=star;
+rating = star;
 
 document.querySelectorAll(".star").forEach((s,i)=>{
-s.classList.toggle("active", i<star);
+s.classList.toggle("active", i < star);
 });
 
 }
@@ -42,22 +42,20 @@ data
 
 alert("Cảm ơn bạn đã góp ý!");
 
-}).catch(function(error){
-
-console.log("EmailJS error:", error);
-alert("Gửi góp ý thất bại!");
-
-});
-
 document.getElementById("feedbackForm").reset();
 
-rating=0;
+rating = 0;
 
 document.querySelectorAll(".star").forEach(s=>{
 s.classList.remove("active");
 });
 
 closeFeedback();
+
+}).catch(function(error){
+
+console.log("EmailJS error:", error);
+alert("Gửi góp ý thất bại!");
 
 });
 
