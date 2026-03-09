@@ -24,7 +24,7 @@ if(e.target.id==="feedbackForm"){
 
 e.preventDefault();
 
-let data={
+let data = {
 
 type:document.getElementById("type").value,
 title:document.getElementById("title").value,
@@ -46,7 +46,7 @@ document.getElementById("feedbackForm").reset();
 
 rating = 0;
 
-document.querySelectorAll(".star").forEach(s=>{
+document.querySelectorAll(".star").forEach(function(s){
 s.classList.remove("active");
 });
 
@@ -65,9 +65,9 @@ alert("Gửi góp ý thất bại!");
 
 window.addEventListener("click",function(e){
 
-let modal=document.getElementById("feedbackModal");
+let modal = document.getElementById("feedbackModal");
 
-if(e.target===modal){
+if(e.target === modal){
 closeFeedback();
 }
 
