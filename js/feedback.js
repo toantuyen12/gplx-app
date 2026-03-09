@@ -42,6 +42,13 @@ data
 
 alert("Cảm ơn bạn đã góp ý!");
 
+}).catch(function(error){
+
+console.log("EmailJS error:", error);
+alert("Gửi góp ý thất bại!");
+
+});
+
 document.getElementById("feedbackForm").reset();
 
 rating=0;
