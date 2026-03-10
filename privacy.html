@@ -20,16 +20,15 @@
     <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
     Thi GPLX Online
 </a>
-<div class="header-email">
-✉️ thigplx.contact@gmail.com
-</div>
-<nav>
+<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+<nav class="main-nav">
 <a href="index.html">Trang chủ</a>
 <a href="about.html">Giới thiệu</a>
-<a href="privacy.html">Chính sách</a>
+<a href="privacy.html">Chính sách bảo mật</a>
 <a href="terms.html">Điều khoản</a>
 <a href="contact.html">Liên hệ</a>
-<button onclick="openFeedback()">💬 Góp ý</button>
 </nav>
 </div>
 </header>
@@ -108,11 +107,15 @@ chịu trách nhiệm.
 </div>
 
 <footer class="footer">
-<div>
-<a href="index.html">Trang chủ</a> |
-<a href="about.html">Giới thiệu</a> |
-<a href="privacy.html">Chính sách bảo mật</a> |
-<a href="terms.html">Điều khoản</a> |
+<div class="footer-links">
+<a href="index.html">Trang chủ</a>
+<span class="footer-divider">|</span>
+<a href="about.html">Giới thiệu</a>
+<span class="footer-divider">|</span>
+<a href="privacy.html">Chính sách bảo mật</a>
+<span class="footer-divider">|</span>
+<a href="terms.html">Điều khoản</a>
+<span class="footer-divider">|</span>
 <a href="contact.html">Liên hệ</a>
 </div>
 <p>
@@ -124,8 +127,8 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 📅 Lượt truy cập hôm nay: <span id="todayUsers">0</span><br>
 🌍 Tổng lượt truy cập: <span id="totalUsers">0</span>
 </div>
-<p>Liên hệ: thigplx.contact@gmail.com</p>
-<p>© 2026 thigplx.site</p>
+<p style="font-weight: bold; margin-top: 10px; font-size: 16px;">thigplx.contact@gmail.com</p>
+<p style="margin-top: 5px;">© 2026 thigplx.site</p>
 </footer>
 
 <div id="feedbackContainer"></div>

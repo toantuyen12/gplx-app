@@ -408,3 +408,10 @@ el.innerText = minutes + ":" + seconds.toString().padStart(2,"0");
 },1000);
 
 }
+
+function toggleMenu() {
+    const nav = document.querySelector('.main-nav');
+    if (nav) {
+        nav.classList.toggle('active');
+    }
+}
