@@ -19,7 +19,7 @@
     <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
-<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+<button class="menu-toggle" aria-label="Toggle menu">
     <i class="fa-solid fa-bars"></i>
 </button>
 <nav class="main-nav">
@@ -30,6 +30,14 @@
 <a href="contact.html">Liên hệ</a>
 </nav>
 </div>
+<!-- Mobile Menu -->
+<nav class="mobile-menu">
+<a href="index.html">Trang chủ</a>
+<a href="about.html">Giới thiệu</a>
+<a href="privacy.html">Chính sách bảo mật</a>
+<a href="terms.html">Điều khoản</a>
+<a href="contact.html">Liên hệ</a>
+</nav>
 </header>
 
 <section class="page-section">
@@ -190,21 +198,25 @@ emailjs.init("Gn37aooYVlLuKdN9j");
 <script src="/js/feedback.js"></script>
 
 
+
+
 <!-- Global UI Scripts -->
 <script>
-function toggleMenu() {
-    const nav = document.querySelector('.main-nav');
-    if (nav) {
-        nav.classList.toggle('active');
-    }
-}
-document.addEventListener('click', function(e) {
-    const nav = document.querySelector('.main-nav');
-    const toggle = document.querySelector('.menu-toggle');
-    if (nav && nav.classList.contains('active')) {
-        if (!nav.contains(e.target) && (!toggle || !toggle.contains(e.target))) {
-            nav.classList.remove('active');
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.querySelector('.menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                mobileMenu.classList.remove('active');
+            }
+        });
     }
 });
 </script>
