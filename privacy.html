@@ -184,5 +184,25 @@ fetch("/feedback.html?v=3")
 </script>
 <link rel="stylesheet" href="/css/feedback.css?v=3">
 <script src="/js/feedback.js?v=3"></script>
+<!-- Real Analytics Fetching -->
+<script>
+async function fetchAnalytics() {
+    try {
+        const res = await fetch("/api/analytics");
+        if (res.ok) {
+            const data = await res.json();
+            document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
+            document.getElementById("todayUsers").textContent = data.todayUsers || 0;
+            document.getElementById("totalUsers").textContent = typeof data.totalUsers === 'number' ? data.totalUsers.toLocaleString() : "0";
+        }
+    } catch (error) {
+        console.error("Error fetching analytics:", error);
+    }
+}
+// Fetch initially when page loads
+fetchAnalytics();
+// Then fetch periodically every 60 seconds
+setInterval(fetchAnalytics, 60000);
+</script>
 </body>
 </html>
