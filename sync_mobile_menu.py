@@ -28,26 +28,23 @@ HEADER_CONTENT = """<header>
 </nav>
 </header>"""
 
-SCRIPT_MENU_CONTENT = """<!-- Global UI Scripts -->
+FEEDBACK_LOADER_CONTENT = """<div id="feedbackContainer"></div>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const menuBtn = document.querySelector('.menu-toggle');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            mobileMenu.classList.toggle('active');
-        });
-        
-        document.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                mobileMenu.classList.remove('active');
-            }
-        });
-    }
+fetch("/feedback.html?v=3")
+.then(res=>res.text())
+.then(data=>{
+    document.getElementById("feedbackContainer").innerHTML=data;
 });
-</script>"""
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Gn37aooYVlLuKdN9j");
+})();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>"""
+
 
 html_files = [f for f in os.listdir('.') if f.endswith('.html')]
 
@@ -57,22 +54,24 @@ for file in html_files:
 
     with open(file, 'r', encoding='utf-8') as f:
         content = f.read()
+
+    # 1. Clean up old feedback container logic and old fetch scripts
+    # We remove the block containing the feedback stuff to prevent duplication
+    content = re.sub(r'<div id="feedbackContainer">.*?<script src="/js/feedback\.js.*?>.*?</script>', '', content, flags=re.DOTALL)
     
-    # 1. Replace header completely
+    # Just in case there's slight variations, let's also remove old explicit emailjs tags manually
+    content = re.sub(r'<script src="https://cdn\.jsdelivr\.net/npm/emailjs-com@3/dist/email\.min\.js"></script>', '', content)
+    content = re.sub(r'<script>\s*\(function\(\)\{\s*emailjs\.init\("Gn37aooYVlLuKdN9j"\);\s*\}\)\(\);\s*</script>', '', content, flags=re.DOTALL)
+    content = re.sub(r'<link rel="stylesheet" href="/css/feedback\.css.*?">', '', content)
+
+    # 2. Replace the header to remove the "Góp ý" nav link
     content = re.sub(r'<header>.*?</header>', HEADER_CONTENT, content, flags=re.DOTALL)
-    
-    # 2. Replace old inline script toggleMenu()
-    content = re.sub(r'<!-- Global UI Scripts -->\s*<script>\s*function toggleMenu\(\)(.*?)</script>', '', content, flags=re.DOTALL)
-    content = re.sub(r'<script>\s*function toggleMenu\(\)(.*?)</script>', '', content, flags=re.DOTALL)
-    
-    # Ensure button doesn't have inline onclick
-    content = content.replace('onclick="toggleMenu()"', '')
-    
-    # Insert new script if not present
-    if "const mobileMenu = document.querySelector('.mobile-menu');" not in content:
-        content = content.replace('</body>', f'\n{SCRIPT_MENU_CONTENT}\n</body>')
+
+    # 3. Inject the clean unified FEEDBACK_LOADER_CONTENT right before </body>
+    if "feedbackContainer" not in content:
+        content = content.replace('</body>', f'\n{FEEDBACK_LOADER_CONTENT}\n</body>')
 
     with open(file, 'w', encoding='utf-8') as f:
         f.write(content)
 
-print(f"Updated header and mobile menu logic in {len(html_files)} files.")
+print(f"Removed nav links and injected universal feedback loader into {len(html_files) - 1} files.")

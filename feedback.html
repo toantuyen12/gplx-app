@@ -1,6 +1,12 @@
+<!-- FLOATING FEEDBACK BUTTON -->
+<button class="feedback-floating-btn" onclick="openFeedback()">
+    <i class="fa-solid fa-comment-dots"></i> Góp ý
+</button>
+
 <div class="feedback-modal" id="feedbackModal">
 
 <div class="feedback-box">
+<button class="feedback-close-x" onclick="closeFeedback()" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
 
 <h3><i class="fa-solid fa-comment-dots"></i> Gửi góp ý cho website</h3>
 
@@ -37,7 +43,7 @@
 
 <div class="feedback-actions">
 
-<button type="button" onclick="closeFeedback()">Hủy</button>
+<button type="button" onclick="closeFeedback()">Hủy bỏ</button>
 
 <button type="submit">📩 Gửi góp ý</button>
 

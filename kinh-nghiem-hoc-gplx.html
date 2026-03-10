@@ -132,30 +132,7 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 <p style="margin-top: 5px;">© 2026 thigplx.site</p>
 </footer>
 
-<div id="feedbackContainer"></div>
 
-<script>
-
-fetch("/feedback.html")
-.then(res=>res.text())
-.then(data=>{
-document.getElementById("feedbackContainer").innerHTML=data;
-});
-
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
-<script>
-(function(){
-emailjs.init("Gn37aooYVlLuKdN9j");
-})();
-</script>
-
-<link rel="stylesheet" href="/css/feedback.css">
-
-<script src="/js/feedback.js"></script>
 
 
 
@@ -180,5 +157,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+
+<div id="feedbackContainer"></div>
+<script>
+fetch("/feedback.html?v=3")
+.then(res=>res.text())
+.then(data=>{
+    document.getElementById("feedbackContainer").innerHTML=data;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Gn37aooYVlLuKdN9j");
+})();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
 </body>
 </html>

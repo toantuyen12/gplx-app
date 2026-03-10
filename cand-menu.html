@@ -20,31 +20,31 @@
 <body>
 
     <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo" style="display:flex; align-items:center;">
-                <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
-                Thi GPLX
-            </a>
-            <button class="menu-toggle" aria-label="Toggle menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <nav class="main-nav">
-                <a href="index.html">Trang chủ</a>
-                <a href="about.html">Giới thiệu</a>
-                <a href="privacy.html">Chính sách bảo mật</a>
-                <a href="terms.html">Điều khoản</a>
-                <a href="contact.html">Liên hệ</a>
-            </nav>
-        </div>
-        <!-- Mobile Menu -->
-        <nav class="mobile-menu">
-            <a href="index.html">Trang chủ</a>
-            <a href="about.html">Giới thiệu</a>
-            <a href="privacy.html">Chính sách bảo mật</a>
-            <a href="terms.html">Điều khoản</a>
-            <a href="contact.html">Liên hệ</a>
-        </nav>
-    </header>
+<div class="nav-container">
+<a href="index.html" class="logo" style="display:flex; align-items:center;">
+    <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
+    Thi GPLX
+</a>
+<button class="menu-toggle" aria-label="Toggle menu">
+    <i class="fa-solid fa-bars"></i>
+</button>
+<nav class="main-nav">
+<a href="index.html">Trang chủ</a>
+<a href="about.html">Giới thiệu</a>
+<a href="privacy.html">Chính sách bảo mật</a>
+<a href="terms.html">Điều khoản</a>
+<a href="contact.html">Liên hệ</a>
+</nav>
+</div>
+<!-- Mobile Menu -->
+<nav class="mobile-menu">
+<a href="index.html">Trang chủ</a>
+<a href="about.html">Giới thiệu</a>
+<a href="privacy.html">Chính sách bảo mật</a>
+<a href="terms.html">Điều khoản</a>
+<a href="contact.html">Liên hệ</a>
+</nav>
+</header>
 
     <div class="container">
         <div class="hero-header">
@@ -152,6 +152,23 @@
             }
         });
     </script>
+
+<div id="feedbackContainer"></div>
+<script>
+fetch("/feedback.html?v=3")
+.then(res=>res.text())
+.then(data=>{
+    document.getElementById("feedbackContainer").innerHTML=data;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Gn37aooYVlLuKdN9j");
+})();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
 </body>
 
 </html>
