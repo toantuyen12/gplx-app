@@ -17,6 +17,7 @@ body {
   color: var(--text-main);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 /* ===== CARD ===== */
@@ -265,6 +266,7 @@ button:active {
   box-sizing: border-box;
 }
 
+/* ===== TÙY CHỌN TRẢ LỜI ĐẸP & MƯỢT ===== */
 .option {
   margin: 12px 0;
   padding: 16px 20px;
@@ -274,7 +276,7 @@ button:active {
   background: white;
   border: 2px solid #e2e8f0;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, color 0.3s ease;
   touch-action: manipulation;
   color: var(--text-main);
   display: flex;
@@ -591,6 +593,9 @@ header {
   font-weight: 800;
   text-decoration: none;
   letter-spacing: -0.5px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 
 nav.main-nav {
@@ -750,12 +755,27 @@ line-height:1.6;
   
   .card {
     padding: 20px 15px;
+    width: 100%;
   }
+  
+  .container {
+    padding: 0 10px;
+  }
+  
   .question-left {
     padding: 15px;
   }
   .question-layout {
     gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 18px;
+  }
+  nav.main-nav a {
+    padding: 12px 15px;
   }
 }
 

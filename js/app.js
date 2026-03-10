@@ -428,21 +428,4 @@ el.innerText = minutes + ":" + seconds.toString().padStart(2,"0");
 },1000);
 
 }
-
-function toggleMenu() {
-    const nav = document.querySelector('.main-nav');
-    if (nav) {
-        nav.classList.toggle('active');
-    }
-}
-
-// Close menu when clicking outside
-document.addEventListener('click', function(e) {
-    const nav = document.querySelector('.main-nav');
-    const toggle = document.querySelector('.menu-toggle');
-    if (nav && nav.classList.contains('active')) {
-        if (!nav.contains(e.target) && !toggle.contains(e.target)) {
-            nav.classList.remove('active');
-        }
-    }
-});
+

@@ -18,7 +18,7 @@
 <div class="nav-container">
 <a href="index.html" class="logo" style="display:flex; align-items:center;">
     <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
-    Thi GPLX Online
+    Thi GPLX
 </a>
 <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
@@ -111,6 +111,27 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 <p style="font-weight: bold; margin-top: 10px; font-size: 16px;">thigplx.contact@gmail.com</p>
 <p style="margin-top: 5px;">© 2026 thigplx.site</p>
 </footer>
+
+<!-- Global UI Scripts -->
+<script>
+function toggleMenu() {
+    const nav = document.querySelector('.main-nav');
+    if (nav) {
+        nav.classList.toggle('active');
+    }
+}
+document.addEventListener('click', function(e) {
+    const nav = document.querySelector('.main-nav');
+    const toggle = document.querySelector('.menu-toggle');
+    if (nav && nav.classList.contains('active')) {
+        if (!nav.contains(e.target) && (!toggle || !toggle.contains(e.target))) {
+            nav.classList.remove('active');
+        }
+    }
+});
+</script>
+
+
 
 <div id="feedbackContainer"></div>
 
