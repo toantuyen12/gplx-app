@@ -144,7 +144,11 @@
 
 <h2>Bài viết hữu ích</h2>
 
-<div class="article-grid">
+<div class="carousel-container">
+<button class="carousel-btn prev-btn" onclick="moveCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+
+<div class="carousel-wrapper" id="articleCarousel">
+<div class="carousel-track">
 
 <a class="article-card" href="meo-thi-gplx.html">
 <h3>Mẹo thi lý thuyết GPLX</h3>
@@ -161,6 +165,21 @@
 <p>Những kinh nghiệm giúp việc ôn tập 500 câu hỏi hiệu quả hơn.</p>
 </a>
 
+<!-- Duplicating items for infinite feeling demo -->
+<a class="article-card" href="meo-thi-gplx.html">
+<h3>Sa hình thực tế</h3>
+<p>Phân tích các thế sa hình thường gặp nhất trong bộ đề thi 500 câu.</p>
+</a>
+
+<a class="article-card" href="kinh-nghiem-hoc-gplx.html">
+<h3>Lưu ý kỳ thi CAND</h3>
+<p>Những điểm khác biệt và trọng tâm ôn tập dành cho lực lượng vũ trang.</p>
+</a>
+
+</div>
+</div>
+
+<button class="carousel-btn next-btn" onclick="moveCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 
 </div>
@@ -207,6 +226,88 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+</script>
+
+<script>
+// ===== CAROUSEL LOGIC =====
+const track = document.querySelector('.carousel-track');
+const cards = document.querySelectorAll('.article-card');
+let currentIndex = 0;
+let cardWidth;
+let autoSlideInterval;
+let articlesPerView = window.innerWidth <= 768 ? 1 : 4;
+
+function updateCarouselSettings() {
+    articlesPerView = window.innerWidth <= 768 ? 1 : 4;
+    cardWidth = track.clientWidth / articlesPerView;
+    cards.forEach(card => {
+        card.style.flex = `0 0 ${cardWidth}px`;
+        card.style.maxWidth = `${cardWidth}px`;
+    });
+    moveCarousel(0); // reset position
+}
+
+function moveCarousel(direction) {
+    const totalItems = cards.length;
+    currentIndex += direction;
+    
+    // Looping logic
+    if (currentIndex < 0) {
+        currentIndex = totalItems - articlesPerView;
+        if(currentIndex < 0) currentIndex = 0;
+    } else if (currentIndex > totalItems - articlesPerView) {
+        currentIndex = 0;
+    }
+    
+    track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+    
+    // Pause auto slide if interacted manually
+    if (direction !== 0 && direction !== 99) {
+        resetAutoSlide();
+    }
+}
+
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        moveCarousel(1);
+    }, 5000);
+}
+
+function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+}
+
+window.addEventListener('resize', updateCarouselSettings);
+window.addEventListener('load', () => {
+    updateCarouselSettings();
+    startAutoSlide();
+});
+
+// Touch tracking for Carousel Swiping
+let carouselTouchStartX = 0;
+let carouselTouchEndX = 0;
+
+track.addEventListener('touchstart', e => {
+    carouselTouchStartX = e.changedTouches[0].screenX;
+    clearInterval(autoSlideInterval); // Pause on touch
+}, {passive: true});
+
+track.addEventListener('touchend', e => {
+    carouselTouchEndX = e.changedTouches[0].screenX;
+    handleCarouselSwipe();
+    startAutoSlide(); // Resume on release
+}, {passive: true});
+
+track.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+track.addEventListener('mouseleave', startAutoSlide);
+
+
+function handleCarouselSwipe() {
+    let diff = carouselTouchEndX - carouselTouchStartX;
+    if (diff < -50) moveCarousel(1); // Swipe left -> Next
+    if (diff > 50) moveCarousel(-1); // Swipe right -> Prev
+}
 </script>
 
 

@@ -42,7 +42,9 @@
 
 <!-- ARTICLE -->
 
-<div class="article-container">
+<section class="page-section">
+<div class="container">
+<div class="content-card">
 
 <h1>Điều khoản sử dụng</h1>
 
@@ -81,7 +83,33 @@
 <p>Cập nhật lần cuối: 2026</p>
 
 </div>
+</div>
+</section>
 
+<footer class="footer">
+<div class="footer-links">
+<a href="index.html">Trang chủ</a>
+<span class="footer-divider">|</span>
+<a href="about.html">Giới thiệu</a>
+<span class="footer-divider">|</span>
+<a href="privacy.html">Chính sách bảo mật</a>
+<span class="footer-divider">|</span>
+<a href="terms.html">Điều khoản</a>
+<span class="footer-divider">|</span>
+<a href="contact.html">Liên hệ</a>
+</div>
+<p>
+Bộ câu hỏi được tổng hợp từ tài liệu ôn tập sát hạch lái xe trong lực lượng Công an nhân dân,
+chỉ phục vụ mục đích học tập và ôn luyện.
+</p>
+<div id="visitorStats" style="font-size:16px;line-height:1.8">
+👥 Đang online: <span id="onlineUsers">0</span><br>
+📅 Lượt truy cập hôm nay: <span id="todayUsers">0</span><br>
+🌍 Tổng lượt truy cập: <span id="totalUsers">0</span>
+</div>
+<p style="font-weight: bold; margin-top: 10px; font-size: 16px;">thigplx.contact@gmail.com</p>
+<p style="margin-top: 5px;">© 2026 thigplx.site</p>
+</footer>
 <div id="feedbackContainer"></div>
 
 <script>
@@ -106,5 +134,24 @@ emailjs.init("Gn37aooYVlLuKdN9j");
 
 <script src="/js/feedback.js"></script>
 
+
+<!-- Global UI Scripts -->
+<script>
+function toggleMenu() {
+    const nav = document.querySelector('.main-nav');
+    if (nav) {
+        nav.classList.toggle('active');
+    }
+}
+document.addEventListener('click', function(e) {
+    const nav = document.querySelector('.main-nav');
+    const toggle = document.querySelector('.menu-toggle');
+    if (nav && nav.classList.contains('active')) {
+        if (!nav.contains(e.target) && (!toggle || !toggle.contains(e.target))) {
+            nav.classList.remove('active');
+        }
+    }
+});
+</script>
 </body>
 </html>

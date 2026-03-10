@@ -7,121 +7,34 @@
 <meta charset="UTF-8">
 <title>Các loại biển báo giao thông khi thi GPLX</title>
 
-<style>
 
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:linear-gradient(135deg,#0f2027,#2c5364);
-}
-/* HEADER */
-
-header{
-background:#0f2027;
-padding:15px 0;
-box-shadow:0 2px 10px rgba(0,0,0,0.3);
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.nav-container{
-width:90%;
-max-width:1100px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.logo{
-color:white;
-font-size:20px;
-font-weight:bold;
-text-decoration:none;
-}
-
-nav a{
-color:white;
-text-decoration:none;
-margin-left:20px;
-font-size:15px;
-transition:0.3s;
-}
-
-nav a:hover{
-color:#00d4ff;
-}
-
-/* nội dung */
-
-.page-box{
-    max-width:900px;
-    margin:60px auto;
-    background:white;
-    padding:40px;
-    border-radius:16px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-}
-
-.page-box h1{
-    margin-top:0;
-}
-
-.page-box h2{
-    margin-top:28px;
-}
-
-.page-box p{
-    line-height:1.7;
-    font-size:16px;
-}
-
-.page-box ul{
-    line-height:1.7;
-}
-
-/* footer */
-
-.footer{
-    margin-top:80px;
-    padding:35px 20px;
-    text-align:center;
-    background:#1b2d36;
-    color:#ddd;
-}
-
-.footer a{
-    color:#b084ff;
-    text-decoration:none;
-    margin:0 8px;
-}
-
-</style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <header>
-
 <div class="nav-container">
-
-<a href="index.html" class="logo">Thi GPLX Online</a>
-
-<nav>
+<a href="index.html" class="logo" style="display:flex; align-items:center;">
+    <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
+    Thi GPLX
+</a>
+<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+<nav class="main-nav">
 <a href="index.html">Trang chủ</a>
 <a href="about.html">Giới thiệu</a>
-<a href="privacy.html">Chính sách</a>
+<a href="privacy.html">Chính sách bảo mật</a>
 <a href="terms.html">Điều khoản</a>
 <a href="contact.html">Liên hệ</a>
-<button onclick="openFeedback()">💬 Góp ý</button>
 </nav>
-
 </div>
-
 </header>
 
-<div class="page-box">
+<section class="page-section">
+<div class="container">
+<div class="content-card">
 
 <h1>Các loại biển báo giao thông cần nhớ khi thi GPLX</h1>
 
@@ -224,22 +137,32 @@ giấy phép lái xe và lái xe an toàn hơn khi tham gia giao thông.
 </p>
 
 </div>
+</div>
+</section>
 
 <footer class="footer">
-
-<a href="index.html">Trang chủ</a> |
-<a href="about.html">Giới thiệu</a> |
-<a href="privacy.html">Chính sách bảo mật</a> |
-<a href="terms.html">Điều khoản</a> |
+<div class="footer-links">
+<a href="index.html">Trang chủ</a>
+<span class="footer-divider">|</span>
+<a href="about.html">Giới thiệu</a>
+<span class="footer-divider">|</span>
+<a href="privacy.html">Chính sách bảo mật</a>
+<span class="footer-divider">|</span>
+<a href="terms.html">Điều khoản</a>
+<span class="footer-divider">|</span>
 <a href="contact.html">Liên hệ</a>
-
+</div>
 <p>
 Bộ câu hỏi được tổng hợp từ tài liệu ôn tập sát hạch lái xe trong lực lượng Công an nhân dân,
 chỉ phục vụ mục đích học tập và ôn luyện.
 </p>
-
-<p>© 2026 thigplx.site</p>
-
+<div id="visitorStats" style="font-size:16px;line-height:1.8">
+👥 Đang online: <span id="onlineUsers">0</span><br>
+📅 Lượt truy cập hôm nay: <span id="todayUsers">0</span><br>
+🌍 Tổng lượt truy cập: <span id="totalUsers">0</span>
+</div>
+<p style="font-weight: bold; margin-top: 10px; font-size: 16px;">thigplx.contact@gmail.com</p>
+<p style="margin-top: 5px;">© 2026 thigplx.site</p>
 </footer>
 
 <div id="feedbackContainer"></div>
@@ -266,5 +189,24 @@ emailjs.init("Gn37aooYVlLuKdN9j");
 
 <script src="/js/feedback.js"></script>
 
+
+<!-- Global UI Scripts -->
+<script>
+function toggleMenu() {
+    const nav = document.querySelector('.main-nav');
+    if (nav) {
+        nav.classList.toggle('active');
+    }
+}
+document.addEventListener('click', function(e) {
+    const nav = document.querySelector('.main-nav');
+    const toggle = document.querySelector('.menu-toggle');
+    if (nav && nav.classList.contains('active')) {
+        if (!nav.contains(e.target) && (!toggle || !toggle.contains(e.target))) {
+            nav.classList.remove('active');
+        }
+    }
+});
+</script>
 </body>
 </html>

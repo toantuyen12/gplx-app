@@ -202,7 +202,9 @@ if(mode==="30" && userAns[current]!=null){
 html+=`
 <div class="option ${cls}"
 onclick="choose(${i})"
-ontouchstart="choose(${i})">
+ontouchstart="handleOptionTouchStart(event)"
+ontouchmove="handleOptionTouchMove(event)"
+ontouchend="handleOptionTouchEnd(event, ${i})">
 <b>${i+1}.</b> ${o}
 </div>`;
 });
@@ -270,6 +272,43 @@ function choose(i){
             navBtns[current].classList.add('answered');
         }
     }
+}
+
+let touchStartX = 0;
+let touchStartY = 0;
+let isScrolling = false;
+
+function handleOptionTouchStart(e) {
+    if (e.touches && e.touches.length > 0) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isScrolling = false;
+    }
+}
+
+function handleOptionTouchMove(e) {
+    if (!e.touches || e.touches.length === 0) return;
+    
+    let currentX = e.touches[0].clientX;
+    let currentY = e.touches[0].clientY;
+    
+    // Calculate distance moved
+    let diffX = Math.abs(currentX - touchStartX);
+    let diffY = Math.abs(currentY - touchStartY);
+    
+    // If finger moved more than 10px, consider it a scroll
+    if (diffX > 10 || diffY > 10) {
+        isScrolling = true;
+    }
+}
+
+function handleOptionTouchEnd(e, index) {
+    // Only select the option if the user didn't scroll
+    if (!isScrolling) {
+        choose(index);
+    }
+    // Reset flags
+    isScrolling = false;
 }
 
 function jumpTo(i){
