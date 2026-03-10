@@ -248,8 +248,28 @@ render();
 
 function choose(i){
     userAns[current] = i;
-    // Always re-render so the Question Nav Bar can be updated instantly (answered states)
-    render();
+    
+    // Update options visually instead of full re-render to avoid screen jump
+    const options = document.querySelectorAll('.option');
+    options.forEach((opt, idx) => {
+        opt.classList.remove('selected', 'correct', 'wrong');
+        
+        if (mode === "500") {
+            let q = quiz[current];
+            if (idx === answers[q]) opt.classList.add('correct');
+            else if (idx === i) opt.classList.add('wrong');
+        } else if (mode === "30") {
+            if (idx === i) opt.classList.add('selected');
+        }
+    });
+
+    // Update Question Nav Bar visually
+    if (mode === "30") {
+        const navBtns = document.querySelectorAll('.q-nav-btn');
+        if (navBtns[current] && !navBtns[current].classList.contains('answered')) {
+            navBtns[current].classList.add('answered');
+        }
+    }
 }
 
 function jumpTo(i){
@@ -415,3 +435,14 @@ function toggleMenu() {
         nav.classList.toggle('active');
     }
 }
+
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+    const nav = document.querySelector('.main-nav');
+    const toggle = document.querySelector('.menu-toggle');
+    if (nav && nav.classList.contains('active')) {
+        if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+            nav.classList.remove('active');
+        }
+    }
+});
