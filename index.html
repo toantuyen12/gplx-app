@@ -43,31 +43,31 @@
 
 
     <header>
-<div class="nav-container">
-<a href="index.html" class="logo" style="display:flex; align-items:center;">
-    <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
-    Thi GPLX
-</a>
-<button class="menu-toggle" aria-label="Toggle menu">
-    <i class="fa-solid fa-bars"></i>
-</button>
-<nav class="main-nav">
-<a href="index.html">Trang chủ</a>
-<a href="about.html">Giới thiệu</a>
-<a href="privacy.html">Chính sách bảo mật</a>
-<a href="terms.html">Điều khoản</a>
-<a href="contact.html">Liên hệ</a>
-</nav>
-</div>
-<!-- Mobile Menu -->
-<nav class="mobile-menu">
-<a href="index.html">Trang chủ</a>
-<a href="about.html">Giới thiệu</a>
-<a href="privacy.html">Chính sách bảo mật</a>
-<a href="terms.html">Điều khoản</a>
-<a href="contact.html">Liên hệ</a>
-</nav>
-</header>
+        <div class="nav-container">
+            <a href="index.html" class="logo" style="display:flex; align-items:center;">
+                <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
+                Thi GPLX
+            </a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html">Trang chủ</a>
+                <a href="about.html">Giới thiệu</a>
+                <a href="privacy.html">Chính sách bảo mật</a>
+                <a href="terms.html">Điều khoản</a>
+                <a href="contact.html">Liên hệ</a>
+            </nav>
+        </div>
+        <!-- Mobile Menu -->
+        <nav class="mobile-menu">
+            <a href="index.html">Trang chủ</a>
+            <a href="about.html">Giới thiệu</a>
+            <a href="privacy.html">Chính sách bảo mật</a>
+            <a href="terms.html">Điều khoản</a>
+            <a href="contact.html">Liên hệ</a>
+        </nav>
+    </header>
 
 
     <div class="container">
@@ -138,7 +138,7 @@
                             class="fa-solid fa-star"></i></div>
                     <div class="cat-title" style="font-size: 28px;">GPLX Ô TÔ CAND</div>
                     <div class="cat-desc" style="font-size: 16px;">Bộ đề sát hạch 500 câu dành riêng cho lực lượng Công
-                        an nhân dân. Sử dụng dữ liệu hiện có.</div>
+                        an nhân dân</div>
                     <div style="display: flex; gap: 15px; width: 100%; margin-top: 10px; flex-direction: column;">
                         <button class="primary-btn" onclick="window.location.href='cand-menu.html'"
                             style="padding: 18px; font-size: 18px;">🚀 Thi thử ngay</button>
@@ -325,7 +325,7 @@
 
 
 
-    
+
 
     <script>
         function sendVisit() {
@@ -339,7 +339,7 @@
         setInterval(sendVisit, 90000);
     </script>
 
-    
+
 
 
     <!-- Global UI Scripts -->
@@ -363,54 +363,54 @@
         });
     </script>
 
-<div id="feedbackContainer"></div>
-<script>
-fetch("/feedback.html?v=3")
-.then(res=>res.text())
-.then(data=>{
-    document.getElementById("feedbackContainer").innerHTML=data;
-});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-(function(){
-    emailjs.init("Gn37aooYVlLuKdN9j");
-})();
-</script>
-<link rel="stylesheet" href="/css/feedback.css?v=3">
-<script src="/js/feedback.js?v=3"></script>
-<!-- Real Analytics Fetching -->
-<script>
-let localExtraVisits = 0;
-async function fetchAnalytics() {
-    try {
-        const res = await fetch("/api/analytics");
-        if (res.ok) {
-            const data = await res.json();
-            document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
-            let baseToday = parseInt(data.todayUsers) || 0;
-            document.getElementById("todayUsers").textContent = baseToday + localExtraVisits;
-            document.getElementById("totalUsers").textContent = typeof data.totalUsers === 'number' ? data.totalUsers.toLocaleString() : "0";
+    <div id="feedbackContainer"></div>
+    <script>
+        fetch("/feedback.html?v=3")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("feedbackContainer").innerHTML = data;
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("Gn37aooYVlLuKdN9j");
+        })();
+    </script>
+    <link rel="stylesheet" href="/css/feedback.css?v=3">
+    <script src="/js/feedback.js?v=3"></script>
+    <!-- Real Analytics Fetching -->
+    <script>
+        let localExtraVisits = 0;
+        async function fetchAnalytics() {
+            try {
+                const res = await fetch("/api/analytics");
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
+                    let baseToday = parseInt(data.todayUsers) || 0;
+                    document.getElementById("todayUsers").textContent = baseToday + localExtraVisits;
+                    document.getElementById("totalUsers").textContent = typeof data.totalUsers === 'number' ? data.totalUsers.toLocaleString() : "0";
+                }
+            } catch (error) {
+                console.error("Error fetching analytics:", error);
+            }
         }
-    } catch (error) {
-        console.error("Error fetching analytics:", error);
-    }
-}
-// Fetch initially when page loads
-fetchAnalytics();
-// Then fetch periodically every 60 seconds
-setInterval(fetchAnalytics, 60000);
+        // Fetch initially when page loads
+        fetchAnalytics();
+        // Then fetch periodically every 60 seconds
+        setInterval(fetchAnalytics, 60000);
 
-// Increment local counter independently every 60s
-setInterval(() => {
-    localExtraVisits++;
-    const todayEl = document.getElementById("todayUsers");
-    if (todayEl) {
-        let current = parseInt(todayEl.textContent) || 0;
-        todayEl.textContent = current + 1;
-    }
-}, 60000);
-</script>
+        // Increment local counter independently every 60s
+        setInterval(() => {
+            localExtraVisits++;
+            const todayEl = document.getElementById("todayUsers");
+            if (todayEl) {
+                let current = parseInt(todayEl.textContent) || 0;
+                todayEl.textContent = current + 1;
+            }
+        }, 60000);
+    </script>
 </body>
 
 </html>
