@@ -9,7 +9,7 @@
         crossorigin="anonymous"></script>
 
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <title>Thi thử GPLX Online - Luyện thi lý thuyết các hạng A1, B1, B2, C, CAND</title>
+    <title>Thi thử GPLX Online - Luyện thi lý thuyết các hạng A1, B1, B2, C, Ô TÔ CAND</title>
 
     <meta name="description"
         content="Hệ thống thi thử sát hạch lý thuyết GPLX online mới nhất. Ôn tập 500 câu hỏi, làm đề thi thử 30 câu sát kỳ thi thật cho các hạng bằng lái xe.">
@@ -110,7 +110,7 @@
                     <div class="cat-card" onclick="window.location.href='class-b-menu.html'">
                         <div class="cat-icon"><i class="fa-solid fa-car"></i></div>
                         <div class="cat-title">Hạng B (B1, B2 cũ)</div>
-                        <div class="cat-desc">Ô tô chở người đến 9 chỗ ngồi; xe tải dưới 3.500 kg</div>
+                        <div class="cat-desc">Ô tô chở người đến 8 chỗ ngồi; xe tải dưới 3.500 kg</div>
                         <button class="primary-btn">Thi thử ngay</button>
                     </div>
                     <div class="cat-card" onclick="window.location.href='class-c1-menu.html'">
@@ -381,21 +381,57 @@
     <script src="/js/feedback.js?v=3"></script>
     <!-- Real Analytics Fetching -->
     <script>
-        let localExtraVisits = 0;
+        function getPersistentExtraVisits() {
+            const todayStr = new Date().toDateString();
+            const storedData = localStorage.getItem('gplx_extra_visits');
+            if (storedData) {
+                try {
+                    const parsed = JSON.parse(storedData);
+                    if (parsed.date === todayStr) {
+                        return parseInt(parsed.count) || 0;
+                    }
+                } catch(e) {}
+            }
+            return 0;
+        }
+
+        function savePersistentExtraVisits(count) {
+            const todayStr = new Date().toDateString();
+            localStorage.setItem('gplx_extra_visits', JSON.stringify({
+                date: todayStr,
+                count: count
+            }));
+        }
+
+        let localExtraVisits = getPersistentExtraVisits();
+        let baseToday = 0; // Store the base from API to survive API failures
+        
+        // Immediately set the text to stored visits before API finishes
+        const todayUsersEl = document.getElementById("todayUsers");
+        if (todayUsersEl) {
+            todayUsersEl.textContent = localExtraVisits;
+        }
+        
         async function fetchAnalytics() {
             try {
                 const res = await fetch("/api/analytics");
                 if (res.ok) {
                     const data = await res.json();
                     document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
-                    let baseToday = parseInt(data.todayUsers) || 0;
-                    document.getElementById("todayUsers").textContent = baseToday + localExtraVisits;
+                    baseToday = parseInt(data.todayUsers) || 0;
                     document.getElementById("totalUsers").textContent = typeof data.totalUsers === 'number' ? data.totalUsers.toLocaleString() : "0";
                 }
             } catch (error) {
                 console.error("Error fetching analytics:", error);
+            } finally {
+                // Re-check persistent visits to sync across potential multiple tabs
+                localExtraVisits = getPersistentExtraVisits();
+                if (document.getElementById("todayUsers")) {
+                    document.getElementById("todayUsers").textContent = baseToday + localExtraVisits;
+                }
             }
         }
+        
         // Fetch initially when page loads
         fetchAnalytics();
         // Then fetch periodically every 60 seconds
@@ -403,11 +439,12 @@
 
         // Increment local counter independently every 60s
         setInterval(() => {
-            localExtraVisits++;
+            localExtraVisits = getPersistentExtraVisits() + 1;
+            savePersistentExtraVisits(localExtraVisits);
+            
             const todayEl = document.getElementById("todayUsers");
             if (todayEl) {
-                let current = parseInt(todayEl.textContent) || 0;
-                todayEl.textContent = current + 1;
+                todayEl.textContent = baseToday + localExtraVisits;
             }
         }, 60000);
     </script>
