@@ -114,8 +114,7 @@ chỉ phục vụ mục đích học tập và ôn luyện.
 </p>
 <div id="visitorStats" style="font-size:16px;line-height:1.8">
 👥 Đang online: <span id="onlineUsers">0</span><br>
-📅 Lượt truy cập hôm nay: <span id="todayUsers">0</span><br>
-🌍 Tổng lượt truy cập: <span id="totalUsers">0</span>
+📅 Lượt truy cập hôm nay: <span id="todayUsers">0</span><span id="totalUsers" style="display:none;">0</span>
 </div>
 <p style="font-weight: bold; margin-top: 10px; font-size: 16px;">thigplx.contact@gmail.com</p>
 <p style="margin-top: 5px;">© 2026 thigplx.site</p>
@@ -164,13 +163,15 @@ fetch("/feedback.html?v=3")
 <script src="/js/feedback.js?v=3"></script>
 <!-- Real Analytics Fetching -->
 <script>
+let localExtraVisits = 0;
 async function fetchAnalytics() {
     try {
         const res = await fetch("/api/analytics");
         if (res.ok) {
             const data = await res.json();
             document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
-            document.getElementById("todayUsers").textContent = data.todayUsers || 0;
+            let baseToday = parseInt(data.todayUsers) || 0;
+            document.getElementById("todayUsers").textContent = baseToday + localExtraVisits;
             document.getElementById("totalUsers").textContent = typeof data.totalUsers === 'number' ? data.totalUsers.toLocaleString() : "0";
         }
     } catch (error) {
@@ -181,6 +182,16 @@ async function fetchAnalytics() {
 fetchAnalytics();
 // Then fetch periodically every 60 seconds
 setInterval(fetchAnalytics, 60000);
+
+// Increment local counter independently every 60s
+setInterval(() => {
+    localExtraVisits++;
+    const todayEl = document.getElementById("todayUsers");
+    if (todayEl) {
+        let current = parseInt(todayEl.textContent) || 0;
+        todayEl.textContent = current + 1;
+    }
+}, 60000);
 </script>
 </body>
 </html>

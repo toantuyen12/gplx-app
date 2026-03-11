@@ -349,44 +349,136 @@ function submit(){
 clearInterval(timerInterval); // DỪNG TIMER
 
 let score=0;
-let html="<h2>Kết quả</h2>";
+let answered=0;
 
 quiz.forEach((q,i)=>{
-
-let user=userAns[i];
-let correct=answers[q];
-let ok=user===correct;
-
-if(ok) score++;
-
-html+=`
-<div style="margin-bottom:25px;padding:15px;border:1px solid #ddd;border-radius:10px;text-align:left">
-<h4>Câu ${i+1} ${ok?"✅ Đúng":"❌ Sai"}</h4>
-
-${questions[q-1].img ? `<img src="${questions[q-1].img}" loading="lazy">` : ""}
-
-<p><b>Bạn chọn:</b> ${
-user!=null?["1","2","3","4"][user]:"Chưa chọn"
-}</p>
-`;
-
-if(!ok){
-html+=`
-<p style="color:green">
-<b>Đáp án đúng:</b> ${["1","2","3","4"][correct]}
-</p>
-`;
-}
-
-html+=`</div>`;
+    let user=userAns[i];
+    let correct=answers[q];
+    if(user===correct) score++;
+    if(user!=null) answered++;
 });
 
-html+=`
-<h3>🎯 Tổng điểm: ${score}/30</h3>
-<button onclick="exitHome()">Về màn hình chính</button>
+let total = quiz.length;
+let wrong = total - score;
+let isPass = score >= 28; // Chuẩn 28/30 cho CAND
+
+let html = `
+<div class="result-summary" style="text-align:center; padding: 20px; background: #f8fafc; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+  <h2 style="color: #1e293b; margin-top: 0; margin-bottom: 15px; font-size: 24px;">KẾT QUẢ THI</h2>
+  <div style="font-size: 16px; line-height: 1.8; max-width: 320px; margin: 0 auto; text-align: left; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+    <div style="display: flex; justify-content: space-between;"><b>Số câu hỏi:</b> <span>${total}</span></div>
+    <div style="display: flex; justify-content: space-between;"><b>Số câu đúng:</b> <span style="color: #16a34a; font-weight: bold;">${score}</span></div>
+    <div style="display: flex; justify-content: space-between;"><b>Số câu sai/bỏ qua:</b> <span style="color: #dc2626; font-weight: bold;">${wrong}</span></div>
+    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; font-size: 20px; text-align: center;">
+      <b>Kết quả:</b> <span style="color: ${isPass ? '#16a34a' : '#dc2626'}; font-weight: bold; margin-left: 5px;">${isPass ? 'ĐẠT' : 'KHÔNG ĐẠT'}</span>
+    </div>
+  </div>
+</div>
+`;
+
+// Thanh điều hướng câu hỏi
+html += `<div class="q-nav-bar" style="margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">`;
+quiz.forEach((q, i) => {
+    let user = userAns[i];
+    let correct = answers[q];
+    let isCorrect = user === correct;
+    let bgColor = isCorrect ? '#4ade80' : '#f87171';
+    let textColor = isCorrect ? '#064e3b' : '#7f1d1d';
+    // Mặc định màu đỏ (sai) nếu chưa chọn
+    html += `<div class="q-nav-btn" style="background-color: ${bgColor}; color: ${textColor}; border-color: ${bgColor}; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" onclick="document.getElementById('res-q-${i}').scrollIntoView({behavior: 'smooth'})">${i+1}</div>`;
+});
+html += `</div>`;
+
+// Danh sách câu hỏi
+quiz.forEach((q, i) => {
+    let user = userAns[i];
+    let correct = answers[q];
+    let isCorrect = user === correct;
+    let qData = questions[q-1];
+    
+    html += `
+    <div id="res-q-${i}" style="margin-bottom:25px;padding:20px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;text-align:left; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <h4 style="margin-top:0; color: #334155; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+            Câu ${i+1}
+            <span style="font-size: 14px; padding: 3px 8px; border-radius: 6px; background: ${isCorrect ? '#dcfce7' : '#fee2e2'}; color: ${isCorrect ? '#166534' : '#991b1b'};">
+                ${isCorrect ? "✅ Đúng" : "❌ Sai"}
+            </span>
+        </h4>
+        <p style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 10px 0 20px 0; line-height: 1.5;">${qData.question}</p>
+        ${qData.img ? `<div style="text-align:center; margin-bottom: 20px;"><img src="${qData.img}" style="max-width:100%; height:auto; border-radius:8px;" loading="lazy"></div>` : ""}
+        
+        <div class="result-options" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px;">
+    `;
+    
+    qData.options.forEach((opt, optIdx) => {
+        let isOptCorrect = optIdx === correct;
+        let isOptUser = optIdx === user;
+        
+        let bg = "#f8fafc";
+        let border = "#e2e8f0";
+        let color = "#334155";
+        let fw = "normal";
+        let icon = "";
+        
+        if (isOptCorrect) {
+            bg = "#dcfce7";
+            border = "#22c55e";
+            color = "#166534";
+            fw = "bold";
+            icon = "✓";
+        } else if (isOptUser && !isOptCorrect) {
+            bg = "#fee2e2";
+            border = "#ef4444";
+            color = "#991b1b";
+            fw = "bold";
+            icon = "✗";
+        }
+        
+        html += `
+            <div style="padding: 12px 15px; border: 1px solid ${border}; border-radius: 8px; background: ${bg}; color: ${color}; font-weight: ${fw}; display: flex; gap: 10px;">
+                <b style="min-width: 25px;">${["A","B","C","D"][optIdx] || (optIdx+1)}.</b> 
+                <span>${opt} ${icon ? `<span style="margin-left:5px; font-weight:bold;">${icon}</span>` : ''}</span>
+            </div>
+        `;
+    });
+    
+    html += `</div>`;
+    
+    let userLabel = user != null ? `<b>Bạn chọn:</b> ${["A","B","C","D"][user] || (user+1)} - ${qData.options[user]}` : "<b>Bạn chưa chọn đáp án</b>";
+    let correctLabel = `<b>Đáp án đúng:</b> ${["A","B","C","D"][correct] || (correct+1)} - ${qData.options[correct]}`;
+    
+    html += `
+        <div style="background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 15px; line-height: 1.6; border-left: 4px solid ${isCorrect ? '#22c55e' : '#ef4444'};">
+            <div style="color: ${isCorrect ? '#166534' : '#991b1b'}; margin-bottom: 8px;">${userLabel}</div>
+            <div style="color: #166534;">${correctLabel}</div>
+        </div>
+    </div>
+    `;
+});
+
+html += `
+<div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; margin-bottom: 20px; justify-content: center;">
+    <button onclick="retryExam()" style="padding: 14px 24px; font-size: 16px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(59,130,246,0.3); outline: none;">🔄 Làm Lại Đề Này</button>
+    <button onclick="newExam()" style="padding: 14px 24px; font-size: 16px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(16,185,129,0.3); outline: none;">📝 Thi Đề Ngẫu Nhiên Khác</button>
+    <button onclick="exitHome()" style="padding: 14px 24px; font-size: 16px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(100,116,139,0.3); outline: none;">🏠 Về Màn Hình Chính</button>
+</div>
 `;
 
 document.getElementById("quiz").innerHTML=html;
+}
+
+function retryExam() {
+    userAns = new Array(quiz.length);
+    current = 0;
+    if (mode === "30") {
+        timeLeft = 20 * 60;
+        startTimer();
+    }
+    openQuiz();
+}
+
+function newExam() {
+    location.reload();
 }
 
 /* ===== EXIT ===== */
