@@ -793,7 +793,20 @@
 
       // ── Build dropdown options ────────────────────────────────────────────
       function buildSelectOptions() {
+        const categoryMetadata = {
+          'bien-bao-cam': { color: '#ef4444', icon: 'fa-ban' },
+          'bien-bao-nguy-hiem': { color: '#f59e0b', icon: 'fa-triangle-exclamation' },
+          'bien-bao-hieu-lenh': { color: '#3b82f6', icon: 'fa-circle-info' },
+          'bien-bao-chi-dan': { color: '#10b981', icon: 'fa-signs-post' },
+          'bien-bao-phu': { color: '#6b7280', icon: 'fa-circle-plus' }
+        };
+
         allData.categories.forEach(cat => {
+          const meta = categoryMetadata[cat.id] || { color: '#6366f1', icon: 'fa-circle' };
+          cat.color = meta.color;
+          cat.icon = meta.icon;
+          cat.description = cat.description || `Các loại ${cat.name.toLowerCase()}.`;
+
           const opt = document.createElement('option');
           opt.value = cat.id;
           opt.textContent = `${cat.name} (${cat.signs.length})`;
@@ -868,7 +881,12 @@
         card.style.setProperty('--card-accent', cat.color);
         card.setAttribute('tabindex', '0');
         card.setAttribute('role', 'button');
-        card.setAttribute('aria-label', `${sign.code} – ${sign.title}`);
+        const nameParts = sign.name.split(':');
+        const code = nameParts[0].trim();
+        const title = (nameParts[1] || '').trim();
+        const shortDesc = sign.description.length > 60 ? sign.description.substring(0, 60) + '...' : sign.description;
+
+        card.setAttribute('aria-label', `${code} – ${title}`);
 
         // Image: lazy load with IntersectionObserver
         const imgHtml = `
@@ -876,7 +894,7 @@
         <img
           data-src="${sign.image}"
           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='75' height='75'%3E%3C/svg%3E"
-          alt="${sign.title}"
+          alt="${title}"
           loading="lazy"
           class="lazy-sign-img"
           onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'sign-img-placeholder\\'><i class=\\'fa-solid fa-triangle-exclamation\\'></i></div>'"
@@ -885,9 +903,9 @@
 
         card.innerHTML = `
       ${imgHtml}
-      <span class="sign-code" style="background:${cat.color};">${sign.code}</span>
-      <div class="sign-title">${sign.title}</div>
-      <div class="sign-short-desc">${sign.shortDesc}</div>`;
+      <span class="sign-code" style="background:${cat.color};">${code}</span>
+      <div class="sign-title">${title}</div>
+      <div class="sign-short-desc">${shortDesc}</div>`;
 
         // Lazy load via IntersectionObserver
         const img = card.querySelector('.lazy-sign-img');
@@ -927,17 +945,21 @@
       // ── Open Modal ────────────────────────────────────────────────────────
       function openModal(sign, cat) {
         // Set content
-        modalCode.textContent = sign.code;
+        const nameParts = sign.name.split(':');
+        const code = nameParts[0].trim();
+        const title = (nameParts[1] || '').trim();
+
+        modalCode.textContent = code;
         modalCode.style.background = cat.color;
         modalCategory.textContent = cat.name;
-        modalName.textContent = sign.title;
+        modalName.textContent = title;
         modalDesc.textContent = sign.description;
         modalDesc.style.borderLeftColor = cat.color;
 
         // Image
         modalImgWrap.innerHTML = '';
         const img = document.createElement('img');
-        img.alt = sign.title;
+        img.alt = title;
         img.src = sign.image;
         img.onerror = function () {
           modalImgWrap.innerHTML = `<div class="sign-modal-placeholder" style="color:${cat.color};">

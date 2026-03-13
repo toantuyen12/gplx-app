@@ -1,409 +1,1649 @@
 {
   "categories": [
     {
-      "id": "cam",
+      "id": "bien-bao-cam",
       "name": "Biển báo cấm",
-      "nameEn": "Prohibitory signs",
-      "description": "Hình tròn, viền đỏ, nền trắng — cấm thực hiện hành vi",
-      "color": "#ef4444",
-      "icon": "fa-ban",
       "signs": [
         {
-          "code": "P.101",
-          "title": "Đường cấm",
-          "shortDesc": "Cấm tất cả các loại xe đi vào.",
-          "description": "Biển báo P.101 đặt ở đầu các đoạn đường cấm tất cả các loại xe đi vào. Người điều khiển phương tiện phải tuân thủ tuyệt đối, không được vào đường có biển này.",
+          "id": "1",
+          "name": "P.101: Đường cấm",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại phương tiện tham gia giao thông đi lại cả hai hướng, trừ xe ưu tiên theo luật định.",
+          "image": "images/signs/p1.webp"
+        },
+        {
+          "id": "2",
+          "name": "P.102: Cấm đi ngược chiều",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại phương tiện tham gia giao thông đi vào theo chiều đặt biển.",
+          "image": "images/signs/p2.webp"
+        },
+        {
+          "id": "3",
+          "name": "P.103a: Cấm ô tô",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại xe cơ giới kể cả mô tô 3 bánh có thùng đi qua, trừ xe mô tô 2 bánh, xe gắn máy (kể cả xe máy điện) và các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p3.webp"
+        },
+        {
+          "id": "4",
+          "name": "P.103b: Cấm ô tô rẽ phải",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe ô tô rẽ phải ( kể cả xe mô tô ba bánh), trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p4.webp"
+        },
+        {
+          "id": "5",
+          "name": "P.103c: Cấm ô tô rẽ trái",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe ô tô rẽ trái và cũng không được phép quay đầu xe, trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p5.webp"
+        },
+        {
+          "id": "6",
+          "name": "P.104: Cấm mô tô",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại mô tô đi qua, trừ các loại xe mô tô được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p6.webp"
+        },
+        {
+          "id": "7",
+          "name": "P.105: Cấm ô tô và mô tô",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả xe cơ giới và xe mô tô đi qua trừ xe gắn máy và xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p7.webp"
+        },
+        {
+          "id": "8",
+          "name": "P.106a: Cấm ô tô tải",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại xe ô tô tải trừ các xe được ưu tiên theo Luật Giao thông đường bộ, hiệu lực cấm đối với cả máy kéo và xe máy chuyên dùng.",
+          "image": "images/signs/p8.webp"
+        },
+        {
+          "id": "9",
+          "name": "P.106b: Cấm ô tô tải theo trọng lượng",
+          "category": "Biển báo cấm",
+          "description": "Trọng lượng được tính theo tấn ghi trên biển. Biển có hiệu lực cấm xe ô tô tải có trọng lượng chuyên chở vượt quá trị số ghi trên biển.",
+          "image": "images/signs/p9.webp"
+        },
+        {
+          "id": "10",
+          "name": "P.106c: Cấm ô tô tải chở hàng nguy hiểm",
+          "category": "Biển báo cấm",
+          "description": "Biển báo P.106c đường cấm tất cả các loại xe ô tô tải chở hàng nguy hiểm.",
+          "image": "images/signs/p10.webp"
+        },
+        {
+          "id": "11",
+          "name": "P.107: Cấm ô tô khách và ô tô tải",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe ô tô khách và các loại xe ô tô tải, kể cả máy kéo và xe máy chuyên dùng đi qua, trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p11.webp"
+        },
+        {
+          "id": "12",
+          "name": "P.107a: Cấm ô tô khách",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm ôtô chở khách đi qua trừ các xe ưu tiên theo quy định. Biển này không cấm xe buýt.",
+          "image": "images/signs/p12.webp"
+        },
+        {
+          "id": "13",
+          "name": "P.107b: Cấm xe taxi",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm ôtô taxi đi lại. Trường hợp cấm xe ôtô taxi theo giờ thì đặt biển phụ ghi giờ cấm.",
+          "image": "images/signs/p13.webp"
+        },
+        {
+          "id": "14",
+          "name": "P.108: Cấm ôtô kéo rơ moóc",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại xe cơ giới kéo theo rơ moóc kể cả xe mô tô, máy kéo, xe ô tô khách kéo theo rơ moóc đi qua, trừ loại xe ô tô sơ mi rơ moóc và các xe được ưu tiên theo Luật Giao thông đường bộ (có kéo theo rơ moóc).",
+          "image": "images/signs/p14.webp"
+        },
+        {
+          "id": "15",
+          "name": "P.108a: Cấm xe sơ-mi rơ-moóc",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại xe sơ-mi-rơ-moóc và các xe kéo rơ- moóc trừ các xe được ưu tiên (có dạng xe sơ-mi-rơ-moóc hoặc có kéo theo rơ-moóc) theo quy định.",
+          "image": "images/signs/p15.webp"
+        },
+        {
+          "id": "16",
+          "name": "P.109: Cấm máy kéo",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại máy kéo, kể cả máy kéo bánh hơi và bánh xích đi qua.",
+          "image": "images/signs/p16.webp"
+        },
+        {
+          "id": "17",
+          "name": "P.110a: Cấm xe đạp",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe đạp đi qua. Biển không có giá trị cấm những người dắt xe đạp.",
+          "image": "images/signs/p17.webp"
+        },
+        {
+          "id": "18",
+          "name": "P.110b: Cấm xe đạp thồ",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe đạp thồ đi qua. Biển không có giá trị cấm người dắt loại xe này.",
+          "image": "images/signs/p18.webp"
+        },
+        {
+          "id": "19",
+          "name": "P.111a: Cấm xe gắn máy",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe gắn máy đi qua. Biển không có giá trị cấm đối với xe đạp.",
+          "image": "images/signs/p19.webp"
+        },
+        {
+          "id": "20",
+          "name": "P.112: Cấm người đi bộ",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm người đi bộ qua lại.",
+          "image": "images/signs/p20.webp"
+        },
+        {
+          "id": "21",
+          "name": "P.113: Cấm xe người kéo, đẩy",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe người kéo đẩy đi qua. Biển không có giá trị cấm những xe nôi của trẻ em và phương tiện chuyên dùng để đi lại của những người khuyết tật.",
+          "image": "images/signs/p21.webp"
+        },
+        {
+          "id": "22",
+          "name": "P.114: Cấm xe súc vật kéo",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm súc vật vận tải hàng hóa hoặc hành khách dù kéo xe hay chở trên lưng đi qua.",
+          "image": "images/signs/p22.webp"
+        },
+        {
+          "id": "23",
+          "name": "P.115: Hạn chế trọng lượng xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại phương tiện giao thông đường bộ kể cả các xe được ưu tiên theo Luật Giao thông đường bộ có trọng lượng toàn bộ (cả xe và hàng) vượt quá trị số ghi trên biển tính bằng tấn đi qua.",
+          "image": "images/signs/p23.webp"
+        },
+        {
+          "id": "24",
+          "name": "P.116: Hạn chế trọng lượng trên trục xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại phương tiện giao thông đường bộ, kể cả các xe được ưu tiên theo Luật Giao thông đường bộ có trọng lượng toàn bộ (cả xe và hàng) phân bố trên một trục bất kỳ của xe vượt quá trị số ghi trên biển tính bằng tấn đi qua.",
+          "image": "images/signs/p24.webp"
+        },
+        {
+          "id": "25",
+          "name": "P.117: Hạn chế chiều cao",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm các loại phương tiện giao thông đường bộ đi qua, kể cả các xe được ưu tiên theo Luật Giao thông đường bộ có chiều cao (tính đến điểm cao nhất cả xe và hàng hóa) vượt quá trị số ghi trên biển tính bằng mét đi qua.",
+          "image": "images/signs/p25.webp"
+        },
+        {
+          "id": "26",
+          "name": "P.118: Hạn chế chiều ngang",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm các loại phương tiện giao thông đường bộ kể cả các xe được ưu tiên theo Luật Giao thông đường bộ có chiều ngang (cả xe và hàng hóa) vượt quá trị số ghi trên Biển tính bằng mét đi qua.",
+          "image": "images/signs/p26.webp"
+        },
+        {
+          "id": "27",
+          "name": "P.119: Hạn chế chiều dài ô tô",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại xe (cơ giới và thô sơ), kể cả các xe được ưu tiên theo Luật Giao thông đường bộ, có độ dài toàn bộ (cả xe và hàng) vượt quá trị số ghi trên biển tính bằng mét đi qua.",
+          "image": "images/signs/p27.webp"
+        },
+        {
+          "id": "28",
+          "name": "P.120: Hạn chế chiều dài ô tô kéo moóc",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại phương tiện giao thông đường bộ kéo theo rơ moóc kể cả ô tô sơ mi rơ moóc và các xe được ưu tiên theo Luật Giao thông đường bộ kéo theo rơ moóc có độ dài toàn bộ (cả xe, rơ moóc và hàng) vượt quá trị số ghi trên biển đi qua.",
+          "image": "images/signs/p28.webp"
+        },
+        {
+          "id": "29",
+          "name": "P.121: Cự ly tối thiểu giữa hai xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo xe ô tô phải đi cách nhau một khoảng tối thiểu. Biển có hiệu lực cấm các xe ô tô không được đi cách nhau với cự ly nhỏ hơn trị số ghi trên biển tính bằng mét, kể cả các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p29.webp"
+        },
+        {
+          "id": "30",
+          "name": "P.123a: Cấm rẽ trái",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại phương tiện giao thông đường bộ (xe cơ giới và xe thô sơ) rẽ trái, trừ các xe được ưu tiên theo Luật Giao thông đường bộ. Biển không có giá trị cấm quay đầu xe.",
+          "image": "images/signs/p30.webp"
+        },
+        {
+          "id": "31",
+          "name": "P.123b: Cấm rẽ phải",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại phương tiện giao thông đường bộ (xe cơ giới và xe thô sơ) rẽ phải, trừ các xe được ưu tiên theo Luật Giao thông đường bộ. Biển không có giá trị cấm quay đầu xe.",
+          "image": "images/signs/p31.webp"
+        },
+        {
+          "id": "32",
+          "name": "P.124a: Cấm quay đầu xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm các loại phương tiện giao thông đường bộ quay đầu xe theo kiểu chữ U, trừ các xe được ưu tiên theo Luật Giao thông đường bộ. Biển không có giá trị cấm rẽ trái để sang hướng đường khác.",
+          "image": "images/signs/p32.webp"
+        },
+        {
+          "id": "33",
+          "name": "P.124b: Cấm ô tô quay đầu",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm xe ô tô và xe mô tô 3 bánh quay đầu xe theo kiểu chữ U, trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p33.webp"
+        },
+        {
+          "id": "34",
+          "name": "P.124c: Cấm rẽ trái và quay đầu xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cấm các loại xe rẽ trái đồng thời cấm quay đầu, trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p34.webp"
+        },
+        {
+          "id": "35",
+          "name": "P.124d: Cấm rẽ phải và quay đầu xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cấm các loại xe rẽ phải đồng thời cấm quay đầu, trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p35.webp"
+        },
+        {
+          "id": "36",
+          "name": "P.124e: Cấm ô tô rẽ trái và quay xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cấm xe ôtô rẽ trái và đồng thời cấm quay đầu phải, trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p36.webp"
+        },
+        {
+          "id": "37",
+          "name": "P.124f: Cấm ô tô rẽ phải và quay xe",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cấm xe ôtô rẽ phải và đồng thời cấm quay đầu phải, trừ các xe được ưu tiên theo Luật Giao thông đường bộ.",
+          "image": "images/signs/p37.webp"
+        },
+        {
+          "id": "38",
+          "name": "P.125: Cấm vượt",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm tất cả các loại xe cơ giới vượt nhau, kể cả các xe được ưu tiên theo Luật Giao thông đường bộ. Được phép vượt xe mô tô 2 bánh, xe gắn máy.",
+          "image": "images/signs/p38.webp"
+        },
+        {
+          "id": "39",
+          "name": "P.126: Cấm ôtô tải vượt",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm các loại ôtô tải có khối lượng chuyên chở lớn hơn 3.500 kg kể cả các xe được ưu tiên. Được phép vượt xe máy 2 bánh, xe gắn máy.",
+          "image": "images/signs/p39.webp"
+        },
+        {
+          "id": "40",
+          "name": "P.127: Tốc độ tối đa cho phép",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm tất cả các loại xe cơ giới đường bộ chạy với tốc độ tối đa vượt quá trị số ghi trên Biển (tính bằng km/h).",
+          "image": "images/signs/p40.webp"
+        },
+        {
+          "id": "41",
+          "name": "P.127a: Tốc độ tối đa cho phép về ban đêm",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm tất cả các loại xe cơ giới đường bộ chạy vào ban đêm với tốc độ tối đa vượt quá trị số ghi trên biển.",
+          "image": "images/signs/p41.webp"
+        },
+        {
+          "id": "42",
+          "name": "P.127b: Tốc độ tối đa trên từng làn đường",
+          "category": "Biển báo cấm",
+          "description": "Biển ghép tốc độ tối đa cho phép trên từng làn đường.",
+          "image": "images/signs/p42.webp"
+        },
+        {
+          "id": "43",
+          "name": "P.127c: Tốc độ tối đa phương tiện trên từng làn đường",
+          "category": "Biển báo cấm",
+          "description": "Biển ghép tốc độ tối đa cho phép theo phương tiện, trên từng làn đường.",
+          "image": "images/signs/p43.webp"
+        },
+        {
+          "id": "44",
+          "name": "P.127d: Biển hết hạn chế tốc độ tối đa",
+          "category": "Biển báo cấm",
+          "description": "Biển hết hạn chế tốc độ tối đa cho phép theo biển ghép.",
+          "image": "images/signs/p44.webp"
+        },
+        {
+          "id": "45",
+          "name": "P.128: Cấm bóp còi",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cấm các loại xe cơ giới sử dụng còi.",
+          "image": "images/signs/p45.webp"
+        },
+        {
+          "id": "46",
+          "name": "P.129: Kiểm tra",
+          "category": "Biển báo cấm",
+          "description": "Biển báo nơi đặt trạm kiểm tra, các loại phương tiện vận tải qua đó phải dừng lại để làm thủ tục kiểm tra.",
+          "image": "images/signs/p46.webp"
+        },
+        {
+          "id": "47",
+          "name": "P.130: Cấm dừng và đỗ xe",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm các loại xe cơ giới đường bộ dừng và đỗ lại ở phía đường có đặt biển.",
+          "image": "images/signs/p47.webp"
+        },
+        {
+          "id": "48",
+          "name": "P.131a: Cấm đỗ xe",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm các loại xe cơ giới đỗ ở phía đường có đặt biển vào bất kể ngày nào.",
+          "image": "images/signs/p48.webp"
+        },
+        {
+          "id": "49",
+          "name": "P.131b: Cấm đỗ xe ngày lẻ",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm các loại xe cơ giới đỗ ở phía đường có đặt biển vào những ngày lẻ.",
+          "image": "images/signs/p49.webp"
+        },
+        {
+          "id": "50",
+          "name": "P.131c: Cấm đỗ xe ngày chẵn",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm các loại xe cơ giới đỗ ở phía đường có đặt biển vào những ngày chẵn.",
+          "image": "images/signs/p50.webp"
+        },
+        {
+          "id": "51",
+          "name": "P.132: Nhường cho xe ngược chiều qua đường hẹp",
+          "category": "Biển báo cấm",
+          "description": "Biển báo hiệu phải nhường đường cho các loại xe cơ giới đi theo chiều ngược lại khi đi qua các đoạn đường và cầu hẹp.",
+          "image": "images/signs/p51.webp"
+        },
+        {
+          "id": "52",
+          "name": "DP.133: Hết cấm vượt",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cho người lái xe biết hiệu lực của biển số P.125 'Cấm vượt' và biển số P.126 'Cấm ô tô tải vượt' hết tác dụng.",
+          "image": "images/signs/p52.webp"
+        },
+        {
+          "id": "53",
+          "name": "DP.134: Hết hạn chế tốc độ tối đa",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cho người lái xe biết hiệu lực của biển số P.127 'Hạn chế tốc độ tối đa' hết tác dụng.",
+          "image": "images/signs/p53.webp"
+        },
+        {
+          "id": "54",
+          "name": "DP.135: Hết tất cả các lệnh cấm",
+          "category": "Biển báo cấm",
+          "description": "Biển báo cho người lái xe biết hiệu lực của các biển cấm được đặt trước đó cùng hết tác dụng.",
+          "image": "images/signs/p54.webp"
+        },
+        {
+          "id": "55",
+          "name": "P.136: Cấm đi thẳng",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm tất cả các loại phương tiện giao thông đường bộ đi thẳng ở nơi đường giao nhau.",
+          "image": "images/signs/p55.webp"
+        },
+        {
+          "id": "56",
+          "name": "P.137: Cấm rẽ trái và rẽ phải",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm tất cả các loại phương tiện giao thông đường bộ rẽ trái và rẽ phải ở nơi đường giao nhau.",
+          "image": "images/signs/p56.webp"
+        },
+        {
+          "id": "57",
+          "name": "P.138: Cấm đi thẳng và rẽ trái",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm tất cả các loại phương tiện giao thông đường bộ đi thẳng và rẽ trái ở nơi đường giao nhau.",
+          "image": "images/signs/p57.webp"
+        },
+        {
+          "id": "58",
+          "name": "P.139: Cấm đi thẳng và rẽ phải",
+          "category": "Biển báo cấm",
+          "description": "Biển có hiệu lực cấm tất cả các loại phương tiện giao thông đường bộ đi thẳng và rẽ phải ở nơi đường giao nhau.",
+          "image": "images/signs/p58.webp"
+        },
+        {
+          "id": "59",
+          "name": "P.140: Cấm xe công nông và các loại xe tương tự",
+          "category": "Biển báo cấm",
+          "description": "Biển báo đường cấm tất cả các loại xe công nông và các loại xe tương tự đi qua.",
+          "image": "images/signs/p59.webp"
+        },
+        {
+          "id": "60",
+          "name": "S.508a: Biển cấm theo giờ",
+          "category": "Biển báo cấm",
+          "description": "Biển phụ số S508(a,b) dưới biển cấm báo hiệu cấm phương tiện theo giờ trong thành phố.",
+          "image": "images/signs/p60.webp"
+        },
+        {
+          "id": "61",
+          "name": "S.508b: Biển cấm theo giờ",
+          "category": "Biển báo cấm",
+          "description": "Biển phụ số S508(a,b) dưới biển cấm báo hiệu cấm phương tiện theo giờ trong thành phố.",
+          "image": "images/signs/p61.webp"
+        }
+      ]
+    },
+    {
+      "id": "bien-bao-nguy-hiem",
+      "name": "Biển báo nguy hiểm",
+      "signs": [
+        {
+          "id": "62",
+          "name": "W.201a: Chỗ ngoặt nguy hiểm bên trái",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo đường sắp đến chỗ ngoặt nguy hiểm.",
+          "image": "images/signs/p62.webp"
+        },
+        {
+          "id": "63",
+          "name": "W.201b: Chỗ ngoặt nguy hiểm bên phải",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo đường sắp đến chỗ ngoặt nguy hiểm.",
+          "image": "images/signs/p63.webp"
+        },
+        {
+          "id": "64",
+          "name": "W.201c: Chỗ ngoặt nguy hiểm có nguy cơ lật bên phải",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo chỗ ngoặt nguy hiểm có nguy cơ lật xe bên phải khi đường cong vòng sang trái.",
+          "image": "images/signs/p64.webp"
+        },
+        {
+          "id": "65",
+          "name": "W.201d: Chỗ ngoặt nguy hiểm có nguy cơ lật bên trái",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo chỗ ngoặt nguy hiểm có nguy cơ lật xe bên trái khi đường cong vòng bên phải.",
+          "image": "images/signs/p65.webp"
+        },
+        {
+          "id": "66",
+          "name": "W.202a: Nhiều chỗ ngoặt nguy hiểm liên tiếp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo sắp đến đoạn đường ngoặt liên tiếp (có từ 3 đoạn cong ngược chiều nhau) rất nguy hiểm.",
+          "image": "images/signs/p66.webp"
+        },
+        {
+          "id": "67",
+          "name": "W.202b: Nhiều chỗ ngoặt nguy hiểm liên tiếp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo sắp đến đoạn đường ngoặt liên tiếp (có từ 3 đoạn cong ngược chiều nhau) rất nguy hiểm.",
+          "image": "images/signs/p67.webp"
+        },
+        {
+          "id": "68",
+          "name": "W.203a: Đường bị hẹp cả hai bên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo sắp đến chỗ một đoạn đường bị hẹp đột ngột cả hai bên.",
+          "image": "images/signs/p68.webp"
+        },
+        {
+          "id": "69",
+          "name": "W.203b: Đường bị hẹp bên trái",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo sắp đến chỗ một đoạn đường bị hẹp đột ngột phía bên trái.",
+          "image": "images/signs/p69.webp"
+        },
+        {
+          "id": "70",
+          "name": "W.203c: Đường bị hẹp bên phải",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo sắp đến chỗ một đoạn đường bị hẹp đột ngột phía bên phải.",
+          "image": "images/signs/p70.webp"
+        },
+        {
+          "id": "71",
+          "name": "W.204: Đường hai chiều",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến đoạn đường mà các chiều xe đi và về vẫn phải dùng chung một phía đường.",
+          "image": "images/signs/p71.webp"
+        },
+        {
+          "id": "72",
+          "name": "W.205a: Nơi giao nhau của đường đồng cấp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường nào ưu tiên).",
+          "image": "images/signs/p72.webp"
+        },
+        {
+          "id": "73",
+          "name": "W.205b: Nơi giao nhau của đường đồng cấp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường nào ưu tiên).",
+          "image": "images/signs/p73.webp"
+        },
+        {
+          "id": "74",
+          "name": "W.205c: Nơi giao nhau của đường đồng cấp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường nào ưu tiên).",
+          "image": "images/signs/p74.webp"
+        },
+        {
+          "id": "75",
+          "name": "W.205d: Nơi giao nhau của đường đồng cấp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường nào ưu tiên).",
+          "image": "images/signs/p75.webp"
+        },
+        {
+          "id": "76",
+          "name": "W.205e: Nơi giao nhau của đường đồng cấp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến nơi giao nhau của các tuyến đường cùng cấp (không có đường nào ưu tiên).",
+          "image": "images/signs/p76.webp"
+        },
+        {
+          "id": "77",
+          "name": "W.206: Giao nhau chạy theo vòng xuyến",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu nơi giao nhau có bố trí đảo an toàn ở giữa điểm giao, phải đi vòng xuyến.",
+          "image": "images/signs/p77.webp"
+        },
+        {
+          "id": "78",
+          "name": "W.207a: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên.",
+          "image": "images/signs/p78.webp"
+        },
+        {
+          "id": "79",
+          "name": "W.207b: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên bên phải.",
+          "image": "images/signs/p79.webp"
+        },
+        {
+          "id": "80",
+          "name": "W.207c: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên bên trái.",
+          "image": "images/signs/p80.webp"
+        },
+        {
+          "id": "81",
+          "name": "W.207d: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên.",
+          "image": "images/signs/p81.webp"
+        },
+        {
+          "id": "82",
+          "name": "W.207e: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên.",
+          "image": "images/signs/p82.webp"
+        },
+        {
+          "id": "83",
+          "name": "W.207f: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên.",
+          "image": "images/signs/p83.webp"
+        },
+        {
+          "id": "84",
+          "name": "W.207g: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên.",
+          "image": "images/signs/p84.webp"
+        },
+        {
+          "id": "85",
+          "name": "W.207h: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau với đường không ưu tiên.",
+          "image": "images/signs/p85.webp"
+        },
+        {
+          "id": "86",
+          "name": "W.207i: Giao nhau với đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau with đường không ưu tiên.",
+          "image": "images/signs/p86.webp"
+        },
+        {
+          "id": "87",
+          "name": "W.207k: Giao nhau with đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau with đường không ưu tiên.",
+          "image": "images/signs/p87.webp"
+        },
+        {
+          "id": "88",
+          "name": "W.207l: Giao nhau with đường không ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường ưu tiên sắp đến nơi giao nhau with đường không ưu tiên.",
+          "image": "images/signs/p88.webp"
+        },
+        {
+          "id": "89",
+          "name": "W.208: Giao nhau with đường ưu tiên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đường không đươc ưu tiên sắp đến nơi giao nhau with đường ưu tiên.",
+          "image": "images/signs/p89.webp"
+        },
+        {
+          "id": "90",
+          "name": "W.209: Giao nhau có tín hiệu đèn",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu nơi giao nhau có sự điều khiển giao thông bằng tín hiệu đèn.",
+          "image": "images/signs/p90.webp"
+        },
+        {
+          "id": "91",
+          "name": "W.210: Giao nhau with đường sắt có rào chắn",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ giao nhau giữa đường bộ và đường sắt có rào chắn.",
+          "image": "images/signs/p91.webp"
+        },
+        {
+          "id": "92",
+          "name": "W.211a: Giao nhau with đường sắt không có rào chắn",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ giao nhau giữa đường bộ và đường sắt không có rào chắn.",
+          "image": "images/signs/p92.webp"
+        },
+        {
+          "id": "93",
+          "name": "W.211b: Giao nhau with đường tàu điện",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ giao nhau cùng mức giữa đường bộ with đường tàu điện.",
+          "image": "images/signs/p93.webp"
+        },
+        {
+          "id": "94",
+          "name": "W.212: Cầu hẹp",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến cầu hẹp (chiều rộng lòng cầu nhỏ hơn hoặc bằng 4,5 m).",
+          "image": "images/signs/p94.webp"
+        },
+        {
+          "id": "95",
+          "name": "W.213: Cầu tạm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến cầu tạm (loại cầu được làm để sử dụng tạm thời).",
+          "image": "images/signs/p95.webp"
+        },
+        {
+          "id": "96",
+          "name": "W.214: Cầu xoay-cầu cất",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến cầu xoay, cầu cất, các phương tiện phải chờ đợi.",
+          "image": "images/signs/p96.webp"
+        },
+        {
+          "id": "97",
+          "name": "W.215a: Kè, vực sâu phía trước",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến những chỗ có kè, vực sâu hoặc bờ sông áp sát đường.",
+          "image": "images/signs/p97.webp"
+        },
+        {
+          "id": "98",
+          "name": "W.215b: Kè, vực sâu bên đường phía bên phải",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến những chỗ có kè, vực sâu bên đường phía bên phải.",
+          "image": "images/signs/p98.webp"
+        },
+        {
+          "id": "99",
+          "name": "W.215c: Kè, vực sâu bên đường phía bên trái",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến những chỗ có kè, vực sâu bên đường phía bên trái.",
+          "image": "images/signs/p99.webp"
+        },
+        {
+          "id": "100",
+          "name": "W.216a: Đường ngầm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ có đường ngầm (đường tràn) vượt qua sông, suối.",
+          "image": "images/signs/p100.webp"
+        },
+        {
+          "id": "101",
+          "name": "W.216b: Đường ngầm có nguy cơ lũ quét",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ có đường ngầm (đường tràn) thường xuyên có lũ quét.",
           "image": "images/signs/p101.webp"
         },
         {
-          "code": "P.102",
-          "title": "Cấm đi ngược chiều",
-          "shortDesc": "Cấm xe đi ngược chiều đường một chiều.",
-          "description": "Biển P.102 đặt ở đầu các đoạn đường một chiều, báo hiệu cấm các phương tiện đi ngược chiều quy định. Vi phạm biển này bị xử phạt nặng.",
+          "id": "102",
+          "name": "W.217: Bến phà",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến bến phà.",
           "image": "images/signs/p102.webp"
         },
         {
-          "code": "P.103a",
-          "title": "Cấm xe ô tô",
-          "shortDesc": "Cấm tất cả xe ô tô đi vào.",
-          "description": "Biển P.103a cấm tất cả loại xe ô tô (kể cả xe con, xe tải, xe khách) đi vào đoạn đường có biển. Xe máy và xe thô sơ vẫn được phép.",
-          "image": "images/signs/p103a.webp"
+          "id": "103",
+          "name": "W.218: Cửa chui",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ đường có cổng chui.",
+          "image": "images/signs/p103.webp"
         },
         {
-          "code": "P.103b",
-          "title": "Cấm xe ô tô khách và xe ô tô tải",
-          "shortDesc": "Cấm xe khách và xe tải.",
-          "description": "Biển P.103b cấm các loại xe ô tô chở khách và ô tô tải đi vào tuyến đường. Ô tô con và xe máy vẫn được lưu thông bình thường.",
-          "image": "images/signs/p103b.webp"
-        },
-        {
-          "code": "P.104",
-          "title": "Cấm xe mô tô",
-          "shortDesc": "Cấm mô tô (bao gồm xe hai bánh và ba bánh gắn máy).",
-          "description": "Biển P.104 cấm các loại mô tô, gắn máy đi vào đoạn đường. Ô tô và các phương tiện khác được phép lưu thông nếu không có biển cụ thể khác.",
+          "id": "104",
+          "name": "W.219: Dốc xuống nguy hiểm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ dốc xuống nguy hiểm. Trị số ghi trong biển chỉ độ dốc (%)",
           "image": "images/signs/p104.webp"
         },
         {
-          "code": "P.106a",
-          "title": "Cấm xe tải",
-          "shortDesc": "Cấm các loại xe tải trên trục đường.",
-          "description": "Biển P.106a cấm xe tải các loại đi vào tuyến đường. Thường đặt ở các khu vực dân cư, đường nội bộ, hoặc cầu có giới hạn tải trọng.",
-          "image": "images/signs/p106a.webp"
+          "id": "105",
+          "name": "W.220: Dốc lên nguy hiểm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ dốc lên nguy hiểm. Trị số ghi trong biển chỉ độ dốc (%)",
+          "image": "images/signs/p105.webp"
         },
         {
-          "code": "P.112",
-          "title": "Cấm người đi bộ",
-          "shortDesc": "Cấm người đi bộ đi vào khu vực hoặc phần đường.",
-          "description": "Biển P.112 đặt ở những nơi nguy hiểm hoặc không phù hợp cho người đi bộ như đường cao tốc, cầu hầm, khu công nghiệp.",
+          "id": "106",
+          "name": "W.221a: Đường ổ gà, sống trâu",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đoạn đường có nhiều ổ gà hoặc nền đường gồ ghề.",
+          "image": "images/signs/p106.webp"
+        },
+        {
+          "id": "107",
+          "name": "W.221b: Đường có gồ giảm tốc",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đoạn 'Đường có gồ giảm tốc' để cảnh báo xe đi chậm.",
+          "image": "images/signs/p107.webp"
+        },
+        {
+          "id": "108",
+          "name": "W.222a: Đường trơn",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến đoạn đường có thể xảy ra trơn trượt đặc biệt là khi trời mưa.",
+          "image": "images/signs/p108.webp"
+        },
+        {
+          "id": "109",
+          "name": "W.222b: Lề đường nguy hiểm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu lề đường phía trước có nguy hiểm, không nên đi vào.",
+          "image": "images/signs/p109.webp"
+        },
+        {
+          "id": "110",
+          "name": "W.223a: Vách núi nguy hiểm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu phía trước có vách núi nguy hiểm bên trái.",
+          "image": "images/signs/p110.webp"
+        },
+        {
+          "id": "111",
+          "name": "W.223b: Vách núi nguy hiểm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu phía trước có vách núi nguy hiểm bên phải.",
+          "image": "images/signs/p111.webp"
+        },
+        {
+          "id": "112",
+          "name": "W.224: Đường người đi bộ cắt ngang",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến phần đường ngang dành cho người đi bộ.",
           "image": "images/signs/p112.webp"
         },
         {
-          "code": "P.115",
-          "title": "Hạn chế tốc độ",
-          "shortDesc": "Quy định tốc độ tối đa cho phép trên đường.",
-          "description": "Biển P.115 quy định giới hạn tốc độ tối đa (km/h) mà xe được phép lưu thông trên đoạn đường. Người lái phải duy trì tốc độ không vượt quá con số hiển thị.",
+          "id": "113",
+          "name": "W.225: Trẻ em",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu gần đến đoạn đường thường có trẻ em đi ngang qua (vườn trẻ, trường học).",
+          "image": "images/signs/p113.webp"
+        },
+        {
+          "id": "114",
+          "name": "W.226: Đường người đi xe đạp cắt ngang",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu gần đến chỗ thường có người đi xe đạp từ đường nhỏ cắt ngang qua.",
+          "image": "images/signs/p114.webp"
+        },
+        {
+          "id": "115",
+          "name": "W.227: Công trường",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu phía trước có công trường xây dựng.",
           "image": "images/signs/p115.webp"
         },
         {
-          "code": "P.124a",
-          "title": "Cấm rẽ trái",
-          "shortDesc": "Cấm các phương tiện rẽ trái tại nút giao.",
-          "description": "Biển P.124a đặt trước các nút giao thông, cấm tất cả phương tiện rẽ trái. Xe phải đi thẳng hoặc rẽ phải theo hướng được cho phép.",
-          "image": "images/signs/p124a.webp"
+          "id": "116",
+          "name": "W.228a: Đá lở",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu nguy cơ đá lở từ phía trên xuống đường phía bên trái.",
+          "image": "images/signs/p116.webp"
         },
         {
-          "code": "P.124b",
-          "title": "Cấm rẽ phải",
-          "shortDesc": "Cấm các phương tiện rẽ phải tại nút giao.",
-          "description": "Biển P.124b đặt trước các nút giao thông, cấm tất cả phương tiện rẽ phải. Xe phải đi thẳng hoặc rẽ trái theo hướng được cho phép.",
-          "image": "images/signs/p124b.webp"
+          "id": "117",
+          "name": "W.228b: Đá lở",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu nguy cơ đá lở từ phía trên xuống đường phía bên phải.",
+          "image": "images/signs/p117.webp"
         },
         {
-          "code": "P.125",
-          "title": "Cấm quay đầu xe",
-          "shortDesc": "Cấm quay đầu xe (chữ U) tại vị trí.",
-          "description": "Biển P.125 cấm các phương tiện thực hiện thao tác quay đầu xe (quay U) tại vị trí đặt biển. Thường đặt ở đoạn không đủ chiều rộng hoặc nguy hiểm.",
+          "id": "118",
+          "name": "W.228c: Sỏi đá bắn lên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu nguy cơ sỏi đá bắn lên từ bánh xe.",
+          "image": "images/signs/p118.webp"
+        },
+        {
+          "id": "119",
+          "name": "W.228d: Nền đường yếu",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu nền đường phía trước yếu, có thể bị lún.",
+          "image": "images/signs/p119.webp"
+        },
+        {
+          "id": "120",
+          "name": "W.229: Dải máy bay lên xuống",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu gần đến khu vực có máy bay lên xuống thấp.",
+          "image": "images/signs/p120.webp"
+        },
+        {
+          "id": "121",
+          "name": "W.230: Gia súc",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu khu vực thường có gia súc đi qua đường.",
+          "image": "images/signs/p121.webp"
+        },
+        {
+          "id": "122",
+          "name": "W.231: Thú rừng vượt qua đường",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu khu vực thường có thú rừng vượt qua đường.",
+          "image": "images/signs/p122.webp"
+        },
+        {
+          "id": "123",
+          "name": "W.232: Gió ngang",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu khu vực có gió ngang mạnh.",
+          "image": "images/signs/p123.webp"
+        },
+        {
+          "id": "124",
+          "name": "W.233: Nguy hiểm khác",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu có nguy hiểm khác không được quy định cụ thể.",
+          "image": "images/signs/p124.webp"
+        },
+        {
+          "id": "125",
+          "name": "W.234: Giao nhau với đường hai chiều",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chỗ giao nhau với đường hai chiều.",
           "image": "images/signs/p125.webp"
         },
         {
-          "code": "P.130",
-          "title": "Cấm dừng xe và đỗ xe",
-          "shortDesc": "Tuyệt đối không được dừng hoặc đỗ xe.",
-          "description": "Biển P.130 cấm tuyệt đối việc dừng xe và đỗ xe tại nơi có biển. Tài xế phải tiếp tục lưu thông mà không được dừng hoặc đỗ xe dù bất kỳ lý do gì.",
+          "id": "126",
+          "name": "W.235: Đường đôi",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến đoạn đường đôi.",
+          "image": "images/signs/p126.webp"
+        },
+        {
+          "id": "127",
+          "name": "W.236: Hết đường đôi",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp kết thúc đoạn đường đôi.",
+          "image": "images/signs/p127.webp"
+        },
+        {
+          "id": "128",
+          "name": "W.237: Đường có độ vòng lớn",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến chiếc cầu có độ vồng rất lớn.",
+          "image": "images/signs/p128.webp"
+        },
+        {
+          "id": "129",
+          "name": "W.238: Đường cao tốc phía trước",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp đến đường cao tốc.",
+          "image": "images/signs/p129.webp"
+        },
+        {
+          "id": "130",
+          "name": "W.239: Đường cáp điện ở phía trên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu phía trên có đường cáp điện.",
           "image": "images/signs/p130.webp"
         },
         {
-          "code": "P.131a",
-          "title": "Cấm đỗ xe",
-          "shortDesc": "Không được đỗ xe (nhưng được dừng ngắn).",
-          "description": "Biển P.131a cấm đỗ xe tại nơi có biển nhưng cho phép dừng xe ngắn để đón hoặc trả khách, nhận hoặc giao hàng hóa.",
-          "image": "images/signs/p131a.webp"
+          "id": "131",
+          "name": "W.240: Đường hầm phía trước",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu sắp tới đường hầm.",
+          "image": "images/signs/p131.webp"
+        },
+        {
+          "id": "132",
+          "name": "W.241: Ùn tắc giao thông",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu phía trước có ùn tắc giao thông.",
+          "image": "images/signs/p132.webp"
+        },
+        {
+          "id": "133",
+          "name": "W.242a: Nơi đường sắt giao vuông góc với đường bộ",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu chỗ giao nhau chỉ có một đường sắt cắt ngang đường bộ.",
+          "image": "images/signs/p133.webp"
+        },
+        {
+          "id": "134",
+          "name": "W.242b: Nơi 2 đường sắt giao nhau với đường bộ",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu nơi có 2 đường sắt giao nhau với đường bộ.",
+          "image": "images/signs/p134.webp"
+        },
+        {
+          "id": "135",
+          "name": "W.243a: Nơi đường sắt giao không vuông góc với đường bộ",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển đặt cách ray đường sắt gần nhất 50m.",
+          "image": "images/signs/p135.webp"
+        },
+        {
+          "id": "136",
+          "name": "W.243b: Nơi đường sắt giao không vuông góc với đường bộ",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển đặt cách ray đường sắt gần nhất 100m.",
+          "image": "images/signs/p136.webp"
+        },
+        {
+          "id": "137",
+          "name": "W.243c: Nơi đường sắt giao không vuông góc với đường bộ",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển đặt cách ray đường sắt gần nhất 150m.",
+          "image": "images/signs/p137.webp"
+        },
+        {
+          "id": "138",
+          "name": "W.244: Đoạn đường hay xảy ra tai nạn",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu đoạn đường phía trước thường xảy ra tai nạn.",
+          "image": "images/signs/p138.webp"
+        },
+        {
+          "id": "139",
+          "name": "W.245a: Đi chậm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu người lái xe cần giảm tốc độ đi chậm bên trái.",
+          "image": "images/signs/p139.webp"
+        },
+        {
+          "id": "140",
+          "name": "W.245b: Đi chậm",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu người lái xe cần giảm tốc độ đi chậm bên phải.",
+          "image": "images/signs/p140.webp"
+        },
+        {
+          "id": "141",
+          "name": "W.246a: Chú ý chướng ngại vật: Vòng tránh sang hai bên",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu chướng ngại vật, đi vòng tránh sang hai bên.",
+          "image": "images/signs/p141.webp"
+        },
+        {
+          "id": "142",
+          "name": "W.246b: Chú ý chướng ngại vật: Vòng tránh sang bên trái",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu chướng ngại vật, đi vòng tránh sang bên trái.",
+          "image": "images/signs/p142.webp"
+        },
+        {
+          "id": "143",
+          "name": "W.246c: Chú ý chướng ngại vật: Vòng tránh sang bên phải",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu chướng ngại vật, đi vòng tránh sang bên phải.",
+          "image": "images/signs/p143.webp"
+        },
+        {
+          "id": "144",
+          "name": "W.247: Chú ý xe đỗ",
+          "category": "Biển báo nguy hiểm",
+          "description": "Biển báo hiệu phía trước có xe đỗ, cần chú ý và giảm tốc độ.",
+          "image": "images/signs/p144.webp"
         }
       ]
     },
     {
-      "id": "nguy-hiem",
-      "name": "Biển báo nguy hiểm",
-      "nameEn": "Warning signs",
-      "description": "Hình tam giác, viền đỏ, nền vàng — cảnh báo nguy hiểm phía trước",
-      "color": "#f59e0b",
-      "icon": "fa-triangle-exclamation",
-      "signs": [
-        {
-          "code": "W.201a",
-          "title": "Đường cong nguy hiểm vòng bên trái",
-          "shortDesc": "Phía trước có đường cong nguy hiểm vòng sang trái.",
-          "description": "Biển W.201a cảnh báo phía trước có đường cong vòng sang bên trái. Người lái cần giảm tốc độ, đặc biệt trong điều kiện trời mưa hoặc đường trơn.",
-          "image": "images/signs/w201a.webp"
-        },
-        {
-          "code": "W.201b",
-          "title": "Đường cong nguy hiểm vòng bên phải",
-          "shortDesc": "Phía trước có đường cong nguy hiểm vòng sang phải.",
-          "description": "Biển W.201b cảnh báo phía trước có đường cong vòng sang bên phải. Người lái cần giảm tốc độ và bám sát làn đường để đảm bảo an toàn.",
-          "image": "images/signs/w201b.webp"
-        },
-        {
-          "code": "W.202",
-          "title": "Đường nhiều cong nguy hiểm",
-          "shortDesc": "Phía trước có nhiều đoạn đường cong nguy hiểm liên tiếp.",
-          "description": "Biển W.202 cảnh báo đoạn đường phía trước có nhiều khúc cua nguy hiểm. Người điều khiển cần giảm tốc độ đáng kể và lái xe cẩn thận suốt đoạn đường này.",
-          "image": "images/signs/w202.webp"
-        },
-        {
-          "code": "W.203a",
-          "title": "Đường dốc nguy hiểm xuống dốc",
-          "shortDesc": "Phía trước có dốc xuống nguy hiểm.",
-          "description": "Biển W.203a cảnh báo phía trước có đoạn đường xuống dốc nguy hiểm. Người lái cần vào số thấp, sử dụng phanh động cơ và không tiếp tục tăng tốc.",
-          "image": "images/signs/w203a.webp"
-        },
-        {
-          "code": "W.203b",
-          "title": "Đường dốc nguy hiểm lên dốc",
-          "shortDesc": "Phía trước có dốc lên nguy hiểm.",
-          "description": "Biển W.203b cảnh báo đường dốc lên nguy hiểm. Xe phải nhường đường cho xe xuống dốc. Người lái cần chuẩn bị vào số phù hợp để leo dốc an toàn.",
-          "image": "images/signs/w203b.webp"
-        },
-        {
-          "code": "W.205a",
-          "title": "Giao nhau với đường không ưu tiên",
-          "shortDesc": "Phía trước có ngã tư, xe đang đi có quyền ưu tiên.",
-          "description": "Biển W.205a thông báo phía trước có nút giao và xe đang đi trên đường chính có quyền ưu tiên. Xe từ đường phụ phải nhường đường.",
-          "image": "images/signs/w205a.webp"
-        },
-        {
-          "code": "W.207a",
-          "title": "Giao nhau với đường ưu tiên",
-          "shortDesc": "Phía trước giao với đường ưu tiên — phải nhường đường.",
-          "description": "Biển W.207a cảnh báo xe đang đi sắp gặp đường ưu tiên. Người lái phải giảm tốc, quan sát và nhường đường cho phương tiện trên đường ưu tiên.",
-          "image": "images/signs/w207a.webp"
-        },
-        {
-          "code": "W.209",
-          "title": "Giao nhau có tín hiệu đèn",
-          "shortDesc": "Phía trước có ngã tư điều tiết bằng đèn tín hiệu.",
-          "description": "Biển W.209 cảnh báo phía trước có nút giao thông điều tiết bằng đèn tín hiệu. Người lái cần chú ý và tuân thủ tín hiệu đèn giao thông.",
-          "image": "images/signs/w209.webp"
-        },
-        {
-          "code": "W.210",
-          "title": "Đường bị thu hẹp",
-          "shortDesc": "Mặt đường phía trước bị thu hẹp lại.",
-          "description": "Biển W.210 cảnh báo đường phía trước hẹp lại đột ngột. Người lái phải giảm tốc, đặc biệt khi gặp xe ngược chiều hoặc chướng ngại vật.",
-          "image": "images/signs/w210.webp"
-        },
-        {
-          "code": "W.224",
-          "title": "Đường trơn",
-          "shortDesc": "Mặt đường có thể trơn trượt nguy hiểm.",
-          "description": "Biển W.224 cảnh báo mặt đường trơn trượt, thường do mưa, đóng băng hoặc dầu mỡ. Người lái cần giảm tốc, tránh phanh gấp và giữ khoảng cách an toàn.",
-          "image": "images/signs/w224.webp"
-        },
-        {
-          "code": "W.225",
-          "title": "Cầu hẹp",
-          "shortDesc": "Phía trước có cầu hẹp, chú ý khi qua.",
-          "description": "Biển W.225 cảnh báo phía trước có cầu hẹp chỉ đủ cho một làn xe lưu thông. Người lái cần giảm tốc và nhường đường cho xe ngược chiều đã vào cầu.",
-          "image": "images/signs/w225.webp"
-        },
-        {
-          "code": "W.245",
-          "title": "Công trường",
-          "shortDesc": "Phía trước có công trường đang thi công.",
-          "description": "Biển W.245 cảnh báo có công trình đang thi công phía trước. Người lái cần giảm tốc, cẩn thận với công nhân, máy móc và mảnh vật liệu trên đường.",
-          "image": "images/signs/w245.webp"
-        }
-      ]
-    },
-    {
-      "id": "hieu-lenh",
+      "id": "bien-bao-hieu-lenh",
       "name": "Biển hiệu lệnh",
-      "nameEn": "Mandatory signs",
-      "description": "Hình tròn, nền xanh dương — bắt buộc thực hiện",
-      "color": "#3b82f6",
-      "icon": "fa-circle-check",
       "signs": [
         {
-          "code": "R.301a",
-          "title": "Hướng phải đi vòng chướng ngại vật bên trái",
-          "shortDesc": "Bắt buộc đi vòng qua bên trái chướng ngại vật.",
-          "description": "Biển R.301a yêu cầu phương tiện phải đi vòng qua bên trái của chướng ngại vật hoặc dải phân cách. Không được đi qua bên phải.",
-          "image": "images/signs/r301a.webp"
+          "id": "145",
+          "name": "R.122: Dừng lại",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh buộc các loại xe cơ giới và thô sơ phải dừng lại trước biển.",
+          "image": "images/signs/p145.webp"
         },
         {
-          "code": "R.301b",
-          "title": "Hướng phải đi vòng chướng ngại vật bên phải",
-          "shortDesc": "Bắt buộc đi vòng qua bên phải chướng ngại vật.",
-          "description": "Biển R.301b yêu cầu phương tiện phải đi vòng qua bên phải của chướng ngại vật. Thường đặt ở các đảo phân giao thông và điểm có rào chắn.",
-          "image": "images/signs/r301b.webp"
+          "id": "146",
+          "name": "R.301a: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được đi thẳng.",
+          "image": "images/signs/p146.webp"
         },
         {
-          "code": "R.302a",
-          "title": "Phải đi thẳng",
-          "shortDesc": "Bắt buộc đi thẳng, không được rẽ.",
-          "description": "Biển R.302a yêu cầu tất cả phương tiện phải đi thẳng tại nút giao. Không được rẽ trái, rẽ phải hoặc quay đầu xe khi gặp biển này.",
-          "image": "images/signs/r302a.webp"
+          "id": "147",
+          "name": "R.301b: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được rẽ phải.",
+          "image": "images/signs/p147.webp"
         },
         {
-          "code": "R.302b",
-          "title": "Phải rẽ trái",
-          "shortDesc": "Bắt buộc rẽ trái tại nút giao.",
-          "description": "Biển R.302b yêu cầu phương tiện phải rẽ trái tại nút giao. Thường đặt ở những nơi không thể đi thẳng hoặc rẽ phải vì lý do kỹ thuật hoặc an toàn.",
-          "image": "images/signs/r302b.webp"
+          "id": "148",
+          "name": "R.301c: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được rẽ trái.",
+          "image": "images/signs/p148.webp"
         },
         {
-          "code": "R.302c",
-          "title": "Phải rẽ phải",
-          "shortDesc": "Bắt buộc rẽ phải tại nút giao.",
-          "description": "Biển R.302c yêu cầu phương tiện phải rẽ phải tại nút giao. Thường đặt ở các điểm chỉ được phép rẽ phải như đầu đường một chiều hoặc nút tắc nghẽn.",
-          "image": "images/signs/r302c.webp"
+          "id": "149",
+          "name": "R.301d: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được rẽ phải.",
+          "image": "images/signs/p149.webp"
         },
         {
-          "code": "R.303",
-          "title": "Phải đi thẳng hoặc rẽ phải",
-          "shortDesc": "Bắt buộc đi thẳng hoặc rẽ phải.",
-          "description": "Biển R.303 cho phép đi thẳng hoặc rẽ phải, không được rẽ trái hoặc quay đầu. Thường đặt ở các nút giao thông phức tạp.",
-          "image": "images/signs/r303.webp"
+          "id": "150",
+          "name": "R.301e: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được rẽ trái.",
+          "image": "images/signs/p150.webp"
         },
         {
-          "code": "R.306",
-          "title": "Đường dành cho người đi bộ",
-          "shortDesc": "Chỉ dành cho người đi bộ.",
-          "description": "Biển R.306 chỉ định khu vực hoặc làn đường chỉ dành cho người đi bộ. Tất cả phương tiện cơ giới và xe đạp không được đi vào.",
-          "image": "images/signs/r306.webp"
+          "id": "151",
+          "name": "R.301f: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được rẽ trái hoặc rẽ phải.",
+          "image": "images/signs/p151.webp"
         },
         {
-          "code": "R.307",
-          "title": "Tốc độ tối thiểu",
-          "shortDesc": "Tốc độ tối thiểu bắt buộc phải duy trì.",
-          "description": "Biển R.307 quy định tốc độ tối thiểu (km/h) mà phương tiện phải đạt được khi lưu thông trên đoạn đường. Không được chạy chậm hơn mức quy định.",
-          "image": "images/signs/r307.webp"
+          "id": "152",
+          "name": "R.301g: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được đi thẳng hoặc rẽ phải.",
+          "image": "images/signs/p152.webp"
         },
         {
-          "code": "R.308",
-          "title": "Phải đội mũ bảo hiểm",
-          "shortDesc": "Bắt buộc đội mũ bảo hiểm khi đi xe máy.",
-          "description": "Biển R.308 nhắc nhở người điều khiển xe mô tô bắt buộc phải đội mũ bảo hiểm đạt tiêu chuẩn khi tham gia giao thông.",
-          "image": "images/signs/r308.webp"
+          "id": "153",
+          "name": "R.301h: Hướng đi phải theo",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe chỉ được đi thẳng hoặc rẽ trái.",
+          "image": "images/signs/p153.webp"
         },
         {
-          "code": "R.412",
-          "title": "Nhường đường cho xe ngược chiều",
-          "shortDesc": "Phải nhường đường cho xe đi ngược chiều.",
-          "description": "Biển R.412 yêu cầu nhường đường cho phương tiện đi ngược chiều trong đoạn đường hẹp. Không được đi vào nếu đã có xe ngược chiều trong đoạn.",
-          "image": "images/signs/r412.webp"
+          "id": "154",
+          "name": "R.302a: Hướng phải đi vòng chướng ngại vật",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe phải vòng sang phải để tránh chướng ngại vật.",
+          "image": "images/signs/p154.webp"
+        },
+        {
+          "id": "155",
+          "name": "R.302b: Hướng phải đi vòng chướng ngại vật",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe phải vòng sang trái để tránh chướng ngại vật.",
+          "image": "images/signs/p155.webp"
+        },
+        {
+          "id": "156",
+          "name": "R.302c: Hướng phải đi vòng chướng ngại vật",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh cho các xe có thể vòng sang trái hoặc sang phải để tránh chướng ngại vật.",
+          "image": "images/signs/p156.webp"
+        },
+        {
+          "id": "157",
+          "name": "R.303: Nơi giao nhau chạy theo vòng xuyến",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo nơi giao nhau có bố trí đảo an toàn, các xe phải đi vòng sang trái quanh đảo.",
+          "image": "images/signs/p157.webp"
+        },
+        {
+          "id": "158",
+          "name": "R.304: Đường dành cho xe thô sơ",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo đường dành cho xe thô sơ (kể cả xe của người khuyết tật) và người đi bộ.",
+          "image": "images/signs/p158.webp"
+        },
+        {
+          "id": "159",
+          "name": "R.305: Đường dành cho người đi bộ",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo đường dành cho người đi bộ, các loại xe không được vào.",
+          "image": "images/signs/p159.webp"
+        },
+        {
+          "id": "160",
+          "name": "R.306: Tốc độ tối thiểu cho phép",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo tốc độ tối thiểu cho phép các xe cơ giới đi qua.",
+          "image": "images/signs/p160.webp"
+        },
+        {
+          "id": "161",
+          "name": "R.307: Hết hạn chế tốc độ tối thiểu",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo hết đoạn đường hạn chế tốc độ tối thiểu.",
+          "image": "images/signs/p161.webp"
+        },
+        {
+          "id": "162",
+          "name": "R.308a: Tuyến đường cầu vượt cắt ngang qua",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh biểu thị đi thẳng hoặc rẽ trái trên cầu vượt.",
+          "image": "images/signs/p162.webp"
+        },
+        {
+          "id": "163",
+          "name": "R.308b: Tuyến đường cầu vượt cắt ngang qua",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh biểu thị đi thẳng hoặc rẽ phải trên cầu vượt.",
+          "image": "images/signs/p163.webp"
+        },
+        {
+          "id": "164",
+          "name": "R.309: Ấn còi",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo cho người lái xe phải bấm còi khi đi qua đoạn đường này.",
+          "image": "images/signs/p164.webp"
+        },
+        {
+          "id": "165",
+          "name": "R.403a: Đường dành cho xe ô tô",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo đường dành riêng cho các loại xe ô tô.",
+          "image": "images/signs/p165.webp"
+        },
+        {
+          "id": "166",
+          "name": "R.403b: Đường dành cho xe ô tô, xe máy",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo đường dành riêng cho các loại xe ô tô và xe máy.",
+          "image": "images/signs/p166.webp"
+        },
+        {
+          "id": "167",
+          "name": "R.404a: Hết đường dành cho xe ô tô",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo hết đoạn đường dành riêng cho ô tô.",
+          "image": "images/signs/p167.webp"
+        },
+        {
+          "id": "168",
+          "name": "R.404b: Hết đường dành cho xe ô tô, xe máy",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo hết đoạn đường dành riêng cho ô tô và xe máy.",
+          "image": "images/signs/p168.webp"
+        },
+        {
+          "id": "169",
+          "name": "R.411: Hướng đi trên mỗi làn đường theo vạch kẻ đường",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo cho người lái xe biết số lượng làn đường và hướng đi trên mỗi làn đường.",
+          "image": "images/signs/p169.webp"
+        },
+        {
+          "id": "170",
+          "name": "R.412a: Làn đường dành cho ô tô khách",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho ô tô khách (kể cả xe buýt).",
+          "image": "images/signs/p170.webp"
+        },
+        {
+          "id": "171",
+          "name": "R.412b: Làn đường dành cho ô tô con",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho ô tô con.",
+          "image": "images/signs/p171.webp"
+        },
+        {
+          "id": "172",
+          "name": "R.412c: Làn đường dành cho xe ô tô tải",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho xe ô tô tải.",
+          "image": "images/signs/p172.webp"
+        },
+        {
+          "id": "173",
+          "name": "R.412d: Làn đường dành cho xe máy",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho xe máy.",
+          "image": "images/signs/p173.webp"
+        },
+        {
+          "id": "174",
+          "name": "R.412e: Làn đường dành cho xe buýt",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho xe buýt.",
+          "image": "images/signs/p174.webp"
+        },
+        {
+          "id": "175",
+          "name": "R.412f: Làn đường dành cho ô tô khách và ô tô con",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho ô tô khách và ô tô con.",
+          "image": "images/signs/p175.webp"
+        },
+        {
+          "id": "176",
+          "name": "R.412g: Làn đường dành cho ô tô con và xe máy",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho ô tô con và xe máy.",
+          "image": "images/signs/p176.webp"
+        },
+        {
+          "id": "177",
+          "name": "R.412h: Làn đường dành cho ô tô tải và xe máy",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho ô tô tải và xe máy.",
+          "image": "images/signs/p177.webp"
+        },
+        {
+          "id": "178",
+          "name": "R.412i: Làn đường dành cho xe máy và xe đạp",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho xe máy và xe đạp.",
+          "image": "images/signs/p178.webp"
+        },
+        {
+          "id": "179",
+          "name": "R.412j: Làn đường dành cho xe buýt và xe khách",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo làn đường dành riêng cho xe buýt và ô tô khách.",
+          "image": "images/signs/p179.webp"
+        },
+        {
+          "id": "180",
+          "name": "R.415a: Biển gộp làn đường theo phương tiện",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu số lượng làn đường và loại xe được phép đi trên từng làn.",
+          "image": "images/signs/p180.webp"
+        },
+        {
+          "id": "181",
+          "name": "R.415b: Biển gộp làn đường theo phương tiện",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu số lượng làn đường và loại xe được phép đi trên từng làn.",
+          "image": "images/signs/p181.webp"
+        },
+        {
+          "id": "182",
+          "name": "R.420: Bắt đầu khu đông dân cư",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu bắt đầu vào phạm vi khu đông dân cư.",
+          "image": "images/signs/p182.webp"
+        },
+        {
+          "id": "183",
+          "name": "R.421: Hết khu đông dân cư",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu hết phạm vi khu đông dân cư.",
+          "image": "images/signs/p183.webp"
+        },
+        {
+          "id": "184",
+          "name": "R.E,9a: Cấm đỗ xe trong khu vực",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu khu vực cấm đỗ xe.",
+          "image": "images/signs/p184.webp"
+        },
+        {
+          "id": "185",
+          "name": "R.E,9b: Cấm đỗ xe trong khu vực",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu khu vực cấm đỗ xe.",
+          "image": "images/signs/p185.webp"
+        },
+        {
+          "id": "186",
+          "name": "R.E,9c: Khu vực cấm đỗ xe",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu khu vực cấm đỗ xe (ghi rõ thời gian).",
+          "image": "images/signs/p186.webp"
+        },
+        {
+          "id": "187",
+          "name": "R.E,9d: Hết khu vực cấm đỗ xe",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu hết khu vực cấm đỗ xe.",
+          "image": "images/signs/p187.webp"
+        },
+        {
+          "id": "190",
+          "name": "R.E,11a: Hạn chế tốc độ tối đa trong khu vực",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu khu vực hạn chế tốc độ tối đa.",
+          "image": "images/signs/p188.webp"
+        },
+        {
+          "id": "191",
+          "name": "R.E,11b: Hết hạn chế tốc độ tối đa trong khu vực",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu hết khu vực hạn chế tốc độ tối đa.",
+          "image": "images/signs/p189.webp"
+        },
+        {
+          "id": "188",
+          "name": "R.E,10a: Cấm đỗ xe theo giờ trong khu vực",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu khu vực cấm đỗ xe theo giờ.",
+          "image": "images/signs/p190.webp"
+        },
+        {
+          "id": "189",
+          "name": "R.E,10b: Cấm đỗ xe theo giờ trong khu vực",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển báo hiệu khu vực cấm đỗ xe theo giờ.",
+          "image": "images/signs/p191.webp"
+        },
+        {
+          "id": "192",
+          "name": "R.310a: Hướng đi phải theo cho xe chở hàng nguy hiểm",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh buộc xe chở hàng nguy hiểm chỉ được đi thẳng.",
+          "image": "images/signs/p192.webp"
+        },
+        {
+          "id": "193",
+          "name": "R.310b: Hướng đi phải theo cho xe chở hàng nguy hiểm",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh buộc xe chở hàng nguy hiểm phải rẽ trái.",
+          "image": "images/signs/p193.webp"
+        },
+        {
+          "id": "194",
+          "name": "R.310c: Hướng đi phải theo cho xe chở hàng nguy hiểm",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh buộc xe chở hàng nguy hiểm phải rẽ phải.",
+          "image": "images/signs/p194.webp"
+        },
+        {
+          "id": "195",
+          "name": "R.411b: Hướng đi trên mỗi làn đường",
+          "category": "Biển hiệu lệnh",
+          "description": "Biển hiệu lệnh báo hướng đi trên mỗi làn đường tại nơi giao nhau.",
+          "image": "images/signs/p195.webp"
         }
       ]
     },
     {
-      "id": "chi-dan",
-      "name": "Biển chỉ dẫn",
-      "nameEn": "Direction signs",
-      "description": "Hình chữ nhật/vuông, nền xanh — cung cấp thông tin hướng dẫn",
-      "color": "#22c55e",
-      "icon": "fa-signs-post",
+      "id": "bien-bao-chi-dan",
+      "name": "Biển báo chỉ dẫn",
       "signs": [
         {
-          "code": "I.401a",
-          "title": "Đường ưu tiên",
-          "shortDesc": "Biển chỉ định đường ưu tiên.",
-          "description": "Biển I.401a chỉ định đây là đường ưu tiên (đường chính). Xe trên đường này có quyền đi trước so với xe từ đường phụ nhập vào.",
-          "image": "images/signs/i401a.webp"
+          "id": "196",
+          "name": "I.401: Bắt đầu đường ưu tiên",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu bắt đầu đoạn đường ưu tiên.",
+          "image": "images/signs/p196.webp"
         },
         {
-          "code": "I.401b",
-          "title": "Hết đường ưu tiên",
-          "shortDesc": "Chấm dứt đoạn đường ưu tiên.",
-          "description": "Biển I.401b thông báo kết thúc đoạn đường ưu tiên. Sau biển này, tất cả phương tiện bình đẳng về quyền ưu tiên tại các nút giao tiếp theo.",
-          "image": "images/signs/i401b.webp"
+          "id": "197",
+          "name": "I.402: Hết đường ưu tiên",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu kết thúc đoạn đường ưu tiên.",
+          "image": "images/signs/p197.webp"
         },
         {
-          "code": "I.407a",
-          "title": "Chỗ quay đầu xe",
-          "shortDesc": "Khu vực được phép quay đầu xe.",
-          "description": "Biển I.407a chỉ định nơi phương tiện được phép thực hiện quay đầu xe. Thường đặt ở cuối đường cụt hoặc điểm quay xe an toàn.",
-          "image": "images/signs/i407a.webp"
+          "id": "198",
+          "name": "I.405a: Đường cụt",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu phía trước là đường cụt.",
+          "image": "images/signs/p198.webp"
         },
         {
-          "code": "I.408",
-          "title": "Nơi đỗ xe",
-          "shortDesc": "Chỉ định bãi đỗ xe.",
-          "description": "Biển I.408 chỉ định nơi đỗ xe dành cho các phương tiện. Người lái xe có thể đỗ xe tại khu vực có biển này trong thời gian quy định.",
-          "image": "images/signs/i408.webp"
+          "id": "199",
+          "name": "I.405b: Đường cụt",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu đường rẽ bên phải là đường cụt.",
+          "image": "images/signs/p199.webp"
         },
         {
-          "code": "I.409",
-          "title": "Bến xe buýt",
-          "shortDesc": "Điểm dừng xe buýt công cộng.",
-          "description": "Biển I.409 chỉ định điểm dừng xe buýt công cộng. Phương tiện cá nhân không được dừng đỗ tại khu vực này để tránh cản trở xe buýt.",
-          "image": "images/signs/i409.webp"
+          "id": "200",
+          "name": "I.405c: Đường cụt",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu đường rẽ bên trái là đường cụt.",
+          "image": "images/signs/p200.webp"
         },
         {
-          "code": "I.410",
-          "title": "Trạm cấp cứu",
-          "shortDesc": "Chỉ hướng đến trạm y tế / cấp cứu.",
-          "description": "Biển I.410 chỉ hướng đến trạm cấp cứu hoặc cơ sở y tế gần nhất. Người lái có thể theo hướng biển khi cần hỗ trợ khẩn cấp.",
-          "image": "images/signs/i410.webp"
+          "id": "201",
+          "name": "I.406: Được ưu tiên qua đường hẹp",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu người lái xe được ưu tiên đi trước khi qua đoạn đường hẹp.",
+          "image": "images/signs/p201.webp"
         },
         {
-          "code": "I.411",
-          "title": "Điện thoại khẩn cấp",
-          "shortDesc": "Vị trí điện thoại khẩn cấp.",
-          "description": "Biển I.411 chỉ vị trí có điện thoại khẩn cấp để liên lạc khi cần. Thường đặt dọc đường cao tốc và các tuyến đường quốc lộ.",
-          "image": "images/signs/i411.webp"
+          "id": "202",
+          "name": "I.407a: Đường một chiều",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu đoạn đường một chiều.",
+          "image": "images/signs/p202.webp"
         },
         {
-          "code": "I.412",
-          "title": "Trạm xăng",
-          "shortDesc": "Hướng đến trạm xăng / dầu.",
-          "description": "Biển I.412 chỉ hướng đến trạm nhiên liệu gần nhất. Rất hữu ích trên các tuyến đường dài và đường cao tốc.",
-          "image": "images/signs/i412.webp"
+          "id": "203",
+          "name": "I.407b: Đường một chiều",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu đoạn đường một chiều.",
+          "image": "images/signs/p203.webp"
         },
         {
-          "code": "I.415a",
-          "title": "Đường cao tốc",
-          "shortDesc": "Bắt đầu vào đường cao tốc.",
-          "description": "Biển I.415a thông báo bắt đầu vào đoạn đường cao tốc. Quy định tốc độ và quy tắc giao thông đặc biệt áp dụng từ điểm này.",
-          "image": "images/signs/i415a.webp"
+          "id": "204",
+          "name": "I.407c: Đường một chiều",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu đoạn đường một chiều.",
+          "image": "images/signs/p204.webp"
         },
         {
-          "code": "I.415b",
-          "title": "Hết đường cao tốc",
-          "shortDesc": "Kết thúc đoạn đường cao tốc.",
-          "description": "Biển I.415b thông báo kết thúc đoạn đường cao tốc. Người lái cần chuyển sang chế độ lái thông thường và tuân thủ quy tắc đường thường.",
-          "image": "images/signs/i415b.webp"
+          "id": "205",
+          "name": "I.408: Nơi đỗ xe",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu nơi được phép đỗ xe.",
+          "image": "images/signs/p205.webp"
+        },
+        {
+          "id": "206",
+          "name": "I.408a: Nơi đỗ xe một phần trên hè phố",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu nơi được phép đỗ xe một phần trên hè phố.",
+          "image": "images/signs/p206.webp"
+        },
+        {
+          "id": "207",
+          "name": "I.409: Chỗ quay xe",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu vị trí được phép quay đầu xe.",
+          "image": "images/signs/p207.webp"
+        },
+        {
+          "id": "208",
+          "name": "I.410: Khu vực quay xe",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu khu vực được phép quay đầu xe.",
+          "image": "images/signs/p208.webp"
+        },
+        {
+          "id": "209",
+          "name": "I.414a: Chỉ hướng đường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo chỉ hướng đường đi tại các nơi giao nhau.",
+          "image": "images/signs/p209.webp"
+        },
+        {
+          "id": "210",
+          "name": "I.414b: Chỉ hướng đường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo chỉ hướng đường đi tại các nơi giao nhau.",
+          "image": "images/signs/p210.webp"
+        },
+        {
+          "id": "211",
+          "name": "I.414c: Chỉ hướng đường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo chỉ hướng đường đi tại các nơi giao nhau.",
+          "image": "images/signs/p211.webp"
+        },
+        {
+          "id": "212",
+          "name": "I.414d: Chỉ hướng đường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo chỉ hướng đường đi tại các nơi giao nhau.",
+          "image": "images/signs/p212.webp"
+        },
+        {
+          "id": "213",
+          "name": "I.415: Mũi tên chỉ hướng đi",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo chỉ hướng đi.",
+          "image": "images/signs/p213.webp"
+        },
+        {
+          "id": "214",
+          "name": "I.417: Chỉ hướng đi cho từng loại xe",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo chỉ hướng đi dành riêng cho từng loại xe.",
+          "image": "images/signs/p214.webp"
+        },
+        {
+          "id": "215",
+          "name": "I.440: Đoạn đường thi công",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu đoạn đường đang được thi công.",
+          "image": "images/signs/p215.webp"
+        },
+        {
+          "id": "216",
+          "name": "I.441a: Báo hiệu phía trước có công trường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu phía trước có công trường đang thi công.",
+          "image": "images/signs/p216.webp"
+        },
+        {
+          "id": "217",
+          "name": "I.441b: Báo hiệu phía trước có công trường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu phía trước có công trường đang thi công.",
+          "image": "images/signs/p217.webp"
+        },
+        {
+          "id": "218",
+          "name": "I.441c: Báo hiệu phía trước có công trường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo hiệu phía trước có công trường đang thi công.",
+          "image": "images/signs/p218.webp"
+        },
+        {
+          "id": "219",
+          "name": "I.444a: Biển báo chỉ dẫn địa điểm",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo chỉ dẫn hướng đi đến các địa điểm.",
+          "image": "images/signs/p219.webp"
+        },
+        {
+          "id": "220",
+          "name": "I.449: Biển tên đường",
+          "category": "Biển báo chỉ dẫn",
+          "description": "Biển báo tên các tuyến đường.",
+          "image": "images/signs/p220.webp"
         }
       ]
     },
     {
-      "id": "phu",
-      "name": "Biển phụ",
-      "nameEn": "Supplementary signs",
-      "description": "Hình chữ nhật — bổ sung, làm rõ ý nghĩa biển chính phía trên",
-      "color": "#8b5cf6",
-      "icon": "fa-tag",
+      "id": "bien-bao-phu",
+      "name": "Biển báo phụ",
       "signs": [
         {
-          "code": "S.501",
-          "title": "Phạm vi tác dụng",
-          "shortDesc": "Chỉ khoảng cách hoặc phạm vi áp dụng của biển chính.",
-          "description": "Biển phụ S.501 ghi rõ khoảng cách (m hoặc km) mà biển báo chính phía trên có hiệu lực. Ví dụ: '200m' nghĩa là biển chính có tác dụng trong vòng 200 mét.",
-          "image": "images/signs/s501.webp"
+          "id": "221",
+          "name": "S.501: Phạm vi tác dụng của biển",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu chiều dài đoạn đường nguy hiểm hoặc hạn chế.",
+          "image": "images/signs/p221.webp"
         },
         {
-          "code": "S.502",
-          "title": "Thời gian áp dụng",
-          "shortDesc": "Quy định thời gian biển chính có hiệu lực.",
-          "description": "Biển phụ S.502 ghi rõ khung thời gian (giờ, ngày) mà biển báo chính có hiệu lực. Ví dụ: '7h-9h' hoặc 'T2-T6' cho biết biển chỉ áp dụng trong thời gian đó.",
-          "image": "images/signs/s502.webp"
+          "id": "222",
+          "name": "S.502: Khoảng cách đến đối tượng báo hiệu",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu khoảng cách từ biển đến đối tượng báo hiệu.",
+          "image": "images/signs/p222.webp"
         },
         {
-          "code": "S.503",
-          "title": "Loại phương tiện áp dụng",
-          "shortDesc": "Xác định loại phương tiện mà biển chính áp dụng.",
-          "description": "Biển phụ S.503 chỉ rõ biển chính phía trên chỉ áp dụng cho loại phương tiện cụ thể (ví dụ: xe tải, xe khách, xe đạp). Phương tiện khác không bị hạn chế.",
-          "image": "images/signs/s503.webp"
+          "id": "223",
+          "name": "S.503a: Hướng tác dụng của biển",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng tác dụng của biển (hướng thẳng).",
+          "image": "images/signs/p223.webp"
         },
         {
-          "code": "S.504",
-          "title": "Hướng tác dụng",
-          "shortDesc": "Xác định hướng mà biển chính có hiệu lực.",
-          "description": "Biển phụ S.504 dùng mũi tên để chỉ rõ hướng mà biển báo chính áp dụng (trái, phải, thẳng, hoặc kết hợp). Giúp xác định chính xác làn đường bị ảnh hưởng.",
-          "image": "images/signs/s504.webp"
+          "id": "224",
+          "name": "S.503b: Hướng tác dụng của biển",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng tác dụng của biển (hướng phải).",
+          "image": "images/signs/p224.webp"
         },
         {
-          "code": "S.505",
-          "title": "Khoảng cách đến biển chính",
-          "shortDesc": "Khoảng cách từ vị trí đặt biển đến điểm áp dụng.",
-          "description": "Biển phụ S.505 thông báo khoảng cách từ nơi đặt biển đến điểm nguy hiểm hoặc điểm biển chính có hiệu lực. Giúp người lái chuẩn bị kịp thời.",
-          "image": "images/signs/s505.webp"
+          "id": "225",
+          "name": "S.503c: Hướng tác dụng của biển",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng tác dụng của biển (hướng trái).",
+          "image": "images/signs/p225.webp"
         },
         {
-          "code": "S.506",
-          "title": "Hết hiệu lực",
-          "shortDesc": "Chấm dứt hiệu lực của biển chính phía trên.",
-          "description": "Biển phụ S.506 đặt kèm biển chính để thông báo biển chính hết hiệu lực tại điểm đó. Từ vị trí biển này trở đi, hạn chế của biển chính không còn áp dụng.",
-          "image": "images/signs/s506.webp"
+          "id": "226",
+          "name": "S.503d: Hướng tác dụng của biển",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng tác dụng của biển (hướng ngược lại).",
+          "image": "images/signs/p226.webp"
+        },
+        {
+          "id": "227",
+          "name": "S.503e: Hướng tác dụng của biển",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng tác dụng của biển (hai hướng trái và phải).",
+          "image": "images/signs/p227.webp"
+        },
+        {
+          "id": "228",
+          "name": "S.503f: Hướng tác dụng của biển",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng tác dụng của biển (hai hướng song song).",
+          "image": "images/signs/p228.webp"
+        },
+        {
+          "id": "229",
+          "name": "S.505a: Loại xe",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu loại xe chịu tác dụng của biển chính.",
+          "image": "images/signs/p229.webp"
+        },
+        {
+          "id": "230",
+          "name": "S.506a: Hướng đường ưu tiên",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng đường ưu tiên tại nơi giao nhau.",
+          "image": "images/signs/p230.webp"
+        },
+        {
+          "id": "231",
+          "name": "S.506b: Hướng đường ưu tiên",
+          "category": "Biển báo phụ",
+          "description": "Biển báo hiệu hướng đường ưu tiên tại nơi giao nhau.",
+          "image": "images/signs/p231.webp"
         }
       ]
     }
