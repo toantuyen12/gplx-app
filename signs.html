@@ -584,6 +584,100 @@
         height: 52px;
       }
     }
+
+    /* Game Selection Menu */
+    .game-menu-section {
+      margin-bottom: 40px;
+      animation: fadeSlideIn 0.5s ease forwards;
+    }
+
+    .game-menu-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .game-card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .game-card-btn {
+      background: white;
+      border: 1.5px solid #eef2f6;
+      border-radius: 18px;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      text-align: center;
+    }
+
+    .game-card-btn:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 30px -8px rgba(79, 70, 229, 0.15);
+      border-color: var(--primary);
+      background: #f8faff;
+    }
+
+    .game-card-icon {
+      font-size: 26px;
+      width: 52px;
+      height: 52px;
+      background: #f1f5f9;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .game-card-btn:hover .game-card-icon {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .game-card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+    }
+
+    @media (max-width: 992px) {
+      .game-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .game-card-grid {
+        display: flex;
+        overflow-x: auto;
+        padding: 5px 5px 15px;
+        gap: 14px;
+        scrollbar-width: none;
+        margin: 0 -10px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .game-card-grid::-webkit-scrollbar {
+        display: none;
+      }
+      .game-card-btn {
+        flex: 0 0 170px;
+      }
+    }
   </style>
 </head>
 
@@ -630,6 +724,29 @@
         <option value="all">Tất cả nhóm biển báo</option>
       </select>
       <span class="signs-count-badge" id="signCountBadge">Đang tải...</span>
+    </div>
+
+    <!-- Game Selection Menu -->
+    <div class="game-menu-section">
+      <h2 class="game-menu-title">🎮 Chọn game luyện nhớ biển báo</h2>
+      <div class="game-card-grid">
+        <a href="/games/sign-memory-60s.html" class="game-card-btn">
+          <div class="game-card-icon">🎮</div>
+          <span class="game-card-name">Nhớ biển báo 60 giây</span>
+        </a>
+        <a href="/games/choose-correct-sign.html" class="game-card-btn">
+          <div class="game-card-icon">🧠</div>
+          <span class="game-card-name">Chọn biển báo đúng</span>
+        </a>
+        <a href="/games/memory-challenge.html" class="game-card-btn">
+          <div class="game-card-icon">⚡</div>
+          <span class="game-card-name">Thử thách trí nhớ</span>
+        </a>
+        <a href="/games/sign-puzzle.html" class="game-card-btn">
+          <div class="game-card-icon">🧩</div>
+          <span class="game-card-name">Ghép hình biển báo</span>
+        </a>
+      </div>
     </div>
 
     <!-- Signs Container -->
