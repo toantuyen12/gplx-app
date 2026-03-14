@@ -19,12 +19,11 @@
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --text-main: #102a43;
-            --text-muted: #627d98;
-            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: rgba(255, 255, 255, 0.5);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.6);
         }
 
         * {
@@ -32,289 +31,344 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+            user-select: none;
         }
 
         body {
             background: var(--bg-gradient);
             color: var(--text-main);
-            line-height: 1.6;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            overflow-x: hidden;
         }
 
         .container {
+            width: 100%;
             max-width: 600px;
-            margin: 0 auto;
-            animation: fadeIn 0.5s ease;
+            height: 100%;
+            max-height: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
         }
 
         .back-btn {
             text-decoration: none;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            padding: 8px 12px;
+            gap: 8px;
+            padding: 10px 16px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(4px);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .back-btn:hover { 
+        .back-btn:hover {
             color: var(--primary);
-            background: rgba(255, 255, 255, 0.8);
-            transform: translateX(-3px);
+            transform: translateX(-4px);
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .game-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
-            text-align: center;
-            flex-grow: 1;
             color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Instructions */
-        .instruction-section {
+        /* Screen Management */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Start Screen */
+        .start-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 40px;
+            text-align: center;
             border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin: auto;
         }
 
-        .instruction-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-
-        .instruction-header h2 {
-            font-size: 15px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .instruction-toggle-btn {
-            font-size: 13px;
-            font-weight: 600;
+        .start-icon {
+            font-size: 64px;
             color: var(--primary);
-            background: rgba(79, 70, 229, 0.1);
-            padding: 4px 12px;
-            border-radius: 20px;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 10px 15px rgba(79, 70, 229, 0.3));
         }
 
-        .instruction-content {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            font-size: 14px;
-            color: var(--text-muted);
-            max-height: 500px;
-            overflow: hidden;
-            transition: all 0.3s ease;
+        .start-card h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #0f172a;
         }
 
-        .instruction-content.collapsed {
-            max-height: 0;
-            margin-top: 0;
-            padding-top: 0;
-            border-top: none;
-            opacity: 0;
-        }
-
-        .instruction-content ul {
+        .rules-list {
+            text-align: left;
+            margin: 24px 0;
             list-style: none;
-            padding-left: 0;
         }
 
-        .instruction-content li {
-            margin-bottom: 10px;
+        .rules-list li {
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: var(--text-muted);
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: flex-start;
         }
 
-        .instruction-content li i { 
-            color: var(--primary); 
+        .rules-list i {
+            color: var(--primary);
             margin-top: 4px;
-            font-size: 14px;
         }
 
-        /* Game Stats Bar */
+        /* Game Stats */
         .stats-bar {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .stat-box {
+            flex: 1;
             background: var(--glass-bg);
-            backdrop-filter: blur(8px);
             padding: 12px;
-            border-radius: 18px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: var(--card-shadow);
             border: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         .stat-label {
-            font-size: 10px;
-            text-transform: uppercase;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
+            text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--primary);
         }
 
-        /* Game Area */
-        .game-area {
-            position: relative;
+        .timer-progress-wrap {
+            width: 100%;
+            height: 6px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
         }
 
-        .game-card {
-            background: #ffffff;
-            border-radius: 28px;
+        .timer-progress-bar {
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.1s linear, background-color 0.3s ease;
+        }
+
+        /* Question Area */
+        .game-main {
+            flex: 1;
+            background: white;
+            border-radius: 32px;
             padding: 24px;
-            text-align: center;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 24px;
-            border: 1px solid var(--glass-border);
-            min-height: 420px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            min-height: 0; 
         }
 
-        .question-text-wrap {
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            min-height: 100px;
+        .question-display {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px dashed #e2e8f0;
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 24px;
+            position: relative;
+            text-align: center;
         }
 
         .question-text {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--text-main);
-            line-height: 1.4;
+            color: #1e293b;
+            line-height: 1.5;
         }
 
         .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            flex-shrink: 0;
         }
 
         .option-btn {
-            background: #ffffff;
-            border: 2px solid #f1f5f9;
-            border-radius: 20px;
-            padding: 12px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 24px;
+            aspect-ratio: 1/1;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            aspect-ratio: 1 / 1;
-            overflow: hidden;
+            padding: 16px;
+            position: relative;
         }
 
         .option-btn img {
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
-            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
         }
 
-        .option-btn:hover {
-            border-color: var(--primary-light);
-            background: #f8faff;
+        .option-btn:hover:not(:disabled) {
+            background: white;
+            border-color: var(--primary);
             transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
         }
 
-        .option-btn:active {
-            transform: scale(0.96);
+        .option-btn:disabled {
+            cursor: default;
         }
 
         .option-btn.correct {
-            background: #ecfdf5 !important;
+            background: #f0fdf4 !important;
             border-color: var(--success) !important;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
         }
 
         .option-btn.wrong {
             background: #fef2f2 !important;
             border-color: var(--danger) !important;
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        .option-btn.correct::after {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--success);
+            font-size: 20px;
+        }
+
+        .option-btn.wrong::after {
+            content: '\f057';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--danger);
+            font-size: 20px;
         }
 
         /* Results Screen */
-        .result-screen {
+        .result-main {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .result-main::-webkit-scrollbar { width: 6px; }
+        .result-main::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .score-display {
             text-align: center;
-            display: none;
-            animation: fadeIn 0.5s ease;
+            padding: 30px;
+            background: white;
+            border-radius: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        .final-score-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .final-score-value {
-            font-size: 56px;
+        .score-value {
+            font-size: 64px;
             font-weight: 900;
             color: var(--primary);
-            margin-bottom: 24px;
+            line-height: 1;
+            margin: 10px 0;
             text-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
         }
 
-        .btn-group {
+        .score-stats {
             display: flex;
-            gap: 12px;
             justify-content: center;
-            margin-top: 24px;
+            gap: 24px;
+            margin-top: 16px;
         }
 
-        .main-btn {
-            padding: 14px 32px;
-            border-radius: 16px;
+        .score-stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .score-stat-val {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .score-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .action-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 16px;
+            border-radius: 18px;
             font-weight: 700;
             font-size: 15px;
             border: none;
@@ -322,395 +376,411 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary { 
-            background: var(--primary); 
-            color: white;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-        }
-
-        .btn-primary:hover { 
-            background: var(--primary-hover, #4338ca); 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-outline { 
-            background: white; 
-            border: 2px solid #e2e8f0; 
-            color: var(--text-muted); 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .btn-outline:hover { 
-            background: #f8fafc; 
-            border-color: #cbd5e1; 
-            transform: translateY(-2px);
-        }
-
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Mobile */
-        @media (max-width: 480px) {
-            body { padding: 15px; }
-            .game-card { padding: 16px; min-height: 480px; }
-            .question-text { font-size: 16px; }
-            .option-btn { padding: 8px; }
-            .stat-value { font-size: 16px; }
-            .back-btn span { display: none; }
-            .back-btn { padding: 8px 12px; border-radius: 50%; }
-        }
-
-        .hidden { display: none !important; }
-
-        /* Loader */
-        .loading-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-gradient);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            gap: 20px;
-        }
-        .spinner { 
-            width: 50px; 
-            height: 50px; 
-            border: 5px solid rgba(79, 70, 229, 0.1); 
-            border-top-color: var(--primary); 
-            border-radius: 50%; 
-            animation: spin 0.8s linear infinite; 
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .loading-text {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 16px;
+            gap: 10px;
+            text-decoration: none;
         }
 
-        .score-pop {
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+            background: #4338ca;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #334155;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        /* Feedbacks */
+        .feedback-pop {
             position: absolute;
-            top: 40%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 32px;
+            font-size: 48px;
             font-weight: 900;
-            color: var(--success);
+            z-index: 100;
             pointer-events: none;
-            animation: scoreFloat 0.6s ease-out forwards;
-            z-index: 50;
+            animation: popOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        .score-pop.minus { color: var(--danger); }
-
-        @keyframes scoreFloat {
+        @keyframes popOut {
             0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
             50% { opacity: 1; transform: translate(-50%, -80%) scale(1.2); }
             100% { opacity: 0; transform: translate(-50%, -120%) scale(1); }
         }
+
+        /* Responsive */
+        @media (max-height: 750px) {
+            .container { gap: 10px; }
+            .start-card { padding: 24px; }
+            .start-icon { font-size: 48px; margin-bottom: 12px; }
+            .question-display { padding: 16px; }
+            .option-btn { padding: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .container { gap: 12px; }
+            .stat-value { font-size: 16px; }
+            .question-display { height: 160px; flex: none; }
+            .options-grid { gap: 10px; }
+            .game-main { padding: 16px; border-radius: 24px; }
+            .question-text { font-size: 16px; }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(79, 70, 229, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="loading-screen" id="loadingScreen">
+    <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <p class="loading-text" id="loadingText">Đang chuẩn bị câu hỏi...</p>
     </div>
 
     <div class="container">
         <header>
-            <a href="../signs.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> <span>Quay lại</span></a>
-            <h1 class="game-title">Chọn Biển Báo Đúng</h1>
-            <div style="width: 44px;"></div> <!-- spacer to center title on desktop -->
+            <a href="../signs.html" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Thoát</span>
+            </a>
+            <div class="game-title">Chọn Biển Báo</div>
+            <div style="width: 70px;"></div>
         </header>
 
-        <!-- Instructions -->
-        <div class="instruction-section">
-            <div class="instruction-header" onclick="toggleInstructions()">
-                <h2>📖 Hướng dẫn chơi</h2>
-                <div class="instruction-toggle-btn" id="instrToggleText">Xem hướng dẫn</div>
-            </div>
-            <div class="instruction-content collapsed" id="instrContent">
-                <ul>
-                    <li><i class="fa-solid fa-bullseye"></i> <span><strong>Mục tiêu:</strong> Chọn đúng biển báo tương ứng với mô tả được đưa ra.</span></li>
-                    <li><i class="fa-solid fa-gamepad"></i> <span><strong>Cách chơi:</strong> Đọc kỹ mô tả và chọn 1 trong 4 hình ảnh biển báo bên dưới.</span></li>
-                    <li><i class="fa-solid fa-star"></i> <span><strong>Cộng điểm:</strong> <strong>+10 điểm</strong> cho mỗi câu trả lời đúng.</span></li>
-                    <li><i class="fa-solid fa-circle-minus"></i> <span><strong>Trừ điểm:</strong> <strong>-5 điểm</strong> cho mỗi câu trả lời sai.</span></li>
-                    <li><i class="fa-solid fa-list-ol"></i> <span><strong>Số lượng:</strong> Mỗi lượt chơi gồm <strong>10 câu hỏi</strong>.</span></li>
+        <!-- Start Screen -->
+        <main class="screen active" id="startScreen">
+            <div class="start-card">
+                <div class="start-icon">
+                    <i class="fa-solid fa-images"></i>
+                </div>
+                <h2>Chọn Biển Báo Đúng</h2>
+                <ul class="rules-list">
+                    <li><i class="fa-solid fa-circle-check"></i> <span>Gồm 10 câu hỏi nhận diện hình ảnh.</span></li>
+                    <li><i class="fa-solid fa-clock"></i> <span>Thời gian trả lời có hạn (10 giây/câu).</span></li>
+                    <li><i class="fa-solid fa-layer-group"></i> <span>Hình ảnh lựa chọn thuộc cùng một nhóm.</span></li>
+                    <li><i class="fa-solid fa-bolt"></i> <span>Phản xạ nhanh để nhận thêm điểm thưởng!</span></li>
                 </ul>
+                <button class="btn btn-primary" style="width: 100%" onclick="startGame()">
+                    <i class="fa-solid fa-play"></i> BẮT ĐẦU CHƠI
+                </button>
             </div>
-        </div>
+        </main>
 
         <!-- Game Screen -->
-        <div id="gameScreen">
+        <main class="screen" id="gameScreen">
             <div class="stats-bar">
                 <div class="stat-box">
                     <div class="stat-label">Câu hỏi</div>
-                    <div class="stat-value" id="questionCounter">1/10</div>
+                    <div class="stat-value" id="progressText">1/10</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">Điểm số</div>
-                    <div class="stat-value" id="score">0</div>
+                    <div class="stat-value" id="scoreText">0</div>
                 </div>
             </div>
 
-            <div class="game-area">
-                <div class="game-card">
-                    <div class="question-text-wrap">
-                        <p class="question-text" id="questionText">Đang tải câu hỏi...</p>
-                    </div>
-                    <div class="options-grid" id="optionsGrid">
-                        <!-- Options injected here -->
-                    </div>
-                </div>
-                <div id="feedbackContainer"></div>
+            <div class="timer-progress-wrap">
+                <div class="timer-progress-bar" id="timerBar"></div>
             </div>
-        </div>
+
+            <div class="game-main">
+                <div class="question-display" id="questionDisplay">
+                    <p class="question-text" id="questionText">Đang tải câu hỏi...</p>
+                </div>
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options Injected Here -->
+                </div>
+            </div>
+        </main>
 
         <!-- Result Screen -->
-        <div class="result-screen" id="resultScreen">
-            <h2 class="final-score-title">Kết quả của bạn</h2>
-            <div class="final-score-value" id="finalScore">0</div>
-            
-            <div id="leaderboardContainer"></div>
+        <main class="screen" id="resultScreen">
+            <div class="result-main">
+                <div class="score-display">
+                    <div class="score-stat-label">Tổng điểm</div>
+                    <div class="score-value" id="finalScore">0</div>
+                    <div class="score-stats">
+                        <div class="score-stat-item">
+                            <span class="score-stat-val" id="correctCount">0/10</span>
+                            <span class="score-stat-label">Chính xác</span>
+                        </div>
+                        <div class="score-stat-item">
+                            <span class="score-stat-val" id="avgTime">0s</span>
+                            <span class="score-stat-label">TB / Câu</span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="btn-group">
-                <button class="main-btn btn-primary" onclick="restartGame()">
-                    <i class="fa-solid fa-rotate-right"></i> Chơi lại
-                </button>
-                <a href="../signs.html" class="main-btn btn-outline">
-                    <i class="fa-solid fa-house"></i> Thoát
-                </a>
+                <div id="leaderboardContainer"></div>
             </div>
-        </div>
+
+            <div class="action-btns">
+                <button class="btn btn-secondary" onclick="location.reload()">
+                    <i class="fa-solid fa-rotate-left"></i> TRANG CHỦ
+                </button>
+                <button class="btn btn-primary" onclick="startGame()">
+                    <i class="fa-solid fa-play"></i> CHƠI LẠI
+                </button>
+            </div>
+        </main>
     </div>
 
     <!-- Scripts -->
     <script src="../js/leaderboard.js"></script>
     <script>
         const GAME_ID = 'choose-correct-sign';
-        let allSigns = [];
-        let score = 0;
-        let currentQuestionIndex = 0;
         const TOTAL_QUESTIONS = 10;
-        let currentSign = null;
-        let isGameActive = false;
+        const QUESTION_TIME = 10000;
+
+        let allSigns = [];
+        let categoryMap = {};
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let totalTimeUsed = 0;
+        let questionStartTime = 0;
+        let timerInterval = null;
         let isAnswering = false;
 
         // UI Elements
-        const loadingScreen = document.getElementById('loadingScreen');
-        const loadingText = document.getElementById('loadingText');
-        const questionCounterEl = document.getElementById('questionCounter');
-        const scoreEl = document.getElementById('score');
-        const questionTextEl = document.getElementById('questionText');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const screens = document.querySelectorAll('.screen');
+        const questionText = document.getElementById('questionText');
         const optionsGrid = document.getElementById('optionsGrid');
-        const gameScreen = document.getElementById('gameScreen');
-        const resultScreen = document.getElementById('resultScreen');
-        const finalScoreEl = document.getElementById('finalScore');
-        const instrContent = document.getElementById('instrContent');
-        const instrToggleText = document.getElementById('instrToggleText');
-        const feedbackContainer = document.getElementById('feedbackContainer');
+        const progressText = document.getElementById('progressText');
+        const scoreText = document.getElementById('scoreText');
+        const timerBar = document.getElementById('timerBar');
+        const questionDisplay = document.getElementById('questionDisplay');
 
         /**
-         * Initialize the game: load data and preload images
+         * Initialize App
          */
         async function init() {
             try {
                 const response = await fetch('../data/traffic-signs.json');
-                if (!response.ok) throw new Error('Network error');
                 const data = await response.json();
                 
-                // Flatten all signs from categories
-                allSigns = [];
                 data.categories.forEach(cat => {
-                    cat.signs.forEach(sign => {
-                        // Use description for question text
-                        if (sign.description && sign.description.trim().length > 10) {
-                            allSigns.push({
-                                id: sign.id,
-                                description: sign.description,
-                                image: '../' + sign.image
-                            });
-                        }
-                    });
+                    const categorySigns = cat.signs
+                        .filter(s => s.description && s.description.trim().length > 10)
+                        .map(s => {
+                            const nameParts = s.name.split(':');
+                            const cleanName = (nameParts[1] || nameParts[0]).trim();
+                            return {
+                                id: s.id,
+                                name: cleanName,
+                                description: s.description,
+                                category: cat.name,
+                                image: '../' + s.image
+                            };
+                        });
+                    
+                    if (categorySigns.length > 0) {
+                        categoryMap[cat.name] = categorySigns;
+                        allSigns.push(...categorySigns);
+                    }
                 });
 
-                if (allSigns.length < 10) throw new Error('Not enough signs with descriptions');
-
-                loadingScreen.classList.add('hidden');
-                startGame();
+                loadingOverlay.style.display = 'none';
             } catch (err) {
-                console.error('Failed to load signs:', err);
-                loadingText.textContent = '❌ Lỗi tải dữ liệu. Vui lòng tải lại trang.';
+                console.error('Init failed:', err);
             }
         }
 
         /**
-         * Toggle instructions collapse
+         * Switch Screens
          */
-        function toggleInstructions() {
-            const isCollapsed = instrContent.classList.toggle('collapsed');
-            instrToggleText.textContent = isCollapsed ? 'Xem hướng dẫn' : 'Thu gọn';
+        function showScreen(id) {
+            screens.forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
 
         /**
-         * Setup and start a new game session
+         * Start Game
          */
         function startGame() {
             score = 0;
-            currentQuestionIndex = 0;
-            isGameActive = true;
-            isAnswering = false;
+            correctAnswers = 0;
+            currentIndex = 0;
+            totalTimeUsed = 0;
             
-            updateStatsUI();
-            gameScreen.classList.remove('hidden');
-            resultScreen.classList.add('hidden');
-            
-            nextQuestion();
+            currentQuestions = [...allSigns]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, TOTAL_QUESTIONS);
 
-            // Collapse instructions if open on mobile when starting
-            if (window.innerWidth <= 480 && !instrContent.classList.contains('collapsed')) {
-                toggleInstructions();
-            }
+            showScreen('gameScreen');
+            loadQuestion();
         }
 
         /**
-         * Generate next random question
+         * Load Question
          */
-        function nextQuestion() {
-            if (!isGameActive) return;
-            
-            if (currentQuestionIndex >= TOTAL_QUESTIONS) {
-                endGame();
-                return;
-            }
-
+        function loadQuestion() {
             isAnswering = false;
-            currentQuestionIndex++;
-            updateStatsUI();
-
-            // Pick a random current sign
-            currentSign = allSigns[Math.floor(Math.random() * allSigns.length)];
-            questionTextEl.textContent = currentSign.description;
+            const currentSign = currentQuestions[currentIndex];
             
-            // Create 3 distractors
-            const options = [currentSign];
-            while (options.length < 4) {
-                const randomSign = allSigns[Math.floor(Math.random() * allSigns.length)];
-                if (!options.some(s => s.id === randomSign.id)) {
-                    options.push(randomSign);
-                }
+            progressText.textContent = `${currentIndex + 1}/${TOTAL_QUESTIONS}`;
+            scoreText.textContent = score;
+            questionText.textContent = currentSign.description;
+            
+            // Generate Options
+            let options = [currentSign];
+            const sameCategory = (categoryMap[currentSign.category] || []).filter(s => s.id !== currentSign.id);
+            
+            const distractors = sameCategory
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
+            
+            if (distractors.length < 3) {
+                const otherSigns = allSigns.filter(s => !options.some(opt => opt.id === s.id));
+                const extraDistractors = otherSigns
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3 - distractors.length);
+                distractors.push(...extraDistractors);
             }
-
-            // Shuffle options
+            
+            options.push(...distractors);
             options.sort(() => Math.random() - 0.5);
 
-            // Render buttons
             optionsGrid.innerHTML = '';
-            options.forEach(sign => {
+            options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                const img = document.createElement('img');
-                img.src = sign.image;
-                img.alt = "Biển báo";
-                btn.appendChild(img);
-                btn.onclick = () => handleAnswer(sign.id, btn);
+                btn.innerHTML = `<img src="${opt.image}" alt="Biển báo">`;
+                btn.onclick = () => handleAnswer(opt.id, btn);
                 optionsGrid.appendChild(btn);
             });
+
+            startTimer();
         }
 
         /**
-         * Process user answer
+         * Timer
+         */
+        function startTimer() {
+            questionStartTime = Date.now();
+            let timeLeft = QUESTION_TIME;
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerBar.style.width = '100%';
+            timerBar.style.backgroundColor = 'var(--primary)';
+
+            timerInterval = setInterval(() => {
+                timeLeft -= 100;
+                const percent = (timeLeft / QUESTION_TIME) * 100;
+                timerBar.style.width = percent + '%';
+
+                if (percent < 30) timerBar.style.backgroundColor = 'var(--danger)';
+                else if (percent < 60) timerBar.style.backgroundColor = 'var(--warning)';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleAnswer(null, null);
+                }
+            }, 100);
+        }
+
+        /**
+         * Handle Selection
          */
         function handleAnswer(selectedId, btn) {
-            if (!isGameActive || isAnswering) return;
+            if (isAnswering) return;
             isAnswering = true;
-
-            const isCorrect = (selectedId === currentSign.id);
+            clearInterval(timerInterval);
             
-            // Disable all buttons
-            const allBtns = optionsGrid.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.style.pointerEvents = 'none');
+            const elapsed = Date.now() - questionStartTime;
+            totalTimeUsed += elapsed;
+            
+            const currentSign = currentQuestions[currentIndex];
+            const isCorrect = selectedId === currentSign.id;
+            
+            const buttons = optionsGrid.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
 
             if (isCorrect) {
                 btn.classList.add('correct');
-                const pointsGained = 10;
-                score += pointsGained;
-                showPopFeedback(`+${pointsGained}`, false);
+                const timeBonus = Math.max(0, Math.floor(((QUESTION_TIME - elapsed) / QUESTION_TIME) * 50));
+                const points = 50 + timeBonus;
+                score += points;
+                correctAnswers++;
+                showPop(`+${points}`, 'var(--success)');
             } else {
-                btn.classList.add('wrong');
-                const pointsLost = 5;
-                score = Math.max(0, score - pointsLost);
-                showPopFeedback(`-${pointsLost}`, true);
-                
-                // Highlight correct answer
-                allBtns.forEach(b => {
-                    const img = b.querySelector('img');
-                    if (img && img.src.includes(currentSign.image.replace('../', ''))) {
+                if (btn) btn.classList.add('wrong');
+                buttons.forEach(b => {
+                    if (b.querySelector('img').src.includes(currentSign.image.replace('../', ''))) {
                         b.classList.add('correct');
                     }
                 });
+                showPop('❌', 'var(--danger)');
             }
 
-            updateStatsUI();
-            
-            // Wait a bit then move to next
             setTimeout(() => {
-                if (isGameActive) nextQuestion();
-            }, 1000);
+                currentIndex++;
+                if (currentIndex < TOTAL_QUESTIONS) {
+                    loadQuestion();
+                } else {
+                    endSession();
+                }
+            }, 1200);
         }
 
-        /**
-         * Visual pop animation for score feedback
-         */
-        function showPopFeedback(text, isMinus) {
+        function showPop(text, color) {
             const pop = document.createElement('div');
-            pop.className = `score-pop ${isMinus ? 'minus' : ''}`;
+            pop.className = 'feedback-pop';
             pop.textContent = text;
-            feedbackContainer.appendChild(pop);
-            
+            pop.style.color = color;
+            questionDisplay.appendChild(pop);
             setTimeout(() => pop.remove(), 600);
         }
 
-        /**
-         * Update UI elements with current stats
-         */
-        function updateStatsUI() {
-            scoreEl.textContent = score;
-            questionCounterEl.textContent = `${Math.min(currentQuestionIndex, TOTAL_QUESTIONS)}/${TOTAL_QUESTIONS}`;
-        }
-
-        /**
-         * End game session and show results
-         */
-        function endGame() {
-            isGameActive = false;
+        function endSession() {
+            showScreen('resultScreen');
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('correctCount').textContent = `${correctAnswers}/${TOTAL_QUESTIONS}`;
+            document.getElementById('avgTime').textContent = (totalTimeUsed / (TOTAL_QUESTIONS * 1000)).toFixed(1) + 's';
             
-            gameScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-            finalScoreEl.textContent = score;
-
-            // Save to leaderboard
             if (typeof LeaderboardManager !== 'undefined') {
                 LeaderboardManager.saveScore(GAME_ID, score);
                 LeaderboardManager.render('leaderboardContainer', GAME_ID, score);
             }
         }
 
-        /**
-         * Restart the game
-         */
-        function restartGame() {
-            startGame();
-        }
-
-        // Initialize on load
         init();
     </script>
 </body>
