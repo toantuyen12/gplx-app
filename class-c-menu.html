@@ -61,7 +61,7 @@
                         class="fa-solid fa-book-open-reader"></i></div>
                 <div class="cat-title">1. Ôn tập 600 câu</div>
                 <div class="cat-desc">Học toàn bộ 600 câu hỏi lý thuyết</div>
-                <button class="primary-btn" style="background: #3b82f6;">Bắt đầu ngay</button>
+                <button class="primary-btn" style="background: #3b82f6;">Bắt đầu học</button>
             </a>
             <!-- Thi đề 40 câu -->
             <a href="#" class="cat-card" onclick="alert('Module đang được cập nhật!')">
@@ -69,7 +69,7 @@
                         class="fa-solid fa-stopwatch"></i></div>
                 <div class="cat-title">2. Thi đề 40 câu</div>
                 <div class="cat-desc">Thi thử đề ngẫu nhiên 40 câu</div>
-                <button class="primary-btn" style="background: #22c55e;">Bắt đầu ngay</button>
+                <button class="primary-btn" style="background: #22c55e;">Thi thử ngay</button>
             </a>
             <!-- Biển báo giao thông -->
             <a href="signs.html" class="cat-card">
@@ -77,15 +77,15 @@
                         class="fa-solid fa-triangle-exclamation"></i></div>
                 <div class="cat-title">3. Biển báo giao thông</div>
                 <div class="cat-desc">Học và ghi nhớ các loại biển báo giao thông</div>
-                <button class="primary-btn" style="background: #eab308;">Bắt đầu ngay</button>
+                <button class="primary-btn" style="background: #eab308;">Xem biển báo</button>
             </a>
             <!-- Câu điểm liệt -->
             <a href="#" class="cat-card" onclick="alert('Module đang được cập nhật!')">
                 <div class="cat-icon" style="color: #f97316; background: rgba(249, 115, 22, 0.1);"><i
                         class="fa-solid fa-radiation"></i></div>
                 <div class="cat-title">4. Câu điểm liệt</div>
-                <div class="cat-desc">Danh sách 60 câu hỏi tình huống mất an toàn giao thông nghiêm trọng</div>
-                <button class="primary-btn" style="background: #f97316;">Bắt đầu ngay</button>
+                <div class="cat-desc">Danh sách 60 câu hỏi tình huống mất an toàn giao thông nghiêm trọng hạng C</div>
+                <button class="primary-btn" style="background: #f97316;">Tìm hiểu ngay</button>
             </a>
             <!-- Mẹo ghi nhớ -->
             <a href="meo-thi-gplx.html" class="cat-card">
@@ -93,7 +93,7 @@
                         class="fa-solid fa-lightbulb"></i></div>
                 <div class="cat-title">5. Mẹo ghi nhớ</div>
                 <div class="cat-desc">Các mẹo giúp ghi nhớ lý thuyết</div>
-                <button class="primary-btn" style="background: #8b5cf6;">Bắt đầu ngay</button>
+                <button class="primary-btn" style="background: #8b5cf6;">Xem mẹo ngay</button>
             </a>
             <!-- Sa hình -->
             <a href="sahinh.html" class="cat-card">
@@ -101,7 +101,7 @@
                         class="fa-solid fa-map-location-dot"></i></div>
                 <div class="cat-title">6. Sa hình</div>
                 <div class="cat-desc">Nắm vững quy tắc các tình huống sa hình</div>
-                <button class="primary-btn" style="background: #ef4444;">Bắt đầu ngay</button>
+                <button class="primary-btn" style="background: #ef4444;">Học sa hình</button>
             </a>
             <!-- Đường trường -->
             <a href="#" class="cat-card" onclick="alert('Module đang được cập nhật!')">
@@ -109,7 +109,7 @@
                         class="fa-solid fa-road"></i></div>
                 <div class="cat-title">7. Đường trường</div>
                 <div class="cat-desc">Kinh nghiệm chuẩn bị cho phần thi thực hành đường trường</div>
-                <button class="primary-btn" style="background: #14b8a6;">Bắt đầu ngay</button>
+                <button class="primary-btn" style="background: #14b8a6;">Học đường trường</button>
             </a>
         </div>
 
@@ -198,7 +198,7 @@
                     if (parsed.date === todayStr) {
                         return parseInt(parsed.count) || 0;
                     }
-                } catch(e) {}
+                } catch (e) { }
             }
             return 0;
         }
@@ -213,13 +213,13 @@
 
         let localExtraVisits = getPersistentExtraVisits();
         let baseToday = 0; // Store the base from API to survive API failures
-        
+
         // Immediately set the text to stored visits before API finishes
         const todayUsersEl = document.getElementById("todayUsers");
         if (todayUsersEl) {
             todayUsersEl.textContent = localExtraVisits;
         }
-        
+
         async function fetchAnalytics() {
             try {
                 const res = await fetch("/api/analytics");
@@ -239,7 +239,7 @@
                 }
             }
         }
-        
+
         // Fetch initially when page loads
         fetchAnalytics();
         // Then fetch periodically every 60 seconds
@@ -249,7 +249,7 @@
         setInterval(() => {
             localExtraVisits = getPersistentExtraVisits() + 1;
             savePersistentExtraVisits(localExtraVisits);
-            
+
             const todayEl = document.getElementById("todayUsers");
             if (todayEl) {
                 todayEl.textContent = baseToday + localExtraVisits;
