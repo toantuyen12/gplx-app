@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thử Thách Trí Nhớ - GPLX App</title>
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Shared Leaderboard Style -->
+    <link rel="stylesheet" href="../css/leaderboard.css">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text-main: #102a43;
+            --text-muted: #627d98;
+            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .back-btn:hover { 
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(-3px);
+        }
+
+        .game-title {
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            flex-grow: 1;
+            color: var(--primary);
+        }
+
+        /* Instructions */
+        .instruction-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .instruction-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .instruction-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instruction-toggle-btn {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .instruction-content {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            color: var(--text-muted);
+            max-height: 500px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-content.collapsed {
+            max-height: 0;
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+            opacity: 0;
+        }
+
+        .instruction-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instruction-content li {
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .instruction-content li i { 
+            color: var(--primary); 
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        /* Game Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            padding: 12px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* Game Area */
+        .game-area {
+            position: relative;
+        }
+
+        .game-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+            border: 1px solid var(--glass-border);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Memory Phase UI */
+        .memory-phase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown-timer {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .memory-grid.four-grid {
+             grid-template-columns: repeat(2, 1fr);
+        }
+
+        /* Override for 5 items: 3 in first row, 2 in second */
+        .memory-grid .sign-slot:nth-child(4) {
+            grid-column: span 1;
+            margin-left: 50%;
+        }
+        .memory-grid .sign-slot:nth-child(5) {
+            grid-column: span 1;
+            margin-right: 50%;
+        }
+
+        /* A better approach for 5 items on desktop: */
+        .memory-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sign-slot {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 10px;
+            width: calc(33.33% - 12px);
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #f1f5f9;
+            transition: all 0.3s ease;
+            margin: 6px;
+        }
+
+        .sign-slot img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        /* Question Phase UI */
+        .question-phase {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 30px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid #f1f5f9;
+            border-radius: 24px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+        }
+
+        .option-btn img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-light);
+            background: #f8faff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-btn:active {
+            transform: scale(0.95);
+        }
+
+        .option-btn.correct {
+            border-color: var(--success) !important;
+            background: #ecfdf5 !important;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+        }
+
+        .option-btn.wrong {
+            border-color: var(--danger) !important;
+            background: #fef2f2 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        /* Results Screen */
+        .result-screen {
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .final-score-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .final-score-value {
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 24px;
+            text-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .main-btn {
+            padding: 14px 32px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); }
+        .btn-outline { background: white; border: 2px solid #e2e8f0; color: var(--text-muted); }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Mobile */
+        @media (max-width: 480px) {
+            body { padding: 15px; }
+            .sign-slot { width: calc(33.33% - 10px); margin: 5px; }
+            .option-btn { padding: 10px; }
+            .back-btn span { display: none; }
+            .back-btn { padding: 8px 12px; border-radius: 50%; }
+            .question-text { font-size: 18px; }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Loader */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .spinner { 
+            width: 50px; height: 50px; 
+            border: 5px solid rgba(79, 70, 229, 0.1); 
+            border-top-color: var(--primary); 
+            border-radius: 50%; 
+            animation: spin 0.8s linear infinite; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .score-pop {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--success);
+            pointer-events: none;
+            animation: scoreFloat 0.7s ease-out forwards;
+            z-index: 100;
+        }
+        @keyframes scoreFloat {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -80%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -120%) scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <p class="loading-text">Đang chuẩn bị thử thách...</p>
+    </div>
+
+    <div class="container">
+        <header>
+            <a href="../signs.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> <span>Quay lại</span></a>
+            <h1 class="game-title">Thử Thách Trí Nhớ</h1>
+            <div style="width: 44px;"></div>
+        </header>
+
+        <!-- Instructions -->
+        <div class="instruction-section">
+            <div class="instruction-header" onclick="toggleInstructions()">
+                <h2>📖 Hướng dẫn chơi</h2>
+                <div class="instruction-toggle-btn" id="instrToggleText">Xem hướng dẫn</div>
+            </div>
+            <div class="instruction-content collapsed" id="instrContent">
+                <ul>
+                    <li><i class="fa-solid fa-eye"></i> <span><strong>Ghi nhớ:</strong> 5 biển báo sẽ hiện ra trong vòng <strong>5 giây</strong>.</span></li>
+                    <li><i class="fa-solid fa-brain"></i> <span><strong>Thử thách:</strong> Sau khi biển báo biến mất, hãy chọn đúng biển nào đã từng xuất hiện.</span></li>
+                    <li><i class="fa-solid fa-star"></i> <span><strong>Điểm số:</strong> <strong>+15 điểm</strong> cho mỗi câu trả lời đúng.</span></li>
+                    <li><i class="fa-solid fa-list-ol"></i> <span><strong>Số lượng:</strong> Trò chơi gồm <strong>10 vòng</strong> thử thách.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen">
+            <div class="stats-bar">
+                <div class="stat-box">
+                    <div class="stat-label">Vòng</div>
+                    <div class="stat-value" id="roundCounter">1/10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Điểm số</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <div class="game-card">
+                    <!-- Memory Phase -->
+                    <div class="memory-phase" id="memoryPhase">
+                        <div class="countdown-timer" id="countdown">5</div>
+                        <div class="memory-grid" id="memoryGrid">
+                            <!-- 5 sign slots -->
+                        </div>
+                    </div>
+
+                    <!-- Question Phase -->
+                    <div class="question-phase" id="questionPhase">
+                        <h3 class="question-text">Biển nào vừa xuất hiện?</h3>
+                        <div class="options-grid" id="optionsGrid">
+                            <!-- 4 choice buttons -->
+                        </div>
+                    </div>
+                </div>
+                <div id="feedbackContainer"></div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div class="result-screen" id="resultScreen">
+            <h2 class="final-score-title">Điểm trí nhớ của bạn</h2>
+            <div class="final-score-value" id="finalScore">0</div>
+            
+            <div id="leaderboardContainer"></div>
+
+            <div class="btn-group">
+                <button class="main-btn btn-primary" onclick="restartGame()">
+                    <i class="fa-solid fa-rotate-right"></i> Chơi lại
+                </button>
+                <a href="../signs.html" class="main-btn btn-outline">
+                    <i class="fa-solid fa-house"></i> Thoát
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/leaderboard.js"></script>
+    <script>
+        const GAME_ID = 'memory-challenge';
+        let allSigns = [];
+        let score = 0;
+        let currentRound = 0;
+        const TOTAL_ROUNDS = 10;
+        let visibleSigns = [];
+        let targetSign = null;
+        let isAnswering = false;
+
+        // UI Elements
+        const loadingScreen = document.getElementById('loadingScreen');
+        const roundCounterEl = document.getElementById('roundCounter');
+        const scoreEl = document.getElementById('score');
+        const memoryPhaseEl = document.getElementById('memoryPhase');
+        const questionPhaseEl = document.getElementById('questionPhase');
+        const memoryGrid = document.getElementById('memoryGrid');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const countdownEl = document.getElementById('countdown');
+        const resultScreen = document.getElementById('resultScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const finalScoreEl = document.getElementById('finalScore');
+        const instrContent = document.getElementById('instrContent');
+        const instrToggleText = document.getElementById('instrToggleText');
+
+        async function init() {
+            try {
+                const res = await fetch('../data/traffic-signs.json');
+                const data = await res.json();
+                allSigns = [];
+                data.categories.forEach(cat => {
+                    cat.signs.forEach(sign => {
+                        allSigns.push({ id: sign.id, image: '../' + sign.image });
+                    });
+                });
+                loadingScreen.classList.add('hidden');
+                startGame();
+            } catch (err) {
+                console.error(err);
+                document.querySelector('.loading-text').textContent = '❌ Lỗi tải dữ liệu.';
+            }
+        }
+
+        function toggleInstructions() {
+            const isCollapsed = instrContent.classList.toggle('collapsed');
+            instrToggleText.textContent = isCollapsed ? 'Xem hướng dẫn' : 'Thu gọn';
+        }
+
+        function startGame() {
+            score = 0;
+            currentRound = 0;
+            updateStatsUI();
+            resultScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            startRound();
+        }
+
+        function startRound() {
+            if (currentRound >= TOTAL_ROUNDS) {
+                endGame();
+                return;
+            }
+            currentRound++;
+            updateStatsUI();
+            isAnswering = false;
+
+            // Pick 5 random signs for memory
+            const shuffled = [...allSigns].sort(() => Math.random() - 0.5);
+            visibleSigns = shuffled.slice(0, 5);
+            
+            // Render to grid
+            memoryGrid.innerHTML = '';
+            visibleSigns.forEach(sign => {
+                const div = document.createElement('div');
+                div.className = 'sign-slot';
+                div.innerHTML = `<img src="${sign.image}" alt="Sign">`;
+                memoryGrid.appendChild(div);
+            });
+
+            // Phase toggle
+            memoryPhaseEl.style.display = 'flex';
+            questionPhaseEl.style.display = 'none';
+
+            // Countdown
+            let count = 5;
+            countdownEl.textContent = count;
+            const timer = setInterval(() => {
+                count--;
+                countdownEl.textContent = count;
+                if (count <= 0) {
+                    clearInterval(timer);
+                    showQuestion();
+                }
+            }, 1000);
+        }
+
+        function showQuestion() {
+            memoryPhaseEl.style.display = 'none';
+            questionPhaseEl.style.display = 'flex';
+
+            // Target is one of the 5
+            targetSign = visibleSigns[Math.floor(Math.random() * visibleSigns.length)];
+            
+            // Distractors: signs not in visibleSigns
+            const distractors = allSigns.filter(s => !visibleSigns.some(vs => vs.id === s.id))
+                                        .sort(() => Math.random() - 0.5)
+                                        .slice(0, 3);
+            
+            const options = [targetSign, ...distractors].sort(() => Math.random() - 0.5);
+
+            optionsGrid.innerHTML = '';
+            options.forEach(sign => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<img src="${sign.image}" alt="Sign">`;
+                btn.onclick = () => handleAnswer(sign.id, btn);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(id, btn) {
+            if (isAnswering) return;
+            isAnswering = true;
+
+            const buttons = optionsGrid.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.style.pointerEvents = 'none');
+
+            if (id === targetSign.id) {
+                btn.classList.add('correct');
+                score += 15;
+                showPopFeedback('+15');
+            } else {
+                btn.classList.add('wrong');
+                buttons.forEach(b => {
+                    const img = b.querySelector('img');
+                    if (img && img.src.includes(targetSign.image.replace('../', ''))) b.classList.add('correct');
+                });
+            }
+
+            updateStatsUI();
+            setTimeout(startRound, 1500);
+        }
+
+        function showPopFeedback(text) {
+            const pop = document.createElement('div');
+            pop.className = 'score-pop';
+            pop.textContent = text;
+            document.getElementById('feedbackContainer').appendChild(pop);
+            setTimeout(() => pop.remove(), 700);
+        }
+
+        function updateStatsUI() {
+            scoreEl.textContent = score;
+            roundCounterEl.textContent = `${Math.min(currentRound, TOTAL_ROUNDS)}/${TOTAL_ROUNDS}`;
+        }
+
+        function endGame() {
+            gameScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            finalScoreEl.textContent = score;
+            if (typeof LeaderboardManager !== 'undefined') {
+                LeaderboardManager.saveScore(GAME_ID, score);
+                LeaderboardManager.render('leaderboardContainer', GAME_ID, score);
+            }
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        init();
+    </script>
+</body>
+</html>

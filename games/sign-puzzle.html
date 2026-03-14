@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghép Hình Biển Báo - GPLX App</title>
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Shared Leaderboard Style -->
+    <link rel="stylesheet" href="../css/leaderboard.css">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text-main: #102a43;
+            --text-muted: #627d98;
+            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden; /* Prevent body scroll during drag */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .back-btn:hover { 
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(-3px);
+        }
+
+        .game-title {
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            flex-grow: 1;
+            color: var(--primary);
+        }
+
+        /* Instructions */
+        .instruction-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+            flex-shrink: 0;
+        }
+
+        .instruction-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .instruction-header h2 {
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instruction-toggle-btn {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .instruction-content {
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            max-height: 500px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-content.collapsed {
+            max-height: 0;
+            margin-top: 0;
+            opacity: 0;
+        }
+
+        /* Game Area */
+        .game-screen {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            padding: 10px 20px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .stat-item i { color: var(--primary); }
+
+        .puzzle-board {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        #targetGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 280px;
+            height: 280px;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            gap: 2px;
+            position: relative;
+        }
+
+        .grid-slot {
+            width: 100%;
+            height: 100%;
+            border: 1px dashed #cbd5e1;
+            position: relative;
+        }
+
+        #sourceArea {
+            width: 100%;
+            min-height: 120px;
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            border: 2px inset #f1f5f9;
+        }
+
+        .puzzle-piece {
+            width: 80px;
+            height: 80px;
+            background-size: 240px 240px; /* 3x3 of 80px */
+            border-radius: 8px;
+            cursor: grab;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            touch-action: none;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .puzzle-piece:active { cursor: grabbing; z-index: 100; }
+
+        .puzzle-piece.placed {
+            cursor: default;
+            box-shadow: none;
+            border-radius: 0;
+            border: none;
+        }
+
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 500;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+
+        .final-score-value {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .main-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: white; border: 2px solid #e2e8f0; color: var(--text-muted); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Loader */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .spinner { 
+            width: 40px; height: 40px; 
+            border: 4px solid rgba(79, 70, 229, 0.1); 
+            border-top-color: var(--primary); 
+            border-radius: 50%; 
+            animation: spin 0.8s linear infinite; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 480px) {
+            #targetGrid { width: 240px; height: 240px; }
+            .puzzle-piece { width: 60px; height: 60px; background-size: 180px 180px; }
+            .back-btn span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <p>Đang chuẩn bị mảnh ghép...</p>
+    </div>
+
+    <div class="container">
+        <header>
+            <a href="../signs.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> <span>Quay lại</span></a>
+            <h1 class="game-title">Ghép Hình Biển Báo</h1>
+            <div style="width: 44px;"></div>
+        </header>
+
+        <div class="instruction-section">
+            <div class="instruction-header" onclick="toggleInstructions()">
+                <h2>📖 Hướng dẫn chơi</h2>
+                <div class="instruction-toggle-btn" id="instrToggleText">Thu gọn</div>
+            </div>
+            <div class="instruction-content" id="instrContent">
+                <p>Kéo các mảnh ghép từ khay bên dưới vào đúng vị trí trong khung hình vuông. Hoàn thành càng nhanh điểm càng cao!</p>
+            </div>
+        </div>
+
+        <div class="game-screen" id="gameScreen">
+            <div class="stats-bar">
+                <div class="stat-item"><i class="fa-solid fa-clock"></i> <span id="timer">00:00</span></div>
+                <div class="stat-item"><i class="fa-solid fa-star"></i> <span id="signName">---</span></div>
+            </div>
+
+            <div class="puzzle-board">
+                <div id="targetGrid">
+                    <!-- 9 slots -->
+                    <div class="grid-slot" data-index="0"></div>
+                    <div class="grid-slot" data-index="1"></div>
+                    <div class="grid-slot" data-index="2"></div>
+                    <div class="grid-slot" data-index="3"></div>
+                    <div class="grid-slot" data-index="4"></div>
+                    <div class="grid-slot" data-index="5"></div>
+                    <div class="grid-slot" data-index="6"></div>
+                    <div class="grid-slot" data-index="7"></div>
+                    <div class="grid-slot" data-index="8"></div>
+                </div>
+
+                <div id="sourceArea">
+                    <!-- pieces injected here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="result-screen" id="resultScreen">
+            <h2>🎉 Chúc mừng!</h2>
+            <p>Bạn đã hoàn thành trong <span id="finalTime">--</span></p>
+            <div class="final-score-value" id="finalScore">0</div>
+            
+            <div id="leaderboardContainer"></div>
+
+            <div class="btn-group">
+                <button class="main-btn btn-primary" onclick="restartGame()">
+                    <i class="fa-solid fa-rotate-right"></i> Chơi tiếp
+                </button>
+                <a href="../signs.html" class="main-btn btn-outline">Thoát</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/leaderboard.js"></script>
+    <script>
+        const GAME_ID = 'sign-puzzle';
+        let allSigns = [];
+        let startTime = 0;
+        let timerInterval = null;
+        let currentSign = null;
+        let placedCount = 0;
+
+        const loadingScreen = document.getElementById('loadingScreen');
+        const timerEl = document.getElementById('timer');
+        const signNameEl = document.getElementById('signName');
+        const targetGrid = document.getElementById('targetGrid');
+        const sourceArea = document.getElementById('sourceArea');
+        const resultScreen = document.getElementById('resultScreen');
+        const finalScoreEl = document.getElementById('finalScore');
+        const finalTimeEl = document.getElementById('finalTime');
+        const instrContent = document.getElementById('instrContent');
+        const instrToggleText = document.getElementById('instrToggleText');
+
+        async function init() {
+            try {
+                const res = await fetch('../data/traffic-signs.json');
+                const data = await res.json();
+                allSigns = [];
+                data.categories.forEach(cat => {
+                    cat.signs.forEach(s => {
+                        allSigns.push({ id: s.id, name: s.name.split(':')[1]?.trim() || s.name, image: '../' + s.image });
+                    });
+                });
+                loadingScreen.classList.add('hidden');
+                startGame();
+            } catch (err) {
+                console.error(err);
+                document.querySelector('.loading-text').textContent = '❌ Lỗi tải dữ liệu.';
+            }
+        }
+
+        function toggleInstructions() {
+            const isCollapsed = instrContent.classList.toggle('collapsed');
+            instrToggleText.textContent = isCollapsed ? 'Xem chi tiết' : 'Thu gọn';
+        }
+
+        function startGame() {
+            currentSign = allSigns[Math.floor(Math.random() * allSigns.length)];
+            signNameEl.textContent = currentSign.name;
+            placedCount = 0;
+            resultScreen.style.display = 'none';
+            
+            // Clear board
+            document.querySelectorAll('.grid-slot').forEach(s => s.innerHTML = '');
+            sourceArea.innerHTML = '';
+
+            const pieces = [];
+            for (let i = 0; i < 9; i++) {
+                const piece = createPiece(i);
+                pieces.push(piece);
+            }
+
+            // Shuffle and add to source
+            pieces.sort(() => Math.random() - 0.5).forEach(p => sourceArea.appendChild(p));
+
+            startTime = Date.now();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function createPiece(index) {
+            const piece = document.createElement('div');
+            piece.className = 'puzzle-piece';
+            piece.setAttribute('data-index', index);
+            piece.style.backgroundImage = `url(${currentSign.image})`;
+            
+            const r = Math.floor(index / 3);
+            const c = index % 3;
+            // Background pos for 3x3 of 80px (desktop) or adaptive
+            const size = window.innerWidth <= 480 ? 80 : 80; // pieces are fixed size 80px
+            // Actually, we should use percentage for background to be responsive-friendly if we change piece size
+            piece.style.backgroundPosition = `${(c * 50)}% ${(r * 50)}%`; 
+            // 0, 50, 100 corresponds to col 0, 1, 2
+
+            // Drag logic
+            let isDragging = false;
+            let startX, startY;
+            let initialX, initialY;
+
+            piece.addEventListener('pointerdown', (e) => {
+                if (piece.classList.contains('placed')) return;
+                isDragging = true;
+                piece.setPointerCapture(e.pointerId);
+                const rect = piece.getBoundingClientRect();
+                startX = e.clientX;
+                startY = e.clientY;
+                initialX = rect.left;
+                initialY = rect.top;
+                
+                piece.style.position = 'fixed';
+                piece.style.left = initialX + 'px';
+                piece.style.top = initialY + 'px';
+                piece.style.transform = 'scale(1.1)';
+            });
+
+            piece.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                piece.style.left = initialX + dx + 'px';
+                piece.style.top = initialY + dy + 'px';
+            });
+
+            piece.addEventListener('pointerup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                piece.style.transform = '';
+                
+                // Check snapping
+                const rect = piece.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                let snapped = false;
+                document.querySelectorAll('.grid-slot').forEach(slot => {
+                    const sRect = slot.getBoundingClientRect();
+                    if (centerX > sRect.left && centerX < sRect.right && 
+                        centerY > sRect.top && centerY < sRect.bottom) {
+                        
+                        if (slot.getAttribute('data-index') == piece.getAttribute('data-index') && !slot.hasChildNodes()) {
+                            snapToSlot(piece, slot);
+                            snapped = true;
+                        }
+                    }
+                });
+
+                if (!snapped) {
+                    piece.style.position = '';
+                    piece.style.left = '';
+                    piece.style.top = '';
+                    sourceArea.appendChild(piece);
+                }
+            });
+
+            return piece;
+        }
+
+        function snapToSlot(piece, slot) {
+            piece.classList.add('placed');
+            piece.style.position = 'absolute';
+            piece.style.left = '0';
+            piece.style.top = '0';
+            piece.style.width = '100%';
+            piece.style.height = '100%';
+            slot.appendChild(piece);
+            placedCount++;
+            
+            if (placedCount === 9) {
+                endGame();
+            }
+        }
+
+        function updateTimer() {
+            const diff = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+            const s = (diff % 60).toString().padStart(2, '0');
+            timerEl.textContent = `${m}:${s}`;
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            const timePassed = Math.floor((Date.now() - startTime) / 1000);
+            const score = Math.max(0, 1000 - timePassed * 5);
+            
+            finalTimeEl.textContent = timerEl.textContent;
+            finalScoreEl.textContent = score;
+            resultScreen.style.display = 'block';
+
+            if (typeof LeaderboardManager !== 'undefined') {
+                LeaderboardManager.saveScore(GAME_ID, score);
+                LeaderboardManager.render('leaderboardContainer', GAME_ID, score);
+            }
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        init();
+    </script>
+</body>
+</html>
