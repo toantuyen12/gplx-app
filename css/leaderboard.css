@@ -2,30 +2,30 @@
 
 .leaderboard-card {
     background: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px -3px rgba(0, 0, 0, 0.08);
     border: 1.5px solid #f1f5f9;
-    padding: 24px;
+    padding: 14px 16px;
     max-width: 400px;
-    margin: 30px auto;
+    margin: 0 auto;
     font-family: 'Inter', sans-serif;
 }
 
 .leaderboard-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: 2px solid #f8fafc;
 }
 
 .leaderboard-icon {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .leaderboard-title {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 800;
     color: #1e293b;
     margin: 0;
@@ -34,23 +34,23 @@
 .leaderboard-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
 }
 
 .leaderboard-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px;
+    padding: 9px 12px;
     background: #f8fafc;
-    border-radius: 16px;
+    border-radius: 12px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid transparent;
 }
 
 .leaderboard-item:hover {
     background: white;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 12px -3px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
     border-color: #e2e8f0;
 }
@@ -58,11 +58,11 @@
 .leaderboard-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
 }
 
 .rank-icon {
-    font-size: 22px;
+    font-size: 18px;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
@@ -72,29 +72,29 @@
 }
 
 .score-value {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 800;
     color: #1e293b;
     line-height: 1.2;
 }
 
 .score-date {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     color: #94a3b8;
-    margin-top: 2px;
+    margin-top: 1px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
 }
 
 .leaderboard-empty {
     text-align: center;
-    padding: 30px 20px;
+    padding: 16px 12px;
     color: #94a3b8;
-    font-size: 14px;
+    font-size: 13px;
     font-style: italic;
     background: #f8fafc;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px dashed #cbd5e1;
 }
 
@@ -111,11 +111,12 @@
 /* Responsive */
 @media (max-width: 480px) {
     .leaderboard-card {
-        padding: 20px;
-        margin: 20px 0;
+        padding: 12px;
+        margin: 0;
     }
     
     .score-value {
-        font-size: 15px;
+        font-size: 13px;
     }
 }
+
