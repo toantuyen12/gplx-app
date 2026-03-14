@@ -14,17 +14,16 @@
 
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-light: #6366f1;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --text-main: #102a43;
-            --text-muted: #627d98;
-            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: rgba(255, 255, 255, 0.5);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.6);
         }
 
         * {
@@ -32,290 +31,273 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+            user-select: none;
         }
 
         body {
             background: var(--bg-gradient);
             color: var(--text-main);
-            line-height: 1.6;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            overflow-x: hidden;
         }
 
         .container {
+            width: 100%;
             max-width: 600px;
-            margin: 0 auto;
-            animation: fadeIn 0.5s ease;
+            height: 100%;
+            max-height: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
         }
 
         .back-btn {
             text-decoration: none;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            padding: 8px 12px;
+            gap: 8px;
+            padding: 10px 16px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(4px);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .back-btn:hover { 
+        .back-btn:hover {
             color: var(--primary);
-            background: rgba(255, 255, 255, 0.8);
-            transform: translateX(-3px);
+            transform: translateX(-4px);
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .game-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
-            text-align: center;
-            flex-grow: 1;
-            color: var(--primary);
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Instructions */
-        .instruction-section {
+        /* Screen Management */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Start Screen */
+        .start-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 40px;
+            text-align: center;
             border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin: auto;
         }
 
-        .instruction-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-
-        .instruction-header h2 {
-            font-size: 15px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .instruction-toggle-btn {
-            font-size: 13px;
-            font-weight: 600;
+        .start-icon {
+            font-size: 64px;
             color: var(--primary);
-            background: rgba(79, 70, 229, 0.1);
-            padding: 4px 12px;
-            border-radius: 20px;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 10px 15px rgba(99, 102, 241, 0.3));
         }
 
-        .instruction-content {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            font-size: 14px;
-            color: var(--text-muted);
-            max-height: 500px;
-            overflow: hidden;
-            transition: all 0.3s ease;
+        .start-card h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #0f172a;
         }
 
-        .instruction-content.collapsed {
-            max-height: 0;
-            margin-top: 0;
-            padding-top: 0;
-            border-top: none;
-            opacity: 0;
-        }
-
-        .instruction-content ul {
+        .rules-list {
+            text-align: left;
+            margin: 24px 0;
             list-style: none;
-            padding-left: 0;
         }
 
-        .instruction-content li {
-            margin-bottom: 10px;
+        .rules-list li {
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: var(--text-muted);
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: flex-start;
         }
 
-        .instruction-content li i { 
-            color: var(--primary); 
+        .rules-list i {
+            color: var(--primary);
             margin-top: 4px;
-            font-size: 14px;
         }
 
-        /* Game Stats Bar */
+        /* Game Stats */
         .stats-bar {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .stat-box {
+            flex: 1;
             background: var(--glass-bg);
-            backdrop-filter: blur(8px);
             padding: 12px;
-            border-radius: 18px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: var(--card-shadow);
             border: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         .stat-label {
-            font-size: 10px;
-            text-transform: uppercase;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
+            text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            color: var(--primary);
+            color: var(--primary-dark);
         }
 
-        /* Game Area */
-        .game-area {
+        .phase-indicator {
+            text-align: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            height: 20px;
+        }
+
+        .timer-progress-wrap {
+            width: 100%;
+            height: 6px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .timer-progress-bar {
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.1s linear, background-color 0.3s ease;
+        }
+
+        /* Game Main Area */
+        .game-main {
+            flex: 1;
+            background: white;
+            border-radius: 32px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            min-height: 0;
             position: relative;
         }
 
-        .game-card {
-            background: #ffffff;
-            border-radius: 28px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 24px;
-            border: 1px solid var(--glass-border);
-            min-height: 400px;
+        /* Memorize Phase */
+        #memorizePhase {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 20px;
+            animation: phaseIn 0.3s ease-out;
         }
 
-        /* Memory Phase UI */
-        .memory-phase {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .countdown-timer {
-            font-size: 48px;
-            font-weight: 900;
-            color: var(--primary);
-            margin-bottom: 20px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .memory-grid {
+        .memorize-grid {
+            flex: 1;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            align-content: center;
         }
 
-        .memory-grid.four-grid {
-             grid-template-columns: repeat(2, 1fr);
-        }
-
-        /* Override for 5 items: 3 in first row, 2 in second */
-        .memory-grid .sign-slot:nth-child(4) {
-            grid-column: span 1;
-            margin-left: 50%;
-        }
-        .memory-grid .sign-slot:nth-child(5) {
-            grid-column: span 1;
-            margin-right: 50%;
-        }
-
-        /* A better approach for 5 items on desktop: */
-        .memory-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .sign-slot {
+        .memorize-item {
             background: #f8fafc;
             border-radius: 20px;
-            padding: 10px;
-            width: calc(33.33% - 12px);
-            aspect-ratio: 1/1;
+            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid #f1f5f9;
-            transition: all 0.3s ease;
-            margin: 6px;
+            aspect-ratio: 1/1;
         }
 
-        .sign-slot img {
+        .memorize-item img {
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
         }
 
-        /* Question Phase UI */
-        .question-phase {
+        /* Answer Phase */
+        #answerPhase {
+            flex: 1;
             display: none;
             flex-direction: column;
-            justify-content: center;
-            height: 100%;
+            gap: 20px;
+            animation: phaseIn 0.3s ease-out;
         }
 
         .question-text {
             font-size: 20px;
             font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 30px;
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 10px;
         }
 
         .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            flex: 1;
         }
 
         .option-btn {
-            background: #ffffff;
-            border: 2px solid #f1f5f9;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
             border-radius: 24px;
-            padding: 15px;
+            aspect-ratio: 1/1;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            aspect-ratio: 1 / 1;
-            overflow: hidden;
+            padding: 16px;
+            position: relative;
         }
 
         .option-btn img {
@@ -325,61 +307,141 @@
             transition: transform 0.3s;
         }
 
-        .option-btn:hover {
-            border-color: var(--primary-light);
-            background: #f8faff;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .option-btn:active {
-            transform: scale(0.95);
+        .option-btn:hover:not(:disabled) {
+            background: white;
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1);
         }
 
         .option-btn.correct {
             border-color: var(--success) !important;
-            background: #ecfdf5 !important;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
+            background: #f0fdf4 !important;
         }
 
         .option-btn.wrong {
             border-color: var(--danger) !important;
             background: #fef2f2 !important;
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        @keyframes phaseIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Countdown */
+        .countdown-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            z-index: 10;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 32px;
+        }
+
+        .countdown-number {
+            font-size: 120px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            animation: countPop 1s infinite;
+        }
+
+        @keyframes countPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* Feedback Pop */
+        .feedback-pop {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: 900;
+            z-index: 100;
+            pointer-events: none;
+            animation: popOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -80%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -120%) scale(1); }
         }
 
         /* Results Screen */
-        .result-screen {
+        .result-main {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .result-main::-webkit-scrollbar { width: 6px; }
+        .result-main::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .score-display {
             text-align: center;
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .final-score-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .final-score-value {
-            font-size: 56px;
-            font-weight: 900;
-            color: var(--primary);
+            padding: 30px;
+            background: white;
+            border-radius: 32px;
             margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .score-value {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            line-height: 1;
+            margin: 10px 0;
             text-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
         }
 
-        .btn-group {
+        .score-stats {
             display: flex;
-            gap: 12px;
             justify-content: center;
-            margin-top: 24px;
+            gap: 24px;
+            margin-top: 16px;
         }
 
-        .main-btn {
-            padding: 14px 32px;
-            border-radius: 16px;
+        .score-stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .score-stat-val {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .score-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .action-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 16px;
+            border-radius: 18px;
             font-weight: 700;
             font-size: 15px;
             border: none;
@@ -387,321 +449,426 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
         }
 
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); }
-        .btn-outline { background: white; border: 2px solid #e2e8f0; color: var(--text-muted); }
+        .btn-primary {
+            background: var(--primary-dark);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
 
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Mobile */
-        @media (max-width: 480px) {
-            body { padding: 15px; }
-            .sign-slot { width: calc(33.33% - 10px); margin: 5px; }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+            background: #4338ca;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #334155;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-height: 750px) {
+            .container { gap: 10px; }
+            .start-card { padding: 24px; }
+            .start-icon { font-size: 48px; margin-bottom: 12px; }
+            .game-main { padding: 16px; gap: 12px; }
+            .memorize-item { padding: 10px; }
             .option-btn { padding: 10px; }
-            .back-btn span { display: none; }
-            .back-btn { padding: 8px 12px; border-radius: 50%; }
-            .question-text { font-size: 18px; }
         }
 
-        .hidden { display: none !important; }
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .container { gap: 12px; }
+            .stat-value { font-size: 16px; }
+            .question-text { font-size: 16px; }
+            .memorize-grid, .options-grid { gap: 10px; }
+        }
 
-        /* Loader */
-        .loading-screen {
+        .loading-overlay {
             position: fixed;
             inset: 0;
             background: var(--bg-gradient);
-            z-index: 1000;
+            z-index: 2000;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
         }
-        .spinner { 
-            width: 50px; height: 50px; 
-            border: 5px solid rgba(79, 70, 229, 0.1); 
-            border-top-color: var(--primary); 
-            border-radius: 50%; 
-            animation: spin 0.8s linear infinite; 
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .score-pop {
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px;
-            font-weight: 900;
-            color: var(--success);
-            pointer-events: none;
-            animation: scoreFloat 0.7s ease-out forwards;
-            z-index: 100;
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(79, 70, 229, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        @keyframes scoreFloat {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 1; transform: translate(-50%, -80%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -120%) scale(1); }
-        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="loading-screen" id="loadingScreen">
+    <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <p class="loading-text">Đang chuẩn bị thử thách...</p>
     </div>
 
     <div class="container">
         <header>
-            <a href="../signs.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> <span>Quay lại</span></a>
-            <h1 class="game-title">Thử Thách Trí Nhớ</h1>
-            <div style="width: 44px;"></div>
+            <a href="../signs.html" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Thoát</span>
+            </a>
+            <div class="game-title">Thử Thách Trí Nhớ</div>
+            <div style="width: 70px;"></div>
         </header>
 
-        <!-- Instructions -->
-        <div class="instruction-section">
-            <div class="instruction-header" onclick="toggleInstructions()">
-                <h2>📖 Hướng dẫn chơi</h2>
-                <div class="instruction-toggle-btn" id="instrToggleText">Xem hướng dẫn</div>
-            </div>
-            <div class="instruction-content collapsed" id="instrContent">
-                <ul>
-                    <li><i class="fa-solid fa-eye"></i> <span><strong>Ghi nhớ:</strong> 5 biển báo sẽ hiện ra trong vòng <strong>5 giây</strong>.</span></li>
-                    <li><i class="fa-solid fa-brain"></i> <span><strong>Thử thách:</strong> Sau khi biển báo biến mất, hãy chọn đúng biển nào đã từng xuất hiện.</span></li>
-                    <li><i class="fa-solid fa-star"></i> <span><strong>Điểm số:</strong> <strong>+15 điểm</strong> cho mỗi câu trả lời đúng.</span></li>
-                    <li><i class="fa-solid fa-list-ol"></i> <span><strong>Số lượng:</strong> Trò chơi gồm <strong>10 vòng</strong> thử thách.</span></li>
+        <!-- Start Screen -->
+        <main class="screen active" id="startScreen">
+            <div class="start-card">
+                <div class="start-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h2>Thử Thách Trí Nhớ</h2>
+                <ul class="rules-list">
+                    <li><i class="fa-solid fa-eye"></i> <span>Ghi nhớ 4 biển báo trong 5 giây.</span></li>
+                    <li><i class="fa-solid fa-question"></i> <span>Chọn biển báo ĐÃ XUẤT HIỆN trước đó.</span></li>
+                    <li><i class="fa-solid fa-layer-group"></i> <span>Tất cả biển báo đều thuộc cùng một nhóm.</span></li>
+                    <li><i class="fa-solid fa-bolt"></i> <span>Trả lời càng nhanh, điểm càng cao!</span></li>
                 </ul>
+                <button class="btn btn-primary" style="width: 100%" onclick="startGame()">
+                    <i class="fa-solid fa-play"></i> BẮT ĐẦU CHƠI
+                </button>
             </div>
-        </div>
+        </main>
 
         <!-- Game Screen -->
-        <div id="gameScreen">
+        <main class="screen" id="gameScreen">
             <div class="stats-bar">
                 <div class="stat-box">
-                    <div class="stat-label">Vòng</div>
-                    <div class="stat-value" id="roundCounter">1/10</div>
+                    <div class="stat-label">Vòng chơi</div>
+                    <div class="stat-value" id="progressText">1/10</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">Điểm số</div>
-                    <div class="stat-value" id="score">0</div>
+                    <div class="stat-value" id="scoreText">0</div>
                 </div>
             </div>
 
-            <div class="game-area">
-                <div class="game-card">
-                    <!-- Memory Phase -->
-                    <div class="memory-phase" id="memoryPhase">
-                        <div class="countdown-timer" id="countdown">5</div>
-                        <div class="memory-grid" id="memoryGrid">
-                            <!-- 5 sign slots -->
-                        </div>
-                    </div>
+            <div class="phase-indicator" id="phaseIndicator">Ghi nhớ...</div>
 
-                    <!-- Question Phase -->
-                    <div class="question-phase" id="questionPhase">
-                        <h3 class="question-text">Biển nào vừa xuất hiện?</h3>
-                        <div class="options-grid" id="optionsGrid">
-                            <!-- 4 choice buttons -->
-                        </div>
+            <div class="timer-progress-wrap">
+                <div class="timer-progress-bar" id="timerBar"></div>
+            </div>
+
+            <div class="game-main" id="gameMain">
+                <div class="countdown-overlay" id="countdownOverlay">
+                    <div class="countdown-number" id="countdownNumber">3</div>
+                </div>
+
+                <div id="memorizePhase">
+                    <div class="memorize-grid" id="memorizeGrid">
+                        <!-- 4 signs here -->
                     </div>
                 </div>
-                <div id="feedbackContainer"></div>
+
+                <div id="answerPhase">
+                    <h3 class="question-text">Biển nào đã xuất hiện?</h3>
+                    <div class="options-grid" id="optionsGrid">
+                        <!-- 4 choices here -->
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
 
         <!-- Result Screen -->
-        <div class="result-screen" id="resultScreen">
-            <h2 class="final-score-title">Điểm trí nhớ của bạn</h2>
-            <div class="final-score-value" id="finalScore">0</div>
-            
-            <div id="leaderboardContainer"></div>
+        <main class="screen" id="resultScreen">
+            <div class="result-main">
+                <div class="score-display">
+                    <div class="score-stat-label">Tổng điểm</div>
+                    <div class="score-value" id="finalScore">0</div>
+                    <div class="score-stats">
+                        <div class="score-stat-item">
+                            <span class="score-stat-val" id="correctCount">0/10</span>
+                            <span class="score-stat-label">Chính xác</span>
+                        </div>
+                        <div class="score-stat-item">
+                            <span class="score-stat-val" id="avgTime">0s</span>
+                            <span class="score-stat-label">TB / Câu</span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="btn-group">
-                <button class="main-btn btn-primary" onclick="restartGame()">
-                    <i class="fa-solid fa-rotate-right"></i> Chơi lại
-                </button>
-                <a href="../signs.html" class="main-btn btn-outline">
-                    <i class="fa-solid fa-house"></i> Thoát
-                </a>
+                <div id="leaderboardContainer"></div>
             </div>
-        </div>
+
+            <div class="action-btns">
+                <button class="btn btn-secondary" onclick="location.reload()">
+                    <i class="fa-solid fa-rotate-left"></i> TRANG CHỦ
+                </button>
+                <button class="btn btn-primary" onclick="startGame()">
+                    <i class="fa-solid fa-play"></i> CHƠI LẠI
+                </button>
+            </div>
+        </main>
     </div>
 
     <!-- Scripts -->
     <script src="../js/leaderboard.js"></script>
     <script>
         const GAME_ID = 'memory-challenge';
+        const TOTAL_QUESTIONS = 10;
+        const MEMORIZE_TIME = 5000;
+        const ANSWER_TIME = 5000;
+
         let allSigns = [];
-        let score = 0;
+        let categoryMap = {};
         let currentRound = 0;
-        const TOTAL_ROUNDS = 10;
-        let visibleSigns = [];
-        let targetSign = null;
+        let score = 0;
+        let correctAnswers = 0;
+        let totalAnswerTime = 0;
+        
+        let currentMemorizedSigns = [];
+        let currentCorrectSign = null;
+        let timerInterval = null;
         let isAnswering = false;
 
         // UI Elements
-        const loadingScreen = document.getElementById('loadingScreen');
-        const roundCounterEl = document.getElementById('roundCounter');
-        const scoreEl = document.getElementById('score');
-        const memoryPhaseEl = document.getElementById('memoryPhase');
-        const questionPhaseEl = document.getElementById('questionPhase');
-        const memoryGrid = document.getElementById('memoryGrid');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const screens = document.querySelectorAll('.screen');
+        const memorizeGrid = document.getElementById('memorizeGrid');
         const optionsGrid = document.getElementById('optionsGrid');
-        const countdownEl = document.getElementById('countdown');
-        const resultScreen = document.getElementById('resultScreen');
-        const gameScreen = document.getElementById('gameScreen');
-        const finalScoreEl = document.getElementById('finalScore');
-        const instrContent = document.getElementById('instrContent');
-        const instrToggleText = document.getElementById('instrToggleText');
+        const progressText = document.getElementById('progressText');
+        const scoreText = document.getElementById('scoreText');
+        const timerBar = document.getElementById('timerBar');
+        const phaseIndicator = document.getElementById('phaseIndicator');
+        const memorizePhase = document.getElementById('memorizePhase');
+        const answerPhase = document.getElementById('answerPhase');
+        const countdownOverlay = document.getElementById('countdownOverlay');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const gameMain = document.getElementById('gameMain');
 
+        /**
+         * Initialize App
+         */
         async function init() {
             try {
-                const res = await fetch('../data/traffic-signs.json');
-                const data = await res.json();
-                allSigns = [];
+                const response = await fetch('../data/traffic-signs.json');
+                const data = await response.json();
+                
                 data.categories.forEach(cat => {
-                    cat.signs.forEach(sign => {
-                        allSigns.push({ id: sign.id, image: '../' + sign.image });
-                    });
+                    const categorySigns = cat.signs.map(s => ({
+                        id: s.id,
+                        image: '../' + s.image,
+                        category: cat.name
+                    }));
+                    
+                    if (categorySigns.length >= 7) { // Need at least 7 for memorization + distractors
+                        categoryMap[cat.name] = categorySigns;
+                        allSigns.push(...categorySigns);
+                    }
                 });
-                loadingScreen.classList.add('hidden');
-                startGame();
+
+                loadingOverlay.style.display = 'none';
             } catch (err) {
-                console.error(err);
-                document.querySelector('.loading-text').textContent = '❌ Lỗi tải dữ liệu.';
+                console.error('Init failed:', err);
             }
         }
 
-        function toggleInstructions() {
-            const isCollapsed = instrContent.classList.toggle('collapsed');
-            instrToggleText.textContent = isCollapsed ? 'Xem hướng dẫn' : 'Thu gọn';
+        /**
+         * Switch Screens
+         */
+        function showScreen(id) {
+            screens.forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
 
+        /**
+         * Start Game
+         */
         function startGame() {
             score = 0;
+            correctAnswers = 0;
             currentRound = 0;
-            updateStatsUI();
-            resultScreen.classList.add('hidden');
-            gameScreen.classList.remove('hidden');
-            startRound();
+            totalAnswerTime = 0;
+            
+            showScreen('gameScreen');
+            nextRound();
         }
 
-        function startRound() {
-            if (currentRound >= TOTAL_ROUNDS) {
-                endGame();
+        /**
+         * Next Round
+         */
+        function nextRound() {
+            currentRound++;
+            if (currentRound > TOTAL_QUESTIONS) {
+                endSession();
                 return;
             }
-            currentRound++;
-            updateStatsUI();
-            isAnswering = false;
 
-            // Pick 5 random signs for memory
-            const shuffled = [...allSigns].sort(() => Math.random() - 0.5);
-            visibleSigns = shuffled.slice(0, 5);
+            progressText.textContent = `${currentRound}/${TOTAL_QUESTIONS}`;
+            scoreText.textContent = score;
             
-            // Render to grid
-            memoryGrid.innerHTML = '';
-            visibleSigns.forEach(sign => {
-                const div = document.createElement('div');
-                div.className = 'sign-slot';
-                div.innerHTML = `<img src="${sign.image}" alt="Sign">`;
-                memoryGrid.appendChild(div);
-            });
-
-            // Phase toggle
-            memoryPhaseEl.style.display = 'flex';
-            questionPhaseEl.style.display = 'none';
-
-            // Countdown
-            let count = 5;
-            countdownEl.textContent = count;
-            const timer = setInterval(() => {
-                count--;
-                countdownEl.textContent = count;
-                if (count <= 0) {
-                    clearInterval(timer);
-                    showQuestion();
-                }
-            }, 1000);
+            startMemorizationPhase();
         }
 
-        function showQuestion() {
-            memoryPhaseEl.style.display = 'none';
-            questionPhaseEl.style.display = 'flex';
-
-            // Target is one of the 5
-            targetSign = visibleSigns[Math.floor(Math.random() * visibleSigns.length)];
+        /**
+         * Phase 1: Memorization
+         */
+        function startMemorizationPhase() {
+            isAnswering = false;
+            memorizePhase.style.display = 'flex';
+            answerPhase.style.display = 'none';
+            phaseIndicator.textContent = 'Ghi nhớ...';
             
-            // Distractors: signs not in visibleSigns
-            const distractors = allSigns.filter(s => !visibleSigns.some(vs => vs.id === s.id))
-                                        .sort(() => Math.random() - 0.5)
-                                        .slice(0, 3);
+            // Pick a random category that has enough signs
+            const categories = Object.keys(categoryMap);
+            const randomCat = categories[Math.floor(Math.random() * categories.length)];
+            const catSigns = [...categoryMap[randomCat]].sort(() => Math.random() - 0.5);
             
-            const options = [targetSign, ...distractors].sort(() => Math.random() - 0.5);
+            currentMemorizedSigns = catSigns.slice(0, 4);
+            const distractors = catSigns.slice(4, 7);
+            
+            // One of memorize signs will be the correct answer
+            currentCorrectSign = currentMemorizedSigns[Math.floor(Math.random() * 4)];
+            
+            // Build Memorize Grid
+            memorizeGrid.innerHTML = '';
+            currentMemorizedSigns.forEach(sign => {
+                const item = document.createElement('div');
+                item.className = 'memorize-item';
+                item.innerHTML = `<img src="${sign.image}" alt="Sign">`;
+                memorizeGrid.appendChild(item);
+            });
 
+            // Start Timer
+            startTimer(MEMORIZE_TIME, () => {
+                startAnswerPhase(distractors);
+            });
+        }
+
+        /**
+         * Phase 2: Answer
+         */
+        function startAnswerPhase(distractors) {
+            phaseIndicator.textContent = 'Trả lời!';
+            memorizePhase.style.display = 'none';
+            answerPhase.style.display = 'flex';
+            
+            const options = [currentCorrectSign, ...distractors].sort(() => Math.random() - 0.5);
+            
             optionsGrid.innerHTML = '';
-            options.forEach(sign => {
+            options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerHTML = `<img src="${sign.image}" alt="Sign">`;
-                btn.onclick = () => handleAnswer(sign.id, btn);
+                btn.innerHTML = `<img src="${opt.image}" alt="Sign">`;
+                btn.onclick = () => handleSelection(opt.id, btn);
                 optionsGrid.appendChild(btn);
             });
+
+            const startTime = Date.now();
+            startTimer(ANSWER_TIME, () => {
+                if (!isAnswering) handleSelection(null, null);
+            }, startTime);
         }
 
-        function handleAnswer(id, btn) {
+        /**
+         * Timer Logic
+         */
+        function startTimer(duration, callback, startTimeOverride = null) {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            const start = startTimeOverride || Date.now();
+            timerBar.style.width = '100%';
+            timerBar.style.backgroundColor = 'var(--primary)';
+
+            timerInterval = setInterval(() => {
+                const elapsed = Date.now() - start;
+                const remaining = Math.max(0, duration - elapsed);
+                const percent = (remaining / duration) * 100;
+                
+                timerBar.style.width = percent + '%';
+
+                if (percent < 30) timerBar.style.backgroundColor = 'var(--danger)';
+                else if (percent < 60) timerBar.style.backgroundColor = 'var(--warning)';
+
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    callback();
+                }
+            }, 50);
+        }
+
+        /**
+         * Handle Selection
+         */
+        function handleSelection(selectedId, btn) {
             if (isAnswering) return;
             isAnswering = true;
-
+            clearInterval(timerInterval);
+            
+            const elapsed = Date.now() - (Date.now() - (5000 - parseFloat(timerBar.style.width) * 50)); // Rough elapsed from bar
+            // Actually better to track it precisely in the answer phase start
+            
+            const isCorrect = selectedId === currentCorrectSign.id;
             const buttons = optionsGrid.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.style.pointerEvents = 'none');
+            buttons.forEach(b => b.disabled = true);
 
-            if (id === targetSign.id) {
+            if (isCorrect) {
                 btn.classList.add('correct');
-                score += 15;
-                showPopFeedback('+15');
+                const remainingRaw = parseFloat(timerBar.style.width) / 100 * ANSWER_TIME;
+                const speedBonus = Math.floor(remainingRaw / 1000 * 20);
+                const points = 100 + speedBonus;
+                score += points;
+                correctAnswers++;
+                showPop(`+${points}`, 'var(--success)');
             } else {
-                btn.classList.add('wrong');
+                if (btn) btn.classList.add('wrong');
                 buttons.forEach(b => {
                     const img = b.querySelector('img');
-                    if (img && img.src.includes(targetSign.image.replace('../', ''))) b.classList.add('correct');
+                    if (img && img.src.includes(currentCorrectSign.image.replace('../', ''))) {
+                        b.classList.add('correct');
+                    }
                 });
+                showPop('❌', 'var(--danger)');
             }
 
-            updateStatsUI();
-            setTimeout(startRound, 1500);
+            setTimeout(nextRound, 1500);
         }
 
-        function showPopFeedback(text) {
+        function showPop(text, color) {
             const pop = document.createElement('div');
-            pop.className = 'score-pop';
+            pop.className = 'feedback-pop';
             pop.textContent = text;
-            document.getElementById('feedbackContainer').appendChild(pop);
-            setTimeout(() => pop.remove(), 700);
+            pop.style.color = color;
+            gameMain.appendChild(pop);
+            setTimeout(() => pop.remove(), 600);
         }
 
-        function updateStatsUI() {
-            scoreEl.textContent = score;
-            roundCounterEl.textContent = `${Math.min(currentRound, TOTAL_ROUNDS)}/${TOTAL_ROUNDS}`;
-        }
-
-        function endGame() {
-            gameScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-            finalScoreEl.textContent = score;
+        /**
+         * End Session
+         */
+        function endSession() {
+            showScreen('resultScreen');
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('correctCount').textContent = `${correctAnswers}/${TOTAL_QUESTIONS}`;
+            document.getElementById('avgTime').textContent = (correctAnswers > 0 ? 'Phản xạ tốt!' : '-');
+            
             if (typeof LeaderboardManager !== 'undefined') {
                 LeaderboardManager.saveScore(GAME_ID, score);
                 LeaderboardManager.render('leaderboardContainer', GAME_ID, score);
             }
-        }
-
-        function restartGame() {
-            startGame();
         }
 
         init();
