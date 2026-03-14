@@ -555,8 +555,6 @@
                 <ul class="rules-list">
                     <li><i class="fa-solid fa-circle-check"></i> <span>Gồm 10 câu hỏi về ý nghĩa biển báo.</span></li>
                     <li><i class="fa-solid fa-clock"></i> <span>Trả lời càng nhanh, điểm cộng càng cao.</span></li>
-                    <li><i class="fa-solid fa-layer-group"></i> <span>Các lựa chọn sẽ thuộc cùng một nhóm biển
-                            báo.</span></li>
                     <li><i class="fa-solid fa-trophy"></i> <span>Cố gắng đạt điểm tuyệt đối để vào Top 5!</span></li>
                 </ul>
                 <button class="btn-modern-start" style="width: 100%" onclick="startGame()">
@@ -835,7 +833,7 @@
          */
         function endSession() {
             const statsText = `Chính xác ${correctAnswers}/${TOTAL_QUESTIONS} • Trung bình ${(totalTimeUsed / (TOTAL_QUESTIONS * 1000)).toFixed(1)}s/câu`;
-            
+
             GameUI.showResult({
                 gameId: GAME_ID,
                 score: score,
