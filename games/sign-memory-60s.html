@@ -12,6 +12,7 @@
 
     <!-- Shared Leaderboard Style -->
     <link rel="stylesheet" href="../css/leaderboard.css">
+    <link rel="stylesheet" href="../css/game-ui.css">
 
     <style>
         :root {
@@ -550,13 +551,15 @@
                 <div class="start-icon">
                     <i class="fa-solid fa-brain"></i>
                 </div>
-                <h2>Chọn Đúng tên biển báo</h2>
+                <h2>Chọn Đúng Tên Biển Báo</h2>
                 <ul class="rules-list">
                     <li><i class="fa-solid fa-circle-check"></i> <span>Gồm 10 câu hỏi về ý nghĩa biển báo.</span></li>
                     <li><i class="fa-solid fa-clock"></i> <span>Trả lời càng nhanh, điểm cộng càng cao.</span></li>
+                    <li><i class="fa-solid fa-layer-group"></i> <span>Các lựa chọn sẽ thuộc cùng một nhóm biển
+                            báo.</span></li>
                     <li><i class="fa-solid fa-trophy"></i> <span>Cố gắng đạt điểm tuyệt đối để vào Top 5!</span></li>
                 </ul>
-                <button class="btn btn-primary" style="width: 100%" onclick="startGame()">
+                <button class="btn-modern-start" style="width: 100%" onclick="startGame()">
                     <i class="fa-solid fa-play"></i> BẮT ĐẦU CHƠI
                 </button>
             </div>
@@ -589,27 +592,13 @@
             </div>
         </main>
 
-        <!-- Final Result Screen (Template Standard) -->
-        <div class="screen-overlay" id="resultScreen">
-            <div class="result-card">
-                <h2 style="font-size: 24px">KẾT QUẢ CUỐI CÙNG</h2>
-                <div class="total-score-value" id="finalScoreDisplay">0</div>
-                <p style="color:var(--text-muted); margin-bottom:20px" id="finalStats">Hoàn thành 0/10 câu hỏi</p>
-
-                <div id="leaderboardContainer" style="margin-top: 20px;"></div>
-
-                <div class="btn-group">
-                    <button class="main-btn btn-primary" onclick="startGame()">
-                        <i class="fa-solid fa-rotate-right"></i> CHƠI LẠI
-                    </button>
-                    <a href="../signs.html" class="main-btn btn-outline">THOÁT</a>
-                </div>
-            </div>
-        </div>
+        <!-- Final Result Screen (Legacy container) -->
+        <div id="resultScreen"></div>
     </div>
 
     <!-- Scripts -->
     <script src="../js/leaderboard.js"></script>
+    <script src="../js/game-ui.js"></script>
     <script>
         const GAME_ID = 'sign-memory-60s';
         const TOTAL_QUESTIONS = 10;
@@ -845,16 +834,14 @@
          * End Game
          */
         function endSession() {
-            showScreen('resultScreen');
-
-            document.getElementById('finalScoreDisplay').textContent = score;
-            document.getElementById('finalStats').textContent = `Chính xác ${correctAnswers}/${TOTAL_QUESTIONS} • Trung bình ${(totalTimeUsed / (TOTAL_QUESTIONS * 1000)).toFixed(1)}s/câu`;
-
-            // Shared Leaderboard logic
-            if (typeof LeaderboardManager !== 'undefined') {
-                LeaderboardManager.saveScore(GAME_ID, score);
-                LeaderboardManager.render('leaderboardContainer', GAME_ID, score);
-            }
+            const statsText = `Chính xác ${correctAnswers}/${TOTAL_QUESTIONS} • Trung bình ${(totalTimeUsed / (TOTAL_QUESTIONS * 1000)).toFixed(1)}s/câu`;
+            
+            GameUI.showResult({
+                gameId: GAME_ID,
+                score: score,
+                statsText: statsText,
+                onRestart: startGame
+            });
         }
 
         init();

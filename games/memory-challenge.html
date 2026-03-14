@@ -12,6 +12,7 @@
 
     <!-- Shared Leaderboard Style -->
     <link rel="stylesheet" href="../css/leaderboard.css">
+    <link rel="stylesheet" href="../css/game-ui.css">
 
     <style>
         :root {
@@ -642,7 +643,7 @@
                     <li><i class="fa-solid fa-question"></i> <span>Chọn biển báo ĐÃ XUẤT HIỆN trước đó.</span></li>
                     <li><i class="fa-solid fa-bolt"></i> <span>Trả lời càng nhanh, điểm càng cao!</span></li>
                 </ul>
-                <button class="btn btn-primary" style="width: 100%" onclick="startGame()">
+                <button class="btn-modern-start" style="width: 100%" onclick="startGame()">
                     <i class="fa-solid fa-play"></i> BẮT ĐẦU CHƠI
                 </button>
             </div>
@@ -687,32 +688,18 @@
             </div>
         </main>
 
-        <!-- Final Result Screen (Template Standard) -->
-        <div class="screen-overlay" id="resultScreen">
-            <div class="result-card">
-                <h2 style="font-size: 24px">KẾT QUẢ CUỐI CÙNG</h2>
-                <div class="total-score-value" id="finalScoreDisplay">0</div>
-                <p style="color:var(--text-muted); margin-bottom:20px" id="finalStats">Hoàn thành 0/10 vòng chơi</p>
-
-                <div id="leaderboardContainer" style="margin-top: 20px;"></div>
-
-                <div class="btn-group">
-                    <button class="main-btn btn-primary" onclick="startGame()">
-                        <i class="fa-solid fa-rotate-right"></i> CHƠI LẠI
-                    </button>
-                    <a href="../signs.html" class="main-btn btn-outline">THOÁT</a>
-                </div>
-            </div>
-        </div>
+        <!-- Final Result Screen (Legacy container) -->
+        <div id="resultScreen"></div>
     </div>
 
     <!-- Scripts -->
     <script src="../js/leaderboard.js"></script>
+    <script src="../js/game-ui.js"></script>
     <script>
         const GAME_ID = 'memory-challenge';
         const TOTAL_QUESTIONS = 10;
-        const MEMORIZE_TIME = 5000;
-        const ANSWER_TIME = 5000;
+        const MEMORIZE_TIME = 4000;
+        const ANSWER_TIME = 3000;
 
         let allSigns = [];
         let categoryMap = {};
@@ -945,16 +932,15 @@
          * End Session
          */
         function endSession() {
-            showScreen('resultScreen');
-
-            document.getElementById('finalScoreDisplay').textContent = score;
             const avgTime = correctAnswers > 0 ? (totalAnswerTime / (correctAnswers * 1000)).toFixed(1) : 0;
-            document.getElementById('finalStats').textContent = `Chính xác ${correctAnswers}/${TOTAL_QUESTIONS} • Trung bình ${avgTime}s/vòng`;
+            const statsText = `Chính xác ${correctAnswers}/${TOTAL_QUESTIONS} • Trung bình ${avgTime}s/vòng`;
 
-            if (typeof LeaderboardManager !== 'undefined') {
-                LeaderboardManager.saveScore(GAME_ID, score);
-                LeaderboardManager.render('leaderboardContainer', GAME_ID, score);
-            }
+            GameUI.showResult({
+                gameId: GAME_ID,
+                score: score,
+                statsText: statsText,
+                onRestart: startGame
+            });
         }
 
         init();

@@ -12,6 +12,7 @@
 
     <!-- Shared Leaderboard Style -->
     <link rel="stylesheet" href="../css/leaderboard.css">
+    <link rel="stylesheet" href="../css/game-ui.css">
 
     <style>
         :root {
@@ -460,11 +461,11 @@
             <h1 style="color:var(--primary); margin-bottom:15px">THỬ THÁCH GHÉP HÌNH</h1>
             <p style="color:var(--text-muted); margin-bottom:30px">Ghép 7 biển báo giao thông nhanh nhất để ghi tên vào
                 bảng xếp hạng!</p>
-            <button class="main-btn btn-primary" style="width:100%; justify-content:center" onclick="initGameSession()">
-                BẮT ĐẦU CHƠI
+            <button class="btn-modern-start" style="width:100%" onclick="initGameSession()">
+                <i class="fa-solid fa-play"></i> BẮT ĐẦU CHƠI
             </button>
-            <a href="../signs.html" class="main-btn btn-outline"
-                style="width:100%; justify-content:center; margin-top:10px">QUAY LẠI</a>
+            <a href="../signs.html" class="modal-btn modal-btn-secondary"
+                style="width:100%; margin-top:12px; text-decoration:none">QUAY LẠI</a>
         </div>
     </div>
 
@@ -520,25 +521,11 @@
         </div>
     </div>
 
-    <!-- Final Result Screen -->
-    <div class="screen-overlay" id="resultScreen">
-        <div class="result-card" style="max-width: 600px;">
-            <h2 style="font-size: 24px">KẾT QUẢ CUỐI CÙNG</h2>
-            <div class="total-score-value" id="finalScoreDisplay">0</div>
-            <p style="color:var(--text-muted); margin-bottom:20px" id="finalStats">Hoàn thành 7/7 biển báo</p>
-
-            <div id="leaderboardContainer" style="margin-top: 20px;"></div>
-
-            <div class="btn-group">
-                <button class="main-btn btn-primary" onclick="initGameSession()">
-                    <i class="fa-solid fa-rotate-right"></i> CHƠI LẠI
-                </button>
-                <a href="../signs.html" class="main-btn btn-outline">THOÁT</a>
-            </div>
-        </div>
-    </div>
+    <!-- Final Result Screen (Legacy container, now handled by game-ui.js) -->
+    <div id="resultScreen"></div>
 
     <script src="../js/leaderboard.js"></script>
+    <script src="../js/game-ui.js"></script>
     <script>
         const GAME_ID = 'sign-puzzle-v2';
         let allSigns = [];
@@ -789,14 +776,18 @@
 
         function endSession() {
             clearInterval(timerInterval);
-            resultScreen.classList.add('active');
-            document.getElementById('finalScoreDisplay').textContent = sessionTotalScore;
+            
+            const totalElapsed = (Date.now() - sessionStartTime) / 1000;
+            const mins = Math.floor(totalElapsed / 60);
+            const secs = Math.floor(totalElapsed % 60);
+            const timeStr = `${mins}:${secs.toString().padStart(2, '0')}`;
 
-            // Save to leaderboard
-            if (typeof LeaderboardManager !== 'undefined') {
-                LeaderboardManager.saveScore(GAME_ID, sessionTotalScore, sessionStartTime);
-                LeaderboardManager.render('leaderboardContainer', GAME_ID, sessionTotalScore);
-            }
+            GameUI.showResult({
+                gameId: GAME_ID,
+                score: sessionTotalScore,
+                statsText: `Hoàn thành 7/7 biển báo • Thời gian ${timeStr}`,
+                onRestart: initGameSession
+            });
         }
 
         init();
