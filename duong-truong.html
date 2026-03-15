@@ -57,6 +57,13 @@
     <!-- MAIN SECTION -->
     <main id="road-test-section">
         <div class="content-container">
+            <!-- TOP BACK BUTTON -->
+            <div class="back-top-container">
+                <button class="back-btn" onclick="history.back()">
+                    <i class="fa-solid fa-arrow-left"></i> Quay lại
+                </button>
+            </div>
+
             <!-- HEADER CARD -->
             <div class="hero-card">
                 <div class="hero-decorative-shape shape-1"></div>
@@ -392,6 +399,13 @@
                     </div>
                 </div>
             </div>
+
+            <!-- BOTTOM BACK BUTTON -->
+            <div class="back-bottom">
+                <button class="back-btn" onclick="history.back()">
+                    <i class="fa-solid fa-arrow-left"></i> Quay lại trang trước
+                </button>
+            </div>
         </div>
     </main>
 
@@ -403,6 +417,39 @@
             padding: 0 40px;
             font-family: 'Be Vietnam Pro', sans-serif;
             color: var(--text-main);
+        }
+
+        /* BACK BUTTON STYLES */
+        .back-top-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #1e73be;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(30, 115, 190, 0.2);
+        }
+
+        .back-btn:hover {
+            background: #165b95;
+            transform: translateX(-4px);
+            box-shadow: 0 6px 12px rgba(30, 115, 190, 0.3);
+        }
+
+        .back-bottom {
+            margin-top: 40px;
+            text-align: center;
         }
 
         .content-container {
