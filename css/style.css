@@ -12,7 +12,7 @@
 
 body {
   margin: 0;
-  font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+  font-family: "Be Vietnam Pro", system-ui, -apple-system, Arial, sans-serif;
   background: var(--bg-gradient);
   color: var(--text-main);
   min-height: 100vh;
@@ -322,7 +322,7 @@ button:active {
 .selected::before {
   content: "✓";
   margin-right: 4px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 /* Đúng (500 câu) */
