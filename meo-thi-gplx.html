@@ -440,13 +440,31 @@
                         <h3 class="faq-question">3. Thi lý thuyết GPLX cần đạt bao nhiêu điểm?</h3>
                         <p class="faq-answer">Tùy từng hạng bằng lái, thí sinh phải trả lời đúng số câu tối thiểu theo
                             quy định của Bộ Giao thông Vận tải để đậu phần thi lý thuyết. Cụ thể như sau: </p>
-                        <ul>
-                            <li><a href="class-a1-menu.html">Hạng A1:</a> 21/25 câu</li>
-                            <li><a href="class-a-menu.html"> Hạng A :</a> 23/25 câu</li>
-                            <li><a href="class-b1-menu.html">Hạng B1:</a> 23/25 câu</li>
-                            <li><a href="class-b-menu.html"> Hạng B :</a> 27/30 câu</li>
-                            <li><a href="class-c1-menu.html">Hạng C1:</a> 32/35 câu</li>
-                            <li><a href="class-c-menu.html"> Hạng C :</a> 36/40 câu</li>
+                        <ul class="license-score-list">
+                            <li>
+                                <span class="license-cat"><a href="class-a1-menu.html">Hạng A1:</a></span>
+                                <span class="license-score">21/25 câu</span>
+                            </li>
+                            <li>
+                                <span class="license-cat"><a href="class-a-menu.html">Hạng A:</a></span>
+                                <span class="license-score">23/25 câu</span>
+                            </li>
+                            <li>
+                                <span class="license-cat"><a href="class-b1-menu.html">Hạng B1:</a></span>
+                                <span class="license-score">23/25 câu</span>
+                            </li>
+                            <li>
+                                <span class="license-cat"><a href="class-b-menu.html">Hạng B:</a></span>
+                                <span class="license-score">27/30 câu</span>
+                            </li>
+                            <li>
+                                <span class="license-cat"><a href="class-c1-menu.html">Hạng C1:</a></span>
+                                <span class="license-score">32/35 câu</span>
+                            </li>
+                            <li>
+                                <span class="license-cat"><a href="class-c-menu.html">Hạng C:</a></span>
+                                <span class="license-score">36/40 câu</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -799,6 +817,56 @@
             color: #4f46e5;
             text-decoration: none;
             font-weight: 600;
+        }
+
+        /* LICENSE SCORE LIST ALIGNMENT */
+        .license-score-list {
+            margin: 15px 0 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .license-score-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .license-score-list li::before {
+            content: "•";
+            color: #4f46e5;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: 0;
+            flex-shrink: 0;
+        }
+
+        .license-score-list .license-cat {
+            width: 100px;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        .license-score-list .license-cat a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+        .license-score-list .license-cat a:hover {
+            text-decoration: underline;
+        }
+
+        .license-score-list .license-score {
+            flex-grow: 1;
+        }
+
+        @media (max-width: 480px) {
+            .license-score-list .license-cat {
+                width: 90px;
+            }
         }
 
 
