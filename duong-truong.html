@@ -64,7 +64,7 @@
                 <div class="hero-icon-wrapper">
                     <div class="hero-icon floating">🛣️</div>
                 </div>
-                <h1>HƯỚNG DẪN BÀI THI SÁT HẠCH ĐƯỜNG TRƯỜNG</h1>
+                <h1 class="page-title">HƯỚNG DẪN BÀI THI SÁT HẠCH <span>ĐƯỜNG TRƯỜNG</span></h1>
                 <p class="hero-subtitle">Kinh nghiệm thực tế và các lưu ý quan trọng để vượt qua bài thi sát hạch cuối
                     cùng</p>
             </div>
@@ -435,16 +435,6 @@
             }
         }
 
-        .hero-card h1 {
-            position: relative;
-            z-index: 2;
-            font-size: 36px;
-            font-weight: 800;
-            color: #0c4a6e;
-            margin-bottom: 12px;
-            letter-spacing: -1px;
-        }
-
         .hero-subtitle {
             position: relative;
             z-index: 2;
@@ -453,6 +443,21 @@
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
+        }
+
+        /* PAGE TITLE REFINEMENT */
+        .page-title {
+            position: relative;
+            z-index: 2;
+            font-weight: 800;
+            color: #0c4a6e;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .page-title span {
+            display: block;
+            margin-top: 6px;
         }
 
         /* INTRO CARD */
