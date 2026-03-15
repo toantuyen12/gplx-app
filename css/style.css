@@ -12,7 +12,7 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
   background: var(--bg-gradient);
   color: var(--text-main);
   min-height: 100vh;
@@ -99,11 +99,11 @@ button {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 15px;
   letter-spacing: 0.3px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Inter', sans-serif;
+  font-family: inherit;
   touch-action: manipulation;
 }
 
@@ -178,7 +178,7 @@ button:active {
 }
 .hero-header h1 {
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-main);
   margin-bottom: 12px;
   letter-spacing: -1px;
@@ -197,7 +197,7 @@ button:active {
 }
 .category-title {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-main);
   margin-bottom: 20px;
   display: flex;
@@ -253,7 +253,7 @@ button:active {
 
 .cat-title {
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-main);
   margin-bottom: 8px;
 }
@@ -417,7 +417,7 @@ margin-bottom:8px;
   color: var(--text-main);
   outline: none;
   transition: all 0.3s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: inherit;
 }
 
 /* FOCUS EFFECT */
@@ -479,7 +479,7 @@ margin-bottom:8px;
 
 .question-text {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--primary);
   margin-bottom: 5px;
 }
@@ -490,7 +490,7 @@ margin-bottom:8px;
   margin: 0 0 16px 0;
   padding: 0;
   color: var(--text-main);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* ===== LAYOUT CÂU HỎI ===== */
@@ -602,7 +602,7 @@ header {
 .logo {
   color: var(--primary);
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: none;
   letter-spacing: -0.5px;
   white-space: nowrap;
