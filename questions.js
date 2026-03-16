@@ -2035,7 +2035,7 @@ const questions = [
   },
   {
     "id": 214,
-    "question": "Câu 214: Biển nào báo hiệu hết hạn chế tốc độ tối",
+    "question": "Câu 214: Biển nào báo hiệu hết hạn chế tốc độ tối đa trong khu vực",
     "options": [
       "Biển 1.",
       "Biển 2.",
@@ -2301,7 +2301,7 @@ const questions = [
   },
   {
     "id": 241,
-    "question": "Câu 241: Việc bảo dưỡng thường xuyên đối với xe lô tô có tác dụng gì?",
+    "question": "Câu 241: Việc bảo dưỡng thường xuyên đối với xe ô tô có tác dụng gì?",
     "options": [
       "Bảo dưỡng thường xuyên làm cho xe ô tô luôn có tính năng kỹ thuật tốt, giảm cường độ hao mòn của các chi tiết.",
       "Ngăn ngừa và phát hiện kịp thời các hư hỏng và sai lệch kỹ thuật để khắc phục, giữ gìn được hình thức bên |ngoài.",
