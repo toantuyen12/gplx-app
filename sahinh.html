@@ -1515,6 +1515,7 @@
             if (licenseType) {
                 licenseInfo.style.display = 'block';
                 let typeName = 'Hạng B';
+                let vehiclePrefix = 'Ô TÔ';
                 let articleCount = 11;
 
                 if (licenseType === 'C1') {
@@ -1529,10 +1530,21 @@
                 } else if (licenseType === 'C_CAND') {
                     typeName = 'Hạng C CAND';
                     articleCount = 10;
+                } else if (licenseType === 'B') {
+                    typeName = 'Hạng B';
+                    articleCount = 11;
+                } else if (licenseType === 'A1') {
+                    typeName = 'Hạng A1';
+                    vehiclePrefix = 'MÔ TÔ';
+                    articleCount = 4;
+                } else if (licenseType === 'A') {
+                    typeName = 'Hạng A';
+                    vehiclePrefix = 'MÔ TÔ';
+                    articleCount = 4;
                 }
 
-                document.getElementById('dynamic-title').innerHTML = `Sát hạch lái xe trong hình đối với <span>Ô TÔ ${typeName.toUpperCase()}</span>`;
-                document.getElementById('dynamic-subtitle').innerHTML = `Hướng dẫn chi tiết các bước thực hiện, yêu cầu và các lỗi cần tránh trong <span>${articleCount} bài thi sa hình</span>`;
+                document.getElementById('dynamic-title').innerHTML = `Sát hạch lái xe trong hình đối với <span>${vehiclePrefix} ${typeName.toUpperCase()}</span>`;
+                document.getElementById('dynamic-subtitle').innerHTML = `Hướng dẫn chi tiết các bước thực hiện, yêu cầu và các lỗi cần tránh trong <span>${articleCount} bài thi sa hình ${vehiclePrefix.toLowerCase()} ${typeName}</span>`;
                 
                 licenseTypeText.textContent = typeName;
 
