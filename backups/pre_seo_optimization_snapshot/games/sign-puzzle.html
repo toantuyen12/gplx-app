@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghép Hình Biển Báo - GPLX App</title>
+
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Shared Leaderboard Style -->
+    <link rel="stylesheet" href="../css/leaderboard.css">
+    <link rel="stylesheet" href="../css/game-ui.css">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text-main: #102a43;
+            --text-muted: #627d98;
+            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 50px;
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+            background: white;
+            transform: translateX(-3px);
+        }
+
+        .game-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            background: var(--glass-bg);
+            padding: 12px 30px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+            flex-shrink: 0;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .stat-item i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: -2px;
+        }
+
+        .stat-value {
+            color: var(--text-main);
+        }
+
+        /* Game Area */
+        .game-area {
+            flex-grow: 1;
+            display: flex;
+            gap: 20px;
+            min-height: 0;
+            /* Important for flex child to not overflow */
+        }
+
+        /* Left side: Pieces */
+        .pieces-area {
+            flex: 1;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        /* Right side: Board */
+        .board-area {
+            flex: 1.2;
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .sign-hint {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: center;
+            background: #f1f5f9;
+            padding: 8px 20px;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        #puzzleGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2px;
+            background: #e2e8f0;
+            border: 4px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            width: 450px;
+            height: 300px;
+            /* 3x2 aspect ratio */
+            position: relative;
+        }
+
+        .grid-slot {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .grid-slot.drag-over {
+            background: #e0e7ff;
+            border-color: var(--primary);
+        }
+
+        .puzzle-piece {
+            width: 148px;
+            height: 148px;
+            background-size: 444px 296px;
+            /* 3x2 grid of 148px each */
+            border-radius: 8px;
+            cursor: grab;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            touch-action: none;
+            z-index: 10;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .puzzle-piece.dragging {
+            cursor: grabbing;
+            opacity: 0.9;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            pointer-events: none;
+        }
+
+        .puzzle-piece.placed {
+            cursor: default;
+            box-shadow: none;
+            border-radius: 0;
+            border: none;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Result Screen */
+        .screen-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .screen-overlay.active {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .total-score-value {
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin: 20px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .main-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: #e2e8f0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes successPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success-animation {
+            animation: successPop 0.4s ease;
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 991px) {
+            body {
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .container {
+                height: auto;
+                max-width: 600px;
+                margin: 0 auto;
+                padding-bottom: 40px;
+            }
+
+            .game-area {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .pieces-area {
+                min-height: 250px;
+            }
+
+            #puzzleGrid {
+                width: 330px;
+                height: 220px;
+            }
+
+            .puzzle-piece {
+                width: 108px;
+                height: 108px;
+                background-size: 324px 216px;
+            }
+
+            .game-title {
+                font-size: 20px;
+            }
+
+            .stats-bar {
+                gap: 15px;
+                padding: 10px 15px;
+            }
+
+            .stat-item {
+                font-size: 14px;
+            }
+        }
+
+        /* Success Overlay */
+        #signSuccessOverlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(16, 185, 129, 0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: var(--success);
+            z-index: 50;
+            border-radius: 12px;
+            backdrop-filter: blur(2px);
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loading Screen -->
+    <div class="screen-overlay active" id="loadingScreen">
+        <span class="loader"></span>
+        <p style="margin-top:20px; font-weight:600; color:var(--text-muted)">Đang tải tài liệu biển báo...</p>
+    </div>
+
+    <!-- Start Screen -->
+    <div class="screen-overlay" id="startScreen">
+        <div class="result-card">
+            <h1 style="color:var(--primary); margin-bottom:15px">THỬ THÁCH GHÉP HÌNH</h1>
+            <p style="color:var(--text-muted); margin-bottom:30px">Ghép 7 biển báo giao thông nhanh nhất để ghi tên vào
+                bảng xếp hạng!</p>
+            <button class="btn-modern-start" style="width:100%" onclick="initGameSession()">
+                <i class="fa-solid fa-play"></i> BẮT ĐẦU CHƠI
+            </button>
+            <a href="../signs.html" class="modal-btn modal-btn-secondary"
+                style="width:100%; margin-top:12px; text-decoration:none">QUAY LẠI</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <a href="../signs.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> <span>Thoát</span></a>
+            <h1 class="game-title">GHÉP HÌNH BIỂN BÁO</h1>
+            <div style="width: 80px;"></div>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <i class="fa-solid fa-layer-group"></i>
+                <div>
+                    <p class="stat-label">Tiến trình</p>
+                    <p class="stat-value"><span id="currentProgress">1</span>/7</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <i class="fa-solid fa-clock"></i>
+                <div>
+                    <p class="stat-label">Thời gian</p>
+                    <p class="stat-value" id="timer">00:00</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <i class="fa-solid fa-trophy"></i>
+                <div>
+                    <p class="stat-label">Tổng điểm</p>
+                    <p class="stat-value" id="totalScore">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="pieces-area" id="piecesContainer">
+                <!-- Pieces will be generated here -->
+            </div>
+
+            <div class="board-area">
+                <div class="sign-hint" id="signHint">---</div>
+                <div id="puzzleGrid">
+                    <!-- 6 slots -->
+                    <div class="grid-slot" data-index="0"></div>
+                    <div class="grid-slot" data-index="1"></div>
+                    <div class="grid-slot" data-index="2"></div>
+                    <div class="grid-slot" data-index="3"></div>
+                    <div class="grid-slot" data-index="4"></div>
+                    <div class="grid-slot" data-index="5"></div>
+                    <div id="signSuccessOverlay"><i class="fa-solid fa-check-circle"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Result Screen (Legacy container, now handled by game-ui.js) -->
+    <div id="resultScreen"></div>
+
+    <script src="../js/leaderboard.js"></script>
+    <script src="../js/game-ui.js"></script>
+    <script>
+        const GAME_ID = 'sign-puzzle-v2';
+        let allSigns = [];
+        let sessionSigns = [];
+        let currentSignIndex = 0;
+        let sessionTotalScore = 0;
+        let currentSignStartTime = 0;
+        let sessionStartTime = 0;
+        let timerInterval = null;
+        let piecesPlacedCount = 0;
+        let wrongPlacements = 0;
+
+        const GRID_COLS = 3;
+        const GRID_ROWS = 2;
+        const TOTAL_PIECES = GRID_COLS * GRID_ROWS;
+
+        // UI elements
+        const loadingScreen = document.getElementById('loadingScreen');
+        const startScreen = document.getElementById('startScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const piecesContainer = document.getElementById('piecesContainer');
+        const puzzleGrid = document.getElementById('puzzleGrid');
+        const signHint = document.getElementById('signHint');
+        const currentProgressEl = document.getElementById('currentProgress');
+        const timerEl = document.getElementById('timer');
+        const totalScoreEl = document.getElementById('totalScore');
+        const successOverlay = document.getElementById('signSuccessOverlay');
+
+        async function init() {
+            try {
+                const response = await fetch('../data/traffic-signs.json');
+                const data = await response.json();
+                allSigns = [];
+                data.categories.forEach(cat => {
+                    cat.signs.forEach(sign => {
+                        allSigns.push({
+                            id: sign.id,
+                            name: sign.name.split(':')[1]?.trim() || sign.name,
+                            image: '../' + sign.image
+                        });
+                    });
+                });
+                loadingScreen.classList.remove('active');
+                startScreen.classList.add('active');
+            } catch (error) {
+                console.error('Error loading signs:', error);
+                loadingScreen.innerHTML = '<p style="color:var(--danger)">Lỗi tải dữ liệu. Vui lòng làm mới trang.</p>';
+            }
+        }
+
+        function initGameSession() {
+            startScreen.classList.remove('active');
+            resultScreen.classList.remove('active');
+
+            // Pick 7 random unique signs
+            sessionSigns = [...allSigns].sort(() => 0.5 - Math.random()).slice(0, 7);
+            currentSignIndex = 0;
+            sessionTotalScore = 0;
+            sessionStartTime = Date.now();
+            wrongPlacements = 0;
+
+            totalScoreEl.textContent = '0';
+            loadCurrentSign();
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function loadCurrentSign() {
+            const sign = sessionSigns[currentSignIndex];
+            signHint.textContent = sign.name;
+            currentProgressEl.textContent = (currentSignIndex + 1);
+            piecesPlacedCount = 0;
+            currentSignStartTime = Date.now();
+            successOverlay.style.display = 'none';
+
+            // Clear pieces and slots
+            piecesContainer.innerHTML = '';
+            document.querySelectorAll('.grid-slot').forEach(slot => {
+                slot.innerHTML = '';
+                slot.classList.remove('drag-over');
+            });
+
+            // Create pieces
+            const pieces = [];
+            for (let i = 0; i < TOTAL_PIECES; i++) {
+                pieces.push(createPiece(i, sign.image));
+            }
+
+            // Shuffle and add to container
+            pieces.sort(() => 0.5 - Math.random()).forEach(p => piecesContainer.appendChild(p));
+        }
+
+        function createPiece(index, image) {
+            const piece = document.createElement('div');
+            piece.className = 'puzzle-piece';
+            piece.dataset.index = index;
+            piece.style.backgroundImage = `url(${image})`;
+
+            const r = Math.floor(index / GRID_COLS);
+            const c = index % GRID_COLS;
+
+            // Calculate background position (3x2 grid)
+            const posX = (c * 50); // 0, 50, 100
+            const posY = (r * 100); // 0, 100
+            piece.style.backgroundPosition = `${posX}% ${posY}%`;
+
+            // Pointer events for drag and drop
+            piece.addEventListener('pointerdown', startDrag);
+
+            return piece;
+        }
+
+        let activeDraggedPiece = null;
+        let dragOffset = { x: 0, y: 0 };
+
+        function startDrag(e) {
+            if (e.target.classList.contains('placed')) return;
+
+            activeDraggedPiece = e.target;
+            const rect = activeDraggedPiece.getBoundingClientRect();
+            dragOffset.x = e.clientX - rect.left;
+            dragOffset.y = e.clientY - rect.top;
+
+            activeDraggedPiece.classList.add('dragging');
+            activeDraggedPiece.style.left = `${rect.left}px`;
+            activeDraggedPiece.style.top = `${rect.top}px`;
+
+            activeDraggedPiece.setPointerCapture(e.pointerId);
+            activeDraggedPiece.addEventListener('pointermove', onDrag);
+            activeDraggedPiece.addEventListener('pointerup', endDrag);
+        }
+
+        function onDrag(e) {
+            if (!activeDraggedPiece) return;
+
+            activeDraggedPiece.style.left = `${e.clientX - dragOffset.x}px`;
+            activeDraggedPiece.style.top = `${e.clientY - dragOffset.y}px`;
+
+            // Highlight potential slot
+            checkHoverSlot(e.clientX, e.clientY);
+        }
+
+        function checkHoverSlot(x, y) {
+            document.querySelectorAll('.grid-slot').forEach(slot => {
+                const rect = slot.getBoundingClientRect();
+                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                    slot.classList.add('drag-over');
+                } else {
+                    slot.classList.remove('drag-over');
+                }
+            });
+        }
+
+        function endDrag(e) {
+            if (!activeDraggedPiece) return;
+
+            const pieceIndex = activeDraggedPiece.dataset.index;
+            const dropX = e.clientX;
+            const dropY = e.clientY;
+
+            let droppedOnSlot = null;
+            document.querySelectorAll('.grid-slot').forEach(slot => {
+                const rect = slot.getBoundingClientRect();
+                if (dropX >= rect.left && dropX <= rect.right && dropY >= rect.top && dropY <= rect.bottom) {
+                    droppedOnSlot = slot;
+                }
+                slot.classList.remove('drag-over');
+            });
+
+            if (droppedOnSlot) {
+                const slotIndex = droppedOnSlot.dataset.index;
+                if (slotIndex === pieceIndex && !droppedOnSlot.hasChildNodes()) {
+                    // Correct placement
+                    snapToSlot(activeDraggedPiece, droppedOnSlot);
+                } else {
+                    // Incorrect or already occupied
+                    if (!droppedOnSlot.hasChildNodes()) wrongPlacements++;
+                    returnToContainer(activeDraggedPiece);
+                }
+            } else {
+                returnToContainer(activeDraggedPiece);
+            }
+
+            activeDraggedPiece.classList.remove('dragging');
+            activeDraggedPiece.style.left = '';
+            activeDraggedPiece.style.top = '';
+            activeDraggedPiece.releasePointerCapture(e.pointerId);
+            activeDraggedPiece.removeEventListener('pointermove', onDrag);
+            activeDraggedPiece.removeEventListener('pointerup', endDrag);
+            activeDraggedPiece = null;
+        }
+
+        function snapToSlot(piece, slot) {
+            piece.classList.add('placed');
+            slot.appendChild(piece);
+            piecesPlacedCount++;
+
+            if (piecesPlacedCount === TOTAL_PIECES) {
+                handleSignComplete();
+            }
+        }
+
+        function returnToContainer(piece) {
+            piecesContainer.appendChild(piece);
+        }
+
+        function handleSignComplete() {
+            const timeTaken = (Date.now() - currentSignStartTime) / 1000;
+            let signScore = 40; // Default
+
+            if (timeTaken < 30) signScore = 100;
+            else if (timeTaken < 60) signScore = 80;
+            else if (timeTaken < 90) signScore = 60;
+
+            // Deduction for wrong attempts
+            signScore = Math.max(10, signScore - (wrongPlacements * 2));
+
+            sessionTotalScore += Math.round(signScore);
+            totalScoreEl.textContent = sessionTotalScore;
+            wrongPlacements = 0;
+
+            // Show success animation
+            successOverlay.style.display = 'flex';
+            puzzleGrid.classList.add('success-animation');
+
+            setTimeout(() => {
+                puzzleGrid.classList.remove('success-animation');
+                nextSign();
+            }, 1200);
+        }
+
+        function nextSign() {
+            currentSignIndex++;
+            if (currentSignIndex < sessionSigns.length) {
+                loadCurrentSign();
+            } else {
+                endSession();
+            }
+        }
+
+        function updateTimer() {
+            const totalElapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+            const mins = Math.floor(totalElapsed / 60).toString().padStart(2, '0');
+            const secs = (totalElapsed % 60).toString().padStart(2, '0');
+            timerEl.textContent = `${mins}:${secs}`;
+        }
+
+        function endSession() {
+            clearInterval(timerInterval);
+            
+            const totalElapsed = (Date.now() - sessionStartTime) / 1000;
+            const mins = Math.floor(totalElapsed / 60);
+            const secs = Math.floor(totalElapsed % 60);
+            const timeStr = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+            GameUI.showResult({
+                gameId: GAME_ID,
+                score: sessionTotalScore,
+                statsText: `Hoàn thành 7/7 biển báo • Thời gian ${timeStr}`,
+                onRestart: initGameSession
+            });
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

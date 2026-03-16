@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn Biển Báo Đúng - GPLX App</title>
+
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Shared Leaderboard Style -->
+    <link rel="stylesheet" href="../css/leaderboard.css">
+    <link rel="stylesheet" href="../css/game-ui.css">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            
+            user-select: none;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 560px;
+            height: 100%;
+            max-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+            transform: translateX(-4px);
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Start Screen */
+        .start-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 12px 16px -4px rgba(0, 0, 0, 0.08);
+            margin: auto;
+            width: 100%;
+        }
+
+        .start-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            filter: drop-shadow(0 6px 10px rgba(79, 70, 229, 0.3));
+        }
+
+        .start-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .rules-list {
+            text-align: left;
+            margin: 14px 0;
+            list-style: none;
+        }
+
+        .rules-list li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .rules-list i {
+            color: var(--primary);
+            margin-top: 2px;
+        }
+
+        /* Game Stats */
+        .stats-bar {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: var(--glass-bg);
+            padding: 6px 8px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .timer-progress-wrap {
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 2px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .timer-progress-bar {
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.1s linear, background-color 0.3s ease;
+        }
+
+        /* Question Area */
+        .game-main {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+            min-height: 0;
+        }
+
+        .question-display {
+            height: 120px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            position: relative;
+            text-align: center;
+        }
+
+        .question-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .option-btn {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            aspect-ratio: 1/1;
+            max-height: 150px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            position: relative;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .option-btn img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: white;
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        .option-btn.correct {
+            background: #f0fdf4 !important;
+            border-color: var(--success) !important;
+        }
+
+        .option-btn.wrong {
+            background: #fef2f2 !important;
+            border-color: var(--danger) !important;
+        }
+
+        .option-btn.correct::after {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 700;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--success);
+            font-size: 20px;
+        }
+
+        .option-btn.wrong::after {
+            content: '\f057';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 700;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--danger);
+            font-size: 20px;
+        }
+
+        /* Results Screen Overlay (Template Standard) */
+        .screen-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .screen-overlay.active {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .total-score-value {
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin: 20px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .main-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            font-size: 16px;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-outline {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-outline:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .result-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .total-score-value {
+                font-size: 60px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .main-btn {
+                width: 100%;
+            }
+        }
+
+        /* Feedbacks */
+        .feedback-pop {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: 700;
+            z-index: 100;
+            pointer-events: none;
+            animation: popOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popOut {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -80%) scale(1.2);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -120%) scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-height: 680px) {
+            .container {
+                gap: 6px;
+            }
+
+            .start-card {
+                padding: 16px;
+            }
+
+            .start-icon {
+                font-size: 32px;
+                margin-bottom: 8px;
+            }
+
+            .option-btn {
+                max-height: 110px;
+                padding: 8px;
+            }
+
+            .game-main {
+                padding: 10px;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            .container {
+                gap: 8px;
+            }
+
+            .stat-value {
+                font-size: 14px;
+            }
+
+            .question-display {
+                min-height: 80px;
+                flex: none;
+            }
+
+            .options-grid {
+                gap: 8px;
+            }
+
+            .game-main {
+                padding: 12px;
+                border-radius: 16px;
+            }
+
+            .question-text {
+                font-size: 13px;
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(79, 70, 229, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <a href="../signs.html" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Thoát</span>
+            </a>
+            <div class="game-title">Chọn Biển Báo</div>
+            <div style="width: 70px;"></div>
+        </header>
+
+        <!-- Start Screen -->
+        <main class="screen active" id="startScreen">
+            <div class="start-card">
+                <div class="start-icon">
+                    <i class="fa-solid fa-images"></i>
+                </div>
+                <h2>Chọn Biển Báo Đúng</h2>
+                <ul class="rules-list">
+                    <li><i class="fa-solid fa-circle-check"></i> <span>Gồm 10 câu hỏi nhận diện hình ảnh</span></li>
+                    <li><i class="fa-solid fa-clock"></i> <span>Giới hạn thời gian trả lời</span></li>
+                    <li><i class="fa-solid fa-bolt"></i> <span>Trả lời nhanh để nhận thêm điểm thưởng!</span></li>
+                </ul>
+                <button class="btn-modern-start" style="width: 100%" onclick="startGame()">
+                    <i class="fa-solid fa-play"></i> BẮT ĐẦU CHƠI
+                </button>
+            </div>
+        </main>
+
+        <!-- Game Screen -->
+        <main class="screen" id="gameScreen">
+            <div class="stats-bar">
+                <div class="stat-box">
+                    <div class="stat-label">Câu hỏi</div>
+                    <div class="stat-value" id="progressText">1/10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Điểm số</div>
+                    <div class="stat-value" id="scoreText">0</div>
+                </div>
+            </div>
+
+            <div class="timer-progress-wrap">
+                <div class="timer-progress-bar" id="timerBar"></div>
+            </div>
+
+            <div class="game-main">
+                <div class="question-display" id="questionDisplay">
+                    <p class="question-text" id="questionText">Đang tải câu hỏi...</p>
+                </div>
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options Injected Here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Final Result Screen (Legacy container) -->
+        <div id="resultScreen"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/leaderboard.js"></script>
+    <script src="../js/game-ui.js"></script>
+    <script>
+        const GAME_ID = 'choose-correct-sign';
+        const TOTAL_QUESTIONS = 10;
+        const QUESTION_TIME = 10000;
+
+        let allSigns = [];
+        let categoryMap = {};
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let totalTimeUsed = 0;
+        let questionStartTime = 0;
+        let timerInterval = null;
+        let isAnswering = false;
+
+        // UI Elements
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const screens = document.querySelectorAll('.screen');
+        const questionText = document.getElementById('questionText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const progressText = document.getElementById('progressText');
+        const scoreText = document.getElementById('scoreText');
+        const timerBar = document.getElementById('timerBar');
+        const questionDisplay = document.getElementById('questionDisplay');
+
+        /**
+         * Initialize App
+         */
+        async function init() {
+            try {
+                const response = await fetch('../data/traffic-signs.json');
+                const data = await response.json();
+
+                data.categories.forEach(cat => {
+                    const categorySigns = cat.signs
+                        .filter(s => s.description && s.description.trim().length > 10)
+                        .map(s => {
+                            const nameParts = s.name.split(':');
+                            const cleanName = (nameParts[1] || nameParts[0]).trim();
+                            return {
+                                id: s.id,
+                                name: cleanName,
+                                description: s.description,
+                                category: cat.name,
+                                image: '../' + s.image
+                            };
+                        });
+
+                    if (categorySigns.length > 0) {
+                        categoryMap[cat.name] = categorySigns;
+                        allSigns.push(...categorySigns);
+                    }
+                });
+
+                loadingOverlay.style.display = 'none';
+            } catch (err) {
+                console.error('Init failed:', err);
+            }
+        }
+
+        /**
+         * Switch Screens
+         */
+        function showScreen(id) {
+            screens.forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(id);
+            if (target) {
+                target.classList.add('active');
+            }
+        }
+
+        /**
+         * Start Game
+         */
+        function startGame() {
+            score = 0;
+            correctAnswers = 0;
+            currentIndex = 0;
+            totalTimeUsed = 0;
+
+            currentQuestions = [...allSigns]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, TOTAL_QUESTIONS);
+
+            showScreen('gameScreen');
+            loadQuestion();
+        }
+
+        /**
+         * Load Question
+         */
+        function loadQuestion() {
+            isAnswering = false;
+            const currentSign = currentQuestions[currentIndex];
+
+            progressText.textContent = `${currentIndex + 1}/${TOTAL_QUESTIONS}`;
+            scoreText.textContent = score;
+            questionText.textContent = currentSign.description;
+
+            // Generate Options
+            let options = [currentSign];
+            const sameCategory = (categoryMap[currentSign.category] || []).filter(s => s.id !== currentSign.id);
+
+            const distractors = sameCategory
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
+
+            if (distractors.length < 3) {
+                const otherSigns = allSigns.filter(s => !options.some(opt => opt.id === s.id));
+                const extraDistractors = otherSigns
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3 - distractors.length);
+                distractors.push(...extraDistractors);
+            }
+
+            options.push(...distractors);
+            options.sort(() => Math.random() - 0.5);
+
+            optionsGrid.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<img src="${opt.image}" alt="Biển báo">`;
+                btn.onclick = () => handleAnswer(opt.id, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            startTimer();
+        }
+
+        /**
+         * Timer
+         */
+        function startTimer() {
+            questionStartTime = Date.now();
+            let timeLeft = QUESTION_TIME;
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerBar.style.width = '100%';
+            timerBar.style.backgroundColor = 'var(--primary)';
+
+            timerInterval = setInterval(() => {
+                timeLeft -= 100;
+                const percent = (timeLeft / QUESTION_TIME) * 100;
+                timerBar.style.width = percent + '%';
+
+                if (percent < 30) timerBar.style.backgroundColor = 'var(--danger)';
+                else if (percent < 60) timerBar.style.backgroundColor = 'var(--warning)';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleAnswer(null, null);
+                }
+            }, 100);
+        }
+
+        /**
+         * Handle Selection
+         */
+        function handleAnswer(selectedId, btn) {
+            if (isAnswering) return;
+            isAnswering = true;
+            clearInterval(timerInterval);
+
+            const elapsed = Date.now() - questionStartTime;
+            totalTimeUsed += elapsed;
+
+            const currentSign = currentQuestions[currentIndex];
+            const isCorrect = selectedId === currentSign.id;
+
+            const buttons = optionsGrid.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                const timeBonus = Math.max(0, Math.floor(((QUESTION_TIME - elapsed) / QUESTION_TIME) * 50));
+                const points = 50 + timeBonus;
+                score += points;
+                correctAnswers++;
+                showPop(`+${points}`, 'var(--success)');
+            } else {
+                if (btn) btn.classList.add('wrong');
+                buttons.forEach(b => {
+                    if (b.querySelector('img').src.includes(currentSign.image.replace('../', ''))) {
+                        b.classList.add('correct');
+                    }
+                });
+                showPop('❌', 'var(--danger)');
+            }
+
+            setTimeout(() => {
+                currentIndex++;
+                if (currentIndex < TOTAL_QUESTIONS) {
+                    loadQuestion();
+                } else {
+                    endSession();
+                }
+            }, 1200);
+        }
+
+        function showPop(text, color) {
+            const pop = document.createElement('div');
+            pop.className = 'feedback-pop';
+            pop.textContent = text;
+            pop.style.color = color;
+            questionDisplay.appendChild(pop);
+            setTimeout(() => pop.remove(), 600);
+        }
+
+        function endSession() {
+            const statsText = `Chính xác ${correctAnswers}/${TOTAL_QUESTIONS} • Trung bình ${(totalTimeUsed / (TOTAL_QUESTIONS * 1000)).toFixed(1)}s/câu`;
+            
+            GameUI.showResult({
+                gameId: GAME_ID,
+                score: score,
+                statsText: statsText,
+                onRestart: startGame
+            });
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
