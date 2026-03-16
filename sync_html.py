@@ -15,7 +15,7 @@ HEADER_CONTENT = """<header>
 <a href="cand-menu.html">600 Câu Hỏi</a>
 <a href="meo-thi-gplx.html">Mẹo Thi</a>
 <a href="sahinh.html">Sa Hình</a>
-<a href="bien-bao-giao-thong.html">Biển Báo</a>
+<a href="signs.html">Biển Báo</a>
 <a href="contact.html">Liên hệ</a>
 </nav>
 </div>
@@ -25,7 +25,7 @@ HEADER_CONTENT = """<header>
 <a href="cand-menu.html">600 Câu Hỏi</a>
 <a href="meo-thi-gplx.html">Mẹo Thi</a>
 <a href="sahinh.html">Sa Hình</a>
-<a href="bien-bao-giao-thong.html">Biển Báo</a>
+<a href="signs.html">Biển Báo</a>
 <a href="contact.html">Liên hệ</a>
 </nav>
 </header>"""
@@ -38,7 +38,7 @@ FOOTER_CONTENT = """<footer class="footer">
         <a href="cand-menu.html">600 câu hỏi GPLX</a>
         <a href="meo-thi-gplx.html">Mẹo thi GPLX</a>
         <a href="sahinh.html">Sa hình lái xe</a>
-        <a href="bien-bao-giao-thong.html">Biển báo giao thông</a>
+        <a href="signs.html">Biển báo giao thông</a>
         <a href="class-b-menu.html">Thi thử sát hạch</a>
     </div>
     
@@ -116,6 +116,25 @@ document.addEventListener('click', function(e) {
 });
 </script>"""
 
+FEEDBACK_CONTENT = """
+<div id="feedbackContainer"></div>
+<script>
+    fetch("/feedback.html?v=3")
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("feedbackContainer").innerHTML = data;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+    (function () {
+        emailjs.init("Gn37aooYVlLuKdN9j");
+    })();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
+"""
+
 html_files = [f for f in os.listdir('.') if f.endswith('.html')]
 
 for file in html_files:
@@ -155,6 +174,10 @@ for file in html_files:
     if 'function toggleMenu()' not in content:
         # insert before closing body
         content = content.replace('</body>', f'\n{SCRIPT_MENU_CONTENT}\n</body>')
+
+    # 6. Ensure Feedback Button exists
+    if 'id="feedbackContainer"' not in content:
+        content = content.replace('</body>', f'\n{FEEDBACK_CONTENT}\n</body>')
 
     with open(file, 'w', encoding='utf-8') as f:
         f.write(content)

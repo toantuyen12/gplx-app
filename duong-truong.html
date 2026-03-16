@@ -64,7 +64,7 @@
 <a href="cand-menu.html">600 Câu Hỏi</a>
 <a href="meo-thi-gplx.html">Mẹo Thi</a>
 <a href="sahinh.html">Sa Hình</a>
-<a href="bien-bao-giao-thong.html">Biển Báo</a>
+<a href="signs.html">Biển Báo</a>
 <a href="contact.html">Liên hệ</a>
 </nav>
 </div>
@@ -74,7 +74,7 @@
 <a href="cand-menu.html">600 Câu Hỏi</a>
 <a href="meo-thi-gplx.html">Mẹo Thi</a>
 <a href="sahinh.html">Sa Hình</a>
-<a href="bien-bao-giao-thong.html">Biển Báo</a>
+<a href="signs.html">Biển Báo</a>
 <a href="contact.html">Liên hệ</a>
 </nav>
 </header>
@@ -923,7 +923,7 @@
         <a href="cand-menu.html">600 câu hỏi GPLX</a>
         <a href="meo-thi-gplx.html">Mẹo thi GPLX</a>
         <a href="sahinh.html">Sa hình lái xe</a>
-        <a href="bien-bao-giao-thong.html">Biển báo giao thông</a>
+        <a href="signs.html">Biển báo giao thông</a>
         <a href="class-b-menu.html">Thi thử sát hạch</a>
     </div>
     
@@ -991,6 +991,25 @@ document.addEventListener('click', function(e) {
     }
 });
 </script>
+
+
+<div id="feedbackContainer"></div>
+<script>
+    fetch("/feedback.html?v=3")
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("feedbackContainer").innerHTML = data;
+        });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+    (function () {
+        emailjs.init("Gn37aooYVlLuKdN9j");
+    })();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
+
 </body>
 
 </html>
