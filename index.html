@@ -127,7 +127,8 @@
                 </div>
 
                 <div class="carousel-container">
-                    <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)"><i
+                            class="fa-solid fa-chevron-left"></i></button>
 
                     <div class="carousel-wrapper" id="articleCarousel">
                         <div class="carousel-track">
@@ -170,7 +171,8 @@
                         </div>
                     </div>
 
-                    <button class="carousel-btn next-btn" onclick="moveCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="carousel-btn next-btn" onclick="moveCarousel(1)"><i
+                            class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
 
@@ -228,16 +230,36 @@
             <div class="category-wrapper" style="margin-top: 50px;">
                 <h2 class="category-title" style="color: var(--primary);"><i class="fa-solid fa-shield-halved"></i>
                     Luyện Thi GPLX Ô TÔ CAND</h2>
-                <div class="cat-card" style="max-width: 600px; margin: 0 auto; padding: 40px;">
-                    <div class="cat-icon"
-                        style="background: rgba(79, 70, 229, 0.15); width: 100px; height: 100px; font-size: 50px;"><i
-                            class="fa-solid fa-star"></i></div>
-                    <div class="cat-title" style="font-size: 28px;">GPLX Ô TÔ CAND</div>
-                    <div class="cat-desc" style="font-size: 16px;">Bộ đề sát hạch 500 câu dành riêng cho lực lượng Công
-                        an nhân dân</div>
-                    <div style="display: flex; gap: 15px; width: 100%; margin-top: 10px; flex-direction: column;">
-                        <button class="primary-btn" onclick="window.location.href='cand-menu.html'"
-                            style="padding: 18px; font-size: 18px;">🚀 Thi thử ngay</button>
+                <div class="category-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+
+                    <!-- HẠNG B CAND -->
+                    <div class="cat-card" style="padding: 40px;">
+                        <div class="cat-icon"
+                            style="background: rgba(79, 70, 229, 0.15); width: 100px; height: 100px; font-size: 50px;">
+                            <i class="fa-solid fa-star"></i></div>
+                        <div class="cat-title" style="font-size: 28px;">HẠNG B CAND</div>
+                        <div class="cat-desc" style="font-size: 16px;">Bộ đề sát hạch 500 câu dành riêng cho lực lượng
+                            Công
+                            an nhân dân</div>
+                        <div style="display: flex; gap: 15px; width: 100%; margin-top: 10px; flex-direction: column;">
+                            <button class="primary-btn" onclick="window.location.href='b-cand-menu.html'"
+                                style="padding: 18px; font-size: 18px;">🚀 Thi thử ngay</button>
+                        </div>
+                    </div>
+
+                    <!-- HẠNG C CAND -->
+                    <div class="cat-card" style="padding: 40px;">
+                        <div class="cat-icon"
+                            style="background: rgba(79, 70, 229, 0.15); width: 100px; height: 100px; font-size: 50px;">
+                            <i class="fa-solid fa-star"></i></div>
+                        <div class="cat-title" style="font-size: 28px;">HẠNG C CAND</div>
+                        <div class="cat-desc" style="font-size: 16px;">Bộ đề sát hạch 500 câu dành riêng cho lực lượng
+                            Công
+                            an nhân dân</div>
+                        <div style="display: flex; gap: 15px; width: 100%; margin-top: 10px; flex-direction: column;">
+                            <button class="primary-btn" onclick="window.location.href='cand-menu.html'"
+                                style="padding: 18px; font-size: 18px;">🚀 Thi thử ngay</button>
+                        </div>
                     </div>
                 </div>
             </div>
