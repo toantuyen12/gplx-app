@@ -179,7 +179,7 @@ html+=`
 
 <h3>${data.question}</h3>
 
-${data.img ? `<img src="${data.img}" loading="lazy">` : ""}
+${data.img ? `<picture><source srcset="${data.img}" type="image/webp"><img src="${data.img.replace('.webp', '.png')}" loading="lazy" decoding="async"></picture>` : ""}
 
 </div>
 
@@ -405,7 +405,7 @@ quiz.forEach((q, i) => {
             </span>
         </h4>
         <p style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 10px 0 20px 0; line-height: 1.5;">${qData.question}</p>
-        ${qData.img ? `<div style="text-align:center; margin-bottom: 20px;"><img src="${qData.img}" style="max-width:100%; height:auto; border-radius:8px;" loading="lazy"></div>` : ""}
+        ${qData.img ? `<div style="text-align:center; margin-bottom: 20px;"><picture><source srcset="${qData.img}" type="image/webp"><img src="${qData.img.replace('.webp', '.png')}" style="max-width:100%; height:auto; border-radius:8px;" loading="lazy" decoding="async"></picture></div>` : ""}
         
         <div class="result-options" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px;">
     `;
@@ -559,4 +559,4 @@ el.innerText = minutes + ":" + seconds.toString().padStart(2,"0");
 },1000);
 
 }
-
+

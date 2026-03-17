@@ -6,7 +6,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="icon" type="image/png" href="assets/favicon.webp">
 <title>Chính sách bảo mật | thigplx.site</title>
 <meta name="description" content="Chính sách bảo mật của thigplx.site. Chúng tôi cam kết bảo vệ thông tin cá nhân và quyền riêng tư của người dùng khi sử dụng dịch vụ ôn thi GPLX.">
 
@@ -14,50 +14,57 @@
     <link rel="stylesheet" href="css/style.css">
 
     <link rel="canonical" href="https://thigplx.site/privacy.html">
-    <script type="application/ld+json">
+    
+    
+    
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Thi GPLX Online",
+      "@id": "https://thigplx.site/#website",
       "url": "https://thigplx.site/",
+      "name": "Thi GPLX Online",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://thigplx.site/index.html#quiz?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
-    }
-    </script>
-    <script type="application/ld+json">
+    },
     {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Thi GPLX",
-      "url": "https://thigplx.site/",
-      "logo": "https://thigplx.site/assets/logo.svg",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "thigplx.contact@gmail.com",
-        "contactType": "customer service"
+      "@type": "WebPage",
+      "@id": "https://thigplx.site/privacy.html#webpage",
+      "url": "https://thigplx.site/privacy.html",
+      "name": "Chính sách bảo mật",
+      "isPartOf": {
+        "@id": "https://thigplx.site/#website"
       }
-    }
-    </script>
-    <script type="application/ld+json">
+    },
     {
-      "@context": "https://schema.org",
       "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Trang chủ",
-        "item": "https://thigplx.site/"
-      },{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Chính sách bảo mật",
-        "item": "https://thigplx.site/privacy.html"
-      }]
+      "@id": "https://thigplx.site/privacy.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Trang chủ",
+          "item": "https://thigplx.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Chính sách bảo mật",
+          "item": "https://thigplx.site/privacy.html"
+        }
+      ]
     }
-    </script>
+  ]
+}
+</script>
 </head>
 
 <body>
@@ -65,7 +72,7 @@
 <header>
 <div class="nav-container">
 <a href="index.html" class="logo" style="display:flex; align-items:center;">
-    <img loading="lazy" src="assets/logo.svg" alt="Thi GPLX Logo" style="height:32px; margin-right:10px;">
+    <img decoding="async" loading="lazy" src="assets/logo.svg" alt="Thi GPLX Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
 <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
@@ -90,6 +97,13 @@
 <a href="contact.html">Liên hệ</a>
 </nav>
 </header>
+
+<nav aria-label="breadcrumb" class="breadcrumb-container" style="padding: 10px 20px; font-size: 14px; color: #666; background: #fff; border-bottom: 1px solid #eaeaea;">
+  <a href="/" style="color: var(--primary-color); text-decoration: none;">Trang chủ</a> 
+  <span style="margin: 0 8px;">/</span> 
+  <span aria-current="page" style="font-weight: 600;">Chính sách bảo mật</span>
+</nav>
+
 
 <div class="container">
 <div class="card" style="padding: 40px; margin-top:20px;">

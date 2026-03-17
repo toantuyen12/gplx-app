@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="icon" type="image/png" href="assets/favicon.webp">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,80 +18,56 @@
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="canonical" href="https://thigplx.site/duong-truong.html">
-    <script type="application/ld+json">
+    
+    
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Thi GPLX Online",
+      "@id": "https://thigplx.site/#website",
       "url": "https://thigplx.site/",
+      "name": "Thi GPLX Online",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://thigplx.site/index.html#quiz?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
-    }
-    </script>
-    <script type="application/ld+json">
+    },
     {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Thi GPLX",
-      "url": "https://thigplx.site/",
-      "logo": "https://thigplx.site/assets/logo.svg",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "thigplx.contact@gmail.com",
-        "contactType": "customer service"
+      "@type": "WebPage",
+      "@id": "https://thigplx.site/duong-truong.html#webpage",
+      "url": "https://thigplx.site/duong-truong.html",
+      "name": "Thi Đường Trường GPLX: Hướng Dẫn & Mẹo Thi Đậu 100%",
+      "isPartOf": {
+        "@id": "https://thigplx.site/#website"
       }
-    }
-    <script type="application/ld+json">
+    },
     {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
+      "@type": "BreadcrumbList",
+      "@id": "https://thigplx.site/duong-truong.html#breadcrumb",
+      "itemListElement": [
         {
-          "@type": "Question",
-          "name": "Thi đường trường GPLX bao nhiêu điểm thì đậu?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Thí sinh cần đạt tối thiểu 80/100 điểm để được công nhận kết quả đậu phần thi sát hạch lái xe trên đường trường."
-          }
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Trang chủ",
+          "item": "https://thigplx.site/"
         },
         {
-          "@type": "Question",
-          "name": "Thi đường trường kéo dài bao lâu?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Bài thi đường trường thường diễn ra trong quãng đường khoảng 2 km và thời gian thực hiện trung bình từ 3-5 phút tùy vào điều kiện giao thông."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Có bị trừ điểm khi quên xi nhan không?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Có. Quên bật xi nhan khi xuất phát hoặc khi kết thúc bài thi sẽ bị trừ 5 điểm/lỗi."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Có thể thi lại đường trường nếu rớt không?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nếu không may bị rớt phần thi đường trường, bạn có thể đăng ký thi lại phần này vào đợt sát hạch kế tiếp mà không cần thi lại lý thuyết và sa hình."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Mẹo thi đường trường dễ đậu là gì?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Mẹo chính là giữ bình tĩnh, luôn thắt dây an toàn, quan sát gương chiếu hậu và thực hiện đúng các lệnh tăng số, giảm số của giám khảo sát hạch."
-          }
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Thi Đường Trường GPLX: Hướng Dẫn & Mẹo Thi Đậu 100%",
+          "item": "https://thigplx.site/duong-truong.html"
         }
       ]
     }
-    </script>
+  ]
+}
+</script>
 </head>
 
 <body>
@@ -100,7 +76,7 @@
     <header>
 <div class="nav-container">
 <a href="index.html" class="logo" style="display:flex; align-items:center;">
-    <img loading="lazy" src="assets/logo.svg" alt="Thi GPLX Logo" style="height:32px; margin-right:10px;">
+    <img decoding="async" loading="lazy" src="assets/logo.svg" alt="Thi GPLX Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
 <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
@@ -125,6 +101,13 @@
 <a href="contact.html">Liên hệ</a>
 </nav>
 </header>
+
+<nav aria-label="breadcrumb" class="breadcrumb-container" style="padding: 10px 20px; font-size: 14px; color: #666; background: #fff; border-bottom: 1px solid #eaeaea;">
+  <a href="/" style="color: var(--primary-color); text-decoration: none;">Trang chủ</a> 
+  <span style="margin: 0 8px;">/</span> 
+  <span aria-current="page" style="font-weight: 600;">Thi Đường Trường GPLX: Hướng Dẫn & Mẹo Thi Đậu 100%</span>
+</nav>
+
 
     <!-- SCROLL PROGRESS BAR -->
     <div class="scroll-progress-container">
@@ -401,8 +384,13 @@
                                     </div>
                                 </div>
                             </div>
-                                    <!-- COMMON MISTAKES -->
-            <section class="seo-mistakes-section">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMON MISTAKES -->
+            <section class="seo-mistakes-section" style="margin-top: 40px;">
                 <h2 class="seo-h2">Những lỗi khiến thí sinh dễ trượt thi đường trường</h2>
                 <div class="seo-text-card red-border">
                     <ul class="custom-list red-list">
@@ -415,7 +403,7 @@
             </section>
 
             <!-- INTERNAL LEARNING LINKS -->
-            <section class="seo-internal-links">
+            <section class="seo-internal-links" style="margin-top: 40px;">
                 <h2 class="seo-h2">Học thi GPLX đầy đủ hơn</h2>
                 <div class="links-grid">
                     <a href="class-b-menu.html" class="link-card">
@@ -449,7 +437,7 @@
             </section>
 
             <!-- FAQ SECTION -->
-            <div class="faq-section">
+            <section class="faq-section" style="margin-top: 40px;">
                 <h2 class="faq-title">Câu hỏi thường gặp về thi đường trường GPLX</h2>
                 <div class="faq-list">
                     <div class="faq-item">
@@ -473,7 +461,7 @@
                         <p class="faq-answer">Hãy luôn ghi nhớ: Thắt dây an toàn, Xi nhan trái, Nhả côn từ từ, và đặc biệt là thực hiện đúng lệnh tăng/giảm số của giám khảo.</p>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- BOTTOM BACK BUTTON -->
             <div class="back-bottom">
@@ -1115,7 +1103,24 @@
         });
     </script>
 
-    <footer class="footer">
+    
+<div class="related-links-section" style="margin-top: 40px; padding: 20px; background: #f9fafb; border-radius: 8px;">
+    <h3><i class="fa-solid fa-link" style="color:var(--primary-color);"></i> Bài viết liên quan (Có thể bạn quan tâm)</h3>
+    <ul style="list-style-type: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
+        <li><a href="/meo-thi-gplx.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Mẹo thi GPLX B2, C đậu 100%</a></li>
+        <li><a href="/sahinh.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ 11 Bài thi Sa Hình Ô Tô chi tiết</a></li>
+        <li><a href="/bien-bao-giao-thong.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Tổng hợp Biển báo Giao thông mới nhất</a></li>
+        <li><a href="/kinh-nghiem-hoc-gplx.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Kinh nghiệm học lái xe thực tế từ A-Z</a></li>
+        <li><a href="/duong-truong.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Kỹ năng thi lái xe đường trường</a></li>
+        <li><a href="/class-b-menu.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Hệ thống 600 câu hỏi thi GPLX Hạng B</a></li>
+        <li><a href="/class-c-menu.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Đề thi thử lý thuyết Hạng C chuẩn</a></li>
+        <li><a href="/games/sign-puzzle.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Game học biển báo vui nhộn (Puzzle)</a></li>
+        <li><a href="/games/memory-challenge.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Trò chơi luyện trí nhớ biển báo</a></li>
+        <li><a href="/bai-viet/nhung-dieu-can-biet-ve-bai-thi-sa-hinh-o-to.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Những lỗi hay gặp khi thi Sa Hình</a></li>
+    </ul>
+</div>
+
+<footer class="footer">
 <div class="footer-container">
     <div class="footer-nav">
         <a href="index.html">Trang chủ</a>

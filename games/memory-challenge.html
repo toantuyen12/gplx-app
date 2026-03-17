@@ -614,6 +614,54 @@
             }
         }
     </style>
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://thigplx.site/#website",
+      "url": "https://thigplx.site/",
+      "name": "Thi GPLX Online",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://thigplx.site/index.html#quiz?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://thigplx.site/games/memory-challenge.html#webpage",
+      "url": "https://thigplx.site/games/memory-challenge.html",
+      "name": "Thử Thách Trí Nhớ - GPLX App",
+      "isPartOf": {
+        "@id": "https://thigplx.site/#website"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://thigplx.site/games/memory-challenge.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Trang chủ",
+          "item": "https://thigplx.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Thử Thách Trí Nhớ - GPLX App",
+          "item": "https://thigplx.site/games/memory-challenge.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 
 <body>
@@ -631,6 +679,13 @@
             <div class="game-title">Thử Thách Trí Nhớ</div>
             <div style="width: 70px;"></div>
         </header>
+
+<nav aria-label="breadcrumb" class="breadcrumb-container" style="padding: 10px 20px; font-size: 14px; color: #666; background: #fff; border-bottom: 1px solid #eaeaea;">
+  <a href="/" style="color: var(--primary-color); text-decoration: none;">Trang chủ</a> 
+  <span style="margin: 0 8px;">/</span> 
+  <span aria-current="page" style="font-weight: 600;">Thử Thách Trí Nhớ - GPLX App</span>
+</nav>
+
 
         <!-- Start Screen -->
         <main class="screen active" id="startScreen">
@@ -821,7 +876,10 @@
             currentMemorizedSigns.forEach(sign => {
                 const item = document.createElement('div');
                 item.className = 'memorize-item';
-                item.innerHTML = `<img src="${sign.image}" alt="Sign">`;
+                item.innerHTML = `<picture>
+  <source srcset="${sign.webp" type="image/webp">
+  <img decoding="async" loading="lazy" src="${sign.png" alt="Sign">
+</picture>`;
                 memorizeGrid.appendChild(item);
             });
 
@@ -845,7 +903,10 @@
             options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerHTML = `<img src="${opt.image}" alt="Sign">`;
+                btn.innerHTML = `<picture>
+  <source srcset="${opt.webp" type="image/webp">
+  <img decoding="async" loading="lazy" src="${opt.png" alt="Sign">
+</picture>`;
                 btn.onclick = () => handleSelection(opt.id, btn);
                 optionsGrid.appendChild(btn);
             });
