@@ -1,0 +1,24 @@
+{
+  "name": "gplx-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "answers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toantuyen12/gplx-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/toantuyen12/gplx-app/issues"
+  },
+  "homepage": "https://github.com/toantuyen12/gplx-app#readme",
+  "dependencies": {
+    "mammoth": "^1.12.0"
+  }
+}

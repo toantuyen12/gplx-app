@@ -148,6 +148,13 @@
       backdrop-filter: blur(8px);
     }
 
+    .sign-card-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
     .sign-card::before {
       content: '';
       position: absolute;
@@ -1111,8 +1118,8 @@
         const imgHtml = `
       <div class="sign-img-wrap">
         <img
-          data-src="${sign.png"
-          src="${sign.png"http://www.w3.org/2000/svg' width='75' height='75'%3E%3C/svg%3E"
+          data-src="${sign.image}"
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='75' height='75'%3E%3C/svg%3E"
           alt="${title}"
           loading="lazy"
           class="lazy-sign-img"
@@ -1121,10 +1128,12 @@
       </div>`;
 
         card.innerHTML = `
-      ${imgHtml}
-      <span class="sign-code" style="background:${cat.color};">${code}</span>
-      <div class="sign-title">${title}</div>
-      <div class="sign-short-desc">${shortDesc}</div>`;
+      <div class="sign-card-inner">
+        ${imgHtml}
+        <span class="sign-code" style="background:${cat.color};">${code}</span>
+        <div class="sign-title">${title}</div>
+        <div class="sign-short-desc">${shortDesc}</div>
+      </div>`;
 
         // Lazy load via IntersectionObserver
         const img = card.querySelector('.lazy-sign-img');
