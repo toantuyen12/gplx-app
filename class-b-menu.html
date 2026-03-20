@@ -124,11 +124,11 @@
         <div class="category-grid">
 
             <!-- Ôn tập 600 câu -->
-            <a href="#" class="cat-card" onclick="alert('Module đang được cập nhật!')">
+            <a href="javascript:void(0)" class="cat-card" onclick="openChapterModal()">
                 <div class="cat-icon" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1);"><i
                         class="fa-solid fa-book-open-reader"></i></div>
                 <div class="cat-title">1. Ôn tập 600 câu</div>
-                <div class="cat-desc">Học toàn bộ 600 câu hỏi lý thuyết</div>
+                <div class="cat-desc">Học toàn bộ 600 câu hỏi lý thuyết theo từng chương</div>
                 <button class="primary-btn" style="background: #3b82f6;">Bắt đầu học</button>
             </a>
             <!-- Thi đề 30 câu -->
@@ -375,6 +375,10 @@ document.addEventListener('click', function(e) {
     }
 });
 </script>
+
+<!-- Study 600 Module -->
+<link rel="stylesheet" href="css/style.css">
+<script src="js/study600.js"></script>
 </body>
 
 </html>
