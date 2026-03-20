@@ -305,7 +305,7 @@ function renderGrid() {
   // Update progress text
   const answered = Object.keys(progress.answers).length;
   const pEl = document.getElementById('s600ProgressText');
-  if (pEl) pEl.textContent = `${answered}/${questions.length} câu`;
+  if (pEl) pEl.textContent = `Câu đã làm: ${answered}/${questions.length} câu`;
 }
 
 function renderQuestion() {
@@ -337,7 +337,7 @@ function renderQuestion() {
   // Explanation with id for auto-scroll
   const explHtml = ans
     ? `<div class="s600-explanation ${ans.isCorrect ? 's600-expl-correct' : 's600-expl-wrong'}" id="s600Explanation">
-        <div class="s600-expl-header">${ans.isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng — Đáp án đúng đã được tô sáng!'}</div>
+        <div class="s600-expl-header">${ans.isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng'}</div>
         <div class="s600-expl-body">${explMap[q.id] || 'Không có giải thích.'}</div>
        </div>`
     : '';
@@ -353,7 +353,6 @@ function renderQuestion() {
         <span class="s600-q-index">Câu ${currentIdx + 1} / ${questions.length}</span>
         ${criticalBadge}
       </div>
-      <span class="s600-q-id">#${q.id}</span>
     </div>
     <div class="s600-q-text">
       <span class="s600-q-num">Câu ${currentIdx + 1}:</span> ${q.question}

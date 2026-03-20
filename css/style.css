@@ -1439,9 +1439,9 @@ nav.main-nav a:hover {
   color: #b91c1c !important;
 }
 .s600-grid-critical {
-  background: #fff1f2 !important;
-  border-color: #f43f5e !important;
-  color: #e11d48 !important;
+  background: #fffbeb !important;
+  border-color: #d97706 !important;
+  color: #b45309 !important;
   font-weight: 700 !important;
   border-width: 2px !important;
 }
@@ -1467,7 +1467,7 @@ nav.main-nav a:hover {
 .dot-current  { background: var(--primary); }
 .dot-correct  { background: #22c55e; }
 .dot-wrong    { background: #ef4444; }
-.dot-critical { background: #f43f5e; }
+.dot-critical { background: #d97706; }
 
 /* ---- QUESTION CONTENT ---- */
 .s600-q-header {
@@ -1510,7 +1510,7 @@ nav.main-nav a:hover {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #be123c;
+  background: #f59e0b;
   color: #fff;
   font-size: 11px;
   text-transform: uppercase;
@@ -1518,7 +1518,7 @@ nav.main-nav a:hover {
   font-weight: 800;
   padding: 3px 10px;
   border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(190, 18, 60, 0.2);
+  box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
   white-space: nowrap;
 }
 .s600-q-text {
