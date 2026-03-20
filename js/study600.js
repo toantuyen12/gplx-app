@@ -321,30 +321,43 @@ function renderQuestion() {
     ? `<div class="s600-q-img-wrap"><img src="${getImageSrc(q.image)}" alt="Hình câu ${q.id}" onerror="this.src='images/q${q.id}.webp'; this.onerror=null;" loading="lazy"></div>`
     : '';
 
-  const optionsHtml = q.options.map(opt => {
+  // Numbered answer options: 1. 2. 3. 4.
+  const optionsHtml = q.options.map((opt, i) => {
     let cls = 's600-ans-btn';
     if (ans) {
       if (opt.id === q.correct_answer) cls += ' s600-ans-correct';
       else if (opt.id === ans.selectedId && !ans.isCorrect) cls += ' s600-ans-wrong';
     }
-    return `<button class="${cls}" data-opt="${opt.id}" onclick="selectAnswer(${opt.id})">${opt.text}</button>`;
+    return `<button class="${cls}" data-opt="${opt.id}" onclick="selectAnswer(${opt.id})">
+      <span class="s600-ans-num">${i + 1}.</span>
+      <span class="s600-ans-text">${opt.text}</span>
+    </button>`;
   }).join('');
 
+  // Explanation with id for auto-scroll
   const explHtml = ans
-    ? `<div class="s600-explanation ${ans.isCorrect ? 's600-expl-correct' : 's600-expl-wrong'}">
-        <div class="s600-expl-header">${ans.isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng'}</div>
+    ? `<div class="s600-explanation ${ans.isCorrect ? 's600-expl-correct' : 's600-expl-wrong'}" id="s600Explanation">
+        <div class="s600-expl-header">${ans.isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng — Đáp án đúng đã được tô sáng!'}</div>
         <div class="s600-expl-body">${explMap[q.id] || 'Không có giải thích.'}</div>
        </div>`
     : '';
 
+  // Critical badge (separate pill)
+  const criticalBadge = q.is_critical
+    ? `<span class="s600-critical-badge">⚠️ Điểm liệt</span>`
+    : '';
+
   area.innerHTML = `
     <div class="s600-q-header">
-      <span class="s600-q-badge ${q.is_critical ? 's600-critical-badge' : ''}">
-        ${q.is_critical ? '⚠ Điểm liệt' : 'Câu hỏi'}
-      </span>
-      <span class="s600-q-index">Câu ${currentIdx + 1}/${questions.length} (ID: ${q.id})</span>
+      <div class="s600-q-header-left">
+        <span class="s600-q-index">Câu ${currentIdx + 1} / ${questions.length}</span>
+        ${criticalBadge}
+      </div>
+      <span class="s600-q-id">#${q.id}</span>
     </div>
-    <div class="s600-q-text">${q.question}</div>
+    <div class="s600-q-text">
+      <span class="s600-q-num">Câu ${currentIdx + 1}:</span> ${q.question}
+    </div>
     ${imgHtml}
     <div class="s600-answers">${optionsHtml}</div>
     ${explHtml}
@@ -360,11 +373,10 @@ function renderQuestion() {
 }
 
 function selectAnswer(optId) {
-  const { questions, explMap, progress, currentIdx, chapter } = _studyState;
+  const { questions, progress, currentIdx, chapter } = _studyState;
   const q = questions[currentIdx];
   if (!q) return;
 
-  // Allow changing answer
   const isCorrect = optId === q.correct_answer;
   progress.answers[q.id] = { selectedId: optId, isCorrect };
   progress.lastQuestion = q.id;
@@ -372,6 +384,14 @@ function selectAnswer(optId) {
 
   renderQuestion();
   renderGrid();
+
+  // Auto-scroll to explanation after a short delay
+  setTimeout(() => {
+    const expl = document.getElementById('s600Explanation');
+    if (expl) {
+      expl.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Changed to center for better visibility
+    }
+  }, 150); // Slightly faster delay
 }
 
 function jumpToQuestion(idx) {
@@ -421,6 +441,31 @@ document.addEventListener('DOMContentLoaded', () => {
       document.title = `${chapter.title}: ${chapter.subtitle} | thigplx.site`;
 
       renderStudyLayout(chapter, questions, explMap, progress, currentIdx);
+      initHotkeys();
     })();
   }
 });
+
+function initHotkeys() {
+  document.addEventListener('keydown', (e) => {
+    // Only handle if no modal is open
+    if (modalOverlayEl && modalOverlayEl.classList.contains('s600-active')) return;
+    if (!_studyState) return;
+
+    // Arrow keys for navigation
+    if (e.key === 'ArrowRight') {
+      nextQuestion();
+    } else if (e.key === 'ArrowLeft') {
+      prevQuestion();
+    }
+
+    // Number keys 1-4 for answer selection
+    const num = parseInt(e.key);
+    if (!isNaN(num) && num >= 1 && num <= 4) {
+      const q = _studyState.questions[_studyState.currentIdx];
+      if (q && q.options[num - 1]) {
+        selectAnswer(q.options[num - 1].id);
+      }
+    }
+  });
+}
