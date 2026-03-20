@@ -1439,9 +1439,9 @@ nav.main-nav a:hover {
   color: #b91c1c !important;
 }
 .s600-grid-critical {
-  background: #fffbeb !important;
-  border-color: #f59e0b !important;
-  color: #b45309 !important;
+  background: #fffbeb;
+  border-color: #f59e0b;
+  color: #b45309;
   font-weight: 700 !important;
   border-width: 2px !important;
   position: relative;
