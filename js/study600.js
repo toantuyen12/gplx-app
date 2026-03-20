@@ -289,11 +289,15 @@ function renderGrid() {
   grid.innerHTML = questions.map((q, idx) => {
     const ans = progress.answers[q.id];
     let cls = 's600-grid-btn';
+    let label = q.id;
     if (idx === currentIdx) cls += ' s600-grid-current';
     else if (ans) cls += ans.isCorrect ? ' s600-grid-correct' : ' s600-grid-wrong';
-    else if (q.is_critical) cls += ' s600-grid-critical';
+    
+    if (q.is_critical) {
+      cls += ' s600-grid-critical';
+    }
 
-    return `<button class="${cls}" onclick="jumpToQuestion(${idx})" title="Câu ${q.id}">${q.id}</button>`;
+    return `<button class="${cls}" onclick="jumpToQuestion(${idx})" title="Câu ${q.id} ${q.is_critical ? '(Điểm liệt)' : ''}">${label}</button>`;
   }).join('');
 
   // Scroll current into view
@@ -335,27 +339,45 @@ function renderQuestion() {
   }).join('');
 
   // Explanation with id for auto-scroll
-  const explHtml = ans
-    ? `<div class="s600-explanation ${ans.isCorrect ? 's600-expl-correct' : 's600-expl-wrong'}" id="s600Explanation">
-        <div class="s600-expl-header">${ans.isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng'}</div>
+  let explHtml = '';
+  if (ans) {
+    let explClass = ans.isCorrect ? 's600-expl-correct' : 's600-expl-wrong';
+    let title = ans.isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng';
+    
+    if (q.is_critical) {
+      if (ans.isCorrect) {
+        explClass = 's600-expl-critical-correct';
+        title = '✅ Đúng (Câu điểm liệt)';
+      } else {
+        explClass = 's600-expl-critical-wrong';
+        title = '⚠️ Sai câu điểm liệt';
+      }
+    }
+
+    explHtml = `<div class="s600-explanation ${explClass}" id="s600Explanation">
+        <div class="s600-expl-header">${title}</div>
+        ${q.is_critical && !ans.isCorrect 
+          ? `<div style="font-weight:700; color:#e11d48; margin-bottom:10px; font-size:15px;">Đây là câu điểm liệt. Nếu sai câu này trong bài thi thật, bạn sẽ bị trượt ngay.</div>` 
+          : ''
+        }
         <div class="s600-expl-body">${explMap[q.id] || 'Không có giải thích.'}</div>
-       </div>`
-    : '';
+       </div>`;
+  }
 
   // Critical badge (separate pill)
   const criticalBadge = q.is_critical
-    ? `<span class="s600-critical-badge">⚠️ Điểm liệt</span>`
+    ? `<span class="s600-critical-badge">⚠️ CÂU ĐIỂM LIỆT</span>`
     : '';
 
   area.innerHTML = `
     <div class="s600-q-header">
       <div class="s600-q-header-left">
-        <span class="s600-q-index">Câu ${currentIdx + 1} / ${questions.length}</span>
+        <span class="s600-q-index">Câu ${q.id} / 600</span>
         ${criticalBadge}
       </div>
     </div>
-    <div class="s600-q-text">
-      <span class="s600-q-num">Câu ${currentIdx + 1}:</span> ${q.question}
+    <div class="s600-q-text ${q.is_critical ? 's600-q-text-critical' : ''}">
+      <span class="s600-q-num">Câu ${q.id}:</span> ${q.question}
     </div>
     ${imgHtml}
     <div class="s600-answers">${optionsHtml}</div>
