@@ -160,7 +160,7 @@ function updateModalProgress() {
 
 function startChapter(chapterId) {
   closeChapterModal();
-  window.location.href = `study600.html?mode=${_manager.mode}&chapter=${chapterId}`;
+  window.location.href = `study600.html?mode=${_manager.mode}&chapter=${chapterId}&question=1`;
 }
 
 // ===== STUDY PAGE LOGIC =====
@@ -384,9 +384,6 @@ function nextQuestion() {
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('s600StudyRoot')) {
     const modeParam = getQueryParam('mode') || 'default';
-    const chParam = parseInt(getQueryParam('chapter') || '1');
-    const qParam = parseInt(getQueryParam('question'));
-
     (async () => {
       const ok = await loadData();
       if (!ok) {
@@ -397,37 +394,56 @@ document.addEventListener('DOMContentLoaded', () => {
       // Initialize Manager
       const mode = String(modeParam || 'default').trim().toLowerCase();
       _manager = createQuestionManager(mode, allQuestionsRaw, allExplanationsRaw);
-      
-      const chapter = _manager.chapters.find(c => c.id === chParam) || _manager.chapters[0];
-      const questions = _manager.getQuestionsByChapter(chapter.id);
-      
-      const progress = loadProgress(_manager.mode, chapter.id);
-      let currentIdx = 0;
 
-      // 1. Check Deep Link Question
-      if (qParam && qParam >= 1 && qParam <= _manager.total) {
+      const root = document.getElementById('s600StudyRoot');
+      const chParamRaw = getQueryParam('chapter');
+      const qParamRaw = getQueryParam('question');
+
+      if (!chParamRaw && !qParamRaw) {
+        // No chapter/question specified -> show landing state + modal
+        document.title = _manager.mode === 'a1' ? 'Ôn tập 250 Câu (A1/A) | thigplx.site' : 'Ôn tập 600 Câu GPLX | thigplx.site';
+        root.innerHTML = `
+          <div class="s600-study-wrap" style="display:flex; align-items:center; justify-content:center; min-height:80vh; flex-direction:column; text-align:center; padding:20px;">
+            <div style="font-size:64px; margin-bottom:20px;">📖</div>
+            <h1 style="font-size:24px; color:#1e293b; margin-bottom:10px;">${_manager.mode === 'a1' ? 'Ôn tập 250 Câu (A1/A)' : 'Ôn tập 600 Câu'}</h1>
+            <p style="color:#64748b; margin-bottom:30px; max-width:400px;">Vui lòng chọn một chương để bắt đầu quá trình ôn tập và theo dõi tiến độ của bạn.</p>
+            <button class="primary-btn" onclick="openChapterModal()" style="padding:14px 30px; font-size:16px;">Chọn chương để học</button>
+          </div>
+        `;
+        openChapterModal();
+      } else {
+        // Parameters present -> Load specific state
+        const chParam = parseInt(chParamRaw || '1');
+        const qParam = parseInt(qParamRaw);
+
+        const chapter = _manager.chapters.find(c => c.id === chParam) || _manager.chapters[0];
+        const questions = _manager.getQuestionsByChapter(chapter.id);
+        const progress = loadProgress(_manager.mode, chapter.id);
+        let currentIdx = 0;
+
+        // 1. Check Deep Link Question range
+        if (qParam && qParam >= 1 && qParam <= _manager.total) {
           const foundIdx = questions.indexOf(qParam);
           if (foundIdx >= 0) {
-              currentIdx = foundIdx;
+            currentIdx = foundIdx;
           } else {
-              // If question is in another chapter, we could redirect, or just find it.
-              // For simplicity, if it's in the current range, use it.
-              // If not, we found it by calling getMapping
-              const m = _manager.getMapping(qParam);
-              if (m && m.chapterId !== chapter.id) {
-                  window.location.href = `study600.html?mode=${_manager.mode}&chapter=${m.chapterId}&question=${qParam}`;
-                  return;
-              }
+            const m = _manager.getMapping(qParam);
+            if (m && m.chapterId !== chapter.id) {
+              window.location.href = `study600.html?mode=${_manager.mode}&chapter=${m.chapterId}&question=${qParam}`;
+              return;
+            }
           }
-      } 
-      // 2. Fallback to Progress
-      else if (progress.lastQuestion) {
-        const restoreIdx = questions.indexOf(progress.lastQuestion);
-        if (restoreIdx >= 0) currentIdx = restoreIdx;
-      }
+        } 
+        // 2. Fallback to Progress
+        else if (progress.lastQuestion) {
+          const restoreIdx = questions.indexOf(progress.lastQuestion);
+          if (restoreIdx >= 0) currentIdx = restoreIdx;
+        }
 
-      document.title = `${chapter.title}: ${chapter.subtitle} | thigplx.site`;
-      renderStudyLayout(chapter, questions, progress, currentIdx);
+        document.title = `${chapter.title}: ${chapter.subtitle} | thigplx.site`;
+        renderStudyLayout(chapter, questions, progress, currentIdx);
+      }
+      
       initHotkeys();
     })();
   }
