@@ -18,7 +18,8 @@ const CRITICAL_IDS = [19, 20, 21, 22, 24, 26, 27, 28, 30, 47, 48, 52, 53, 63, 64
  * @param {string} mode - 'a1' or 'default' (600)
  */
 function createQuestionManager(mode, questions600 = [], questions600explain = []) {
-  const isA1 = mode === 'a1';
+  const normalizedMode = String(mode || 'default').trim().toLowerCase();
+  const isA1 = normalizedMode === 'a1';
   
   // 1. Setup Data Source
   let mapping = [];

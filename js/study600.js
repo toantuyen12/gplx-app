@@ -395,7 +395,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Initialize Manager
-      _manager = createQuestionManager(modeParam, allQuestionsRaw, allExplanationsRaw);
+      const mode = String(modeParam || 'default').trim().toLowerCase();
+      _manager = createQuestionManager(mode, allQuestionsRaw, allExplanationsRaw);
       
       const chapter = _manager.chapters.find(c => c.id === chParam) || _manager.chapters[0];
       const questions = _manager.getQuestionsByChapter(chapter.id);
