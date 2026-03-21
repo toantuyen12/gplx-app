@@ -175,7 +175,7 @@
                 <button class="primary-btn" style="background: #eab308;">Xem biển báo</button>
             </a>
             <!-- Câu điểm liệt -->
-            <a href="study600.html?license=c1&mode=critical" class="cat-card">
+            <a href="#" class="cat-card" onclick="openCriticalPopup('c1'); return false;">
                 <div class="cat-icon" style="color: #f97316; background: rgba(249, 115, 22, 0.1);"><i
                         class="fa-solid fa-radiation"></i></div>
                 <div class="cat-title">4. Câu điểm liệt</div>
@@ -320,6 +320,92 @@ fetch("/feedback.html?v=3")
 </script>
 <link rel="stylesheet" href="/css/feedback.css?v=3">
 <script src="/js/feedback.js?v=3"></script>
+
+<!-- Critical Mode Modal -->
+<div id="criticalModal" class="s600-overlay" style="display:none;" onclick="if(event.target===this) closeCriticalPopup()">
+  <div class="s600-modal">
+    <div class="s600-modal-header">
+      <div>
+        <h2 class="s600-modal-title" id="critTitle">Câu điểm liệt hạng C1</h2>
+        <p class="s600-modal-subtitle">Danh sách 60 câu hỏi bắt buộc phải trả lời đúng</p>
+      </div>
+      <button class="s600-close-btn" onclick="closeCriticalPopup()">✕</button>
+    </div>
+    
+    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+        <h4 style="color: #ef4444; margin: 0 0 8px 0; font-size: 15px;"><i class="fa-solid fa-triangle-exclamation"></i> Lưu ý quan trọng</h4>
+        <ul style="margin: 0; padding-left: 20px; color: #b91c1c; font-size: 14px; line-height: 1.5;">
+            <li>Câu điểm liệt phải trả lời đúng 100%</li>
+            <li>Sai 1 câu sẽ bị trượt</li>
+            <li>Tổng 60 câu cần ghi nhớ</li>
+        </ul>
+    </div>
+
+    <div class="s600-chapters-grid" style="grid-template-columns: 1fr; margin-bottom: 20px;">
+      <div class="s600-chapter-card" style="--ch-color: #f97316; --ch-bg: rgba(249,115,22,0.1); cursor: default;">
+        <div class="s600-ch-top">
+          <span class="s600-ch-icon" style="background:rgba(249,115,22,0.1); color:#f97316;">🔥</span>
+          <div class="s600-ch-info">
+            <div class="s600-ch-title">Tiến độ ôn tập</div>
+            <div class="s600-ch-sub" id="critProgressText">0 / 60 câu</div>
+          </div>
+        </div>
+        <div class="s600-ch-progress-bar">
+          <div class="s600-ch-progress-fill" id="critProgressBar" style="width: 0%; background: #f97316;"></div>
+        </div>
+        <div class="s600-ch-stats" id="critStatusContainer">
+          <span class="s600-stat-new">Chưa bắt đầu</span>
+        </div>
+      </div>
+    </div>
+    
+    <button id="critStartBtn" class="primary-btn" style="width: 100%; background: #f97316; font-size: 16px; padding: 14px; border-radius: 8px; border: none; color: #fff; cursor: pointer; font-weight: 600;" onclick="startCritical()">
+      Bắt đầu luyện tập
+    </button>
+  </div>
+</div>
+
+<script>
+let currentCritLicense = '';
+function openCriticalPopup(license) {
+    currentCritLicense = license;
+    const modal = document.getElementById('criticalModal');
+    modal.style.display = 'flex';
+    // Small timeout to allow display:flex to apply before adding opacity transition class
+    setTimeout(() => { modal.classList.add('s600-active'); }, 10);
+    document.getElementById('critTitle').textContent = `Câu điểm liệt hạng ${license.toUpperCase()}`;
+    
+    const lsKey = `gplx_${license}_critical`;
+    let answeredCount = 0;
+    try {
+        const data = JSON.parse(localStorage.getItem(lsKey));
+        if (data && data.answers) {
+            answeredCount = Object.keys(data.answers).length;
+        }
+    } catch(e) {}
+    
+    document.getElementById('critProgressText').textContent = `${answeredCount} / 60 câu`;
+    const pct = Math.min(100, Math.round((answeredCount / 60) * 100));
+    document.getElementById('critProgressBar').style.width = `${pct}%`;
+    
+    const statsContainer = document.getElementById('critStatusContainer');
+    if (answeredCount === 0) {
+        statsContainer.innerHTML = `<span class="s600-stat-new">Chưa bắt đầu</span>`;
+    } else if (answeredCount < 60) {
+        statsContainer.innerHTML = `<span class="s600-stat-pct" style="color:#f97316">${pct}% Đang học</span>`;
+    } else {
+        statsContainer.innerHTML = `<span class="s600-stat-done" style="color:#22c55e">✓ Hoàn thành</span>`;
+    }
+}
+function closeCriticalPopup() {
+    const modal = document.getElementById('criticalModal');
+    modal.classList.remove('s600-active');
+    setTimeout(() => { modal.style.display = 'none'; }, 300);
+}
+function startCritical() {
+    window.location.href = `study600.html?license=${currentCritLicense}&mode=critical`;
+}
+</script>
 </body>
 
 </html>

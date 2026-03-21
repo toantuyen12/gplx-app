@@ -9,7 +9,7 @@ let _license = 'default';
 
 // ===== LOCAL STORAGE HELPERS =====
 const LS_KEY = (license, mode, chId) => {
-  if (mode === 'critical') return `gplx_${license}_critical_progress`;
+  if (mode === 'critical') return `gplx_${license}_critical`;
   return `gplx_${license}_${mode}_chapter_${chId}`;
 };
 
@@ -269,11 +269,15 @@ function renderGrid() {
     if (idx === currentIdx) cls += ' s600-grid-current';
     else if (ans) cls += ans.isCorrect ? ' s600-grid-correct' : ' s600-grid-wrong';
     
-    if (q && q.is_critical) {
+    let iconHTML = '';
+    if (_manager.mode === 'critical') {
+      iconHTML = ' <span style="font-size:10px;">🔥</span>';
+      cls += ' s600-grid-critical';
+    } else if (q && q.is_critical) {
       cls += ' s600-grid-critical';
     }
 
-    return `<button class="${cls}" onclick="jumpToQuestion(${idx})" title="Câu ${qId} ${q?.is_critical ? '(Điểm liệt)' : ''}">${qId}</button>`;
+    return `<button class="${cls}" onclick="jumpToQuestion(${idx})" title="Câu ${qId} ${q?.is_critical ? '(Điểm liệt)' : ''}">${qId}${iconHTML}</button>`;
   }).join('');
 
   const currentBtn = grid.querySelector('.s600-grid-current');
