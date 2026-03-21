@@ -4,11 +4,11 @@
 
 // ===== A1/A LICENSE CONFIGURATION =====
 const CHAPTERS_A1 = [
-  { id: 1, name: 'Quy tắc giao thông', questionIds: Array.from({ length: 100 }, (_, i) => i + 1) },
-  { id: 2, name: 'Văn hóa & Đạo đức', questionIds: [181, 187, 188, 192, 193, 194, 195, 199, 203, 205] },
-  { id: 3, name: 'Kỹ thuật lái xe', questionIds: [211, 214, 215, 217, 219, 221, 224, 230, 237, 239, 243, 245, 248, 258, 260] },
-  { id: 4, name: 'Biển báo đường bộ', questionIds: Array.from({ length: 90 }, (_, i) => 301 + i) },
-  { id: 5, name: 'Sa hình & Xử lý', questionIds: Array.from({ length: 35 }, (_, i) => i + 486) }
+  { id: 1, name: 'Quy tắc giao thông đường bộ', originalChapterId: 1, questionIds: Array.from({ length: 100 }, (_, i) => i + 1) },
+  { id: 2, name: 'Văn hóa giao thông và đạo đức người lái xe', originalChapterId: 2, questionIds: [181, 187, 188, 192, 193, 194, 195, 199, 203, 205] },
+  { id: 3, name: 'Kỹ thuật lái xe', originalChapterId: 3, questionIds: [211, 214, 215, 217, 219, 221, 224, 230, 237, 239, 243, 245, 248, 258, 260] },
+  { id: 4, name: 'Hệ thống biển báo hiệu đường bộ', originalChapterId: 5, questionIds: Array.from({ length: 90 }, (_, i) => 301 + i) },
+  { id: 5, name: 'Sa hình và xử lý tình huống giao thông', originalChapterId: 6, questionIds: Array.from({ length: 35 }, (_, i) => i + 486) }
 ];
 
 const CRITICAL_IDS = [19, 20, 21, 22, 24, 26, 27, 28, 30, 47, 48, 52, 53, 63, 64, 65, 68, 70, 71, 72];
@@ -31,12 +31,13 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
       const chapterQuestions = ch.questionIds.map(origId => ({
         newId: newIdCounter++,
         originalId: origId,
-        chapterId: ch.id
+        chapterId: ch.id, // Logical ID (1-5)
+        originalChapterId: ch.originalChapterId
       }));
       mapping = mapping.concat(chapterQuestions);
       
       chapters.push({
-...ch,
+        id: ch.id,
         title: `Chương ${Romanize(ch.id)}`,
         subtitle: ch.name,
         count: ch.questionIds.length,
