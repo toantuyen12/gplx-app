@@ -79,7 +79,8 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
 
     let newIdCtr = 1;
     if (isA1Critical) {
-      CRITICAL_IDS.forEach(cId => {
+      const A1_A_CRITICAL_IDS = [19, 20, 21, 22, 24, 26, 27, 28, 30, 47, 48, 52, 53, 63, 64, 65, 68, 70, 71, 72];
+      A1_A_CRITICAL_IDS.forEach(cId => {
         mapping.push({ newId: newIdCtr++, originalId: cId, chapterId: 1 });
       });
     } else {
