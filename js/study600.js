@@ -1,123 +1,65 @@
 /**
- * study600.js — Ôn tập 600 câu study mode
- * Handles: chapter modal, data loading, question rendering, answer logic,
- * explanation display, navigation, and localStorage progress.
+ * study600.js — Ôn tập GPLX study mode
+ * Supports 600 questions (default) and 250 questions (A1/A)
  */
 
-// ===== CHAPTER DEFINITIONS =====
-const CHAPTERS = [
-  {
-    id: 1,
-    title: 'Chương I',
-    subtitle: 'Quy định chung và quy tắc giao thông đường bộ',
-    range: [1, 180],
-    count: 180,
-    icon: '📚',
-    color: '#4f46e5',
-    colorBg: 'rgba(79,70,229,0.1)',
-    desc: 'Luật giao thông, quy tắc đường bộ, quyền và nghĩa vụ người tham gia giao thông'
-  },
-  {
-    id: 2,
-    title: 'Chương II',
-    subtitle: 'Văn hóa giao thông và đạo đức người lái xe',
-    range: [181, 205],
-    count: 25,
-    icon: '🤝',
-    color: '#0891b2',
-    colorBg: 'rgba(8,145,178,0.1)',
-    desc: 'Văn hóa ứng xử, đạo đức nghề lái xe, trách nhiệm xã hội khi tham gia giao thông'
-  },
-  {
-    id: 3,
-    title: 'Chương III',
-    subtitle: 'Kỹ thuật lái xe',
-    range: [206, 263],
-    count: 58,
-    icon: '🚗',
-    color: '#16a34a',
-    colorBg: 'rgba(22,163,74,0.1)',
-    desc: 'Kỹ năng điều khiển xe, xử lý tình huống kỹ thuật và các thao tác cơ bản'
-  },
-  {
-    id: 4,
-    title: 'Chương IV',
-    subtitle: 'Cấu tạo và sửa chữa',
-    range: [264, 300],
-    count: 37,
-    icon: '🔧',
-    color: '#ea580c',
-    colorBg: 'rgba(234,88,12,0.1)',
-    desc: 'Cấu tạo xe, hệ thống cơ khí, nhận biết và xử lý sự cố kỹ thuật cơ bản'
-  },
-  {
-    id: 5,
-    title: 'Chương V',
-    subtitle: 'Báo hiệu đường bộ',
-    range: [301, 485],
-    count: 185,
-    icon: '🚦',
-    color: '#ca8a04',
-    colorBg: 'rgba(202,138,4,0.1)',
-    desc: 'Hệ thống biển báo, tín hiệu đèn, vạch kẻ đường và các báo hiệu giao thông'
-  },
-  {
-    id: 6,
-    title: 'Chương VI',
-    subtitle: 'Sa hình và xử lý tình huống',
-    range: [486, 600],
-    count: 115,
-    icon: '🗺️',
-    color: '#dc2626',
-    colorBg: 'rgba(220,38,38,0.1)',
-    desc: 'Các tình huống sa hình thực tế, cách xử lý khi gặp các trường hợp phức tạp trên đường'
-  }
-];
+let _manager = null;
+let _studyState = null;
 
 // ===== LOCAL STORAGE HELPERS =====
-const LS_KEY = (chId) => `gplx_study600_ch${chId}`;
+const LS_KEY = (mode, chId) => `gplx_study_${mode}_ch${chId}`;
 
-function loadProgress(chapterId) {
+function loadProgress(mode, chapterId) {
   try {
-    const raw = localStorage.getItem(LS_KEY(chapterId));
+    const raw = localStorage.getItem(LS_KEY(mode, chapterId));
     if (raw) return JSON.parse(raw);
   } catch (e) {}
   return { answers: {}, lastQuestion: 1 };
 }
 
-function saveProgress(chapterId, progress) {
+function saveProgress(mode, chapterId, progress) {
   try {
-    localStorage.setItem(LS_KEY(chapterId), JSON.stringify(progress));
+    localStorage.setItem(LS_KEY(mode, chapterId), JSON.stringify(progress));
   } catch (e) {}
 }
 
 function getChapterStats(chapterId, chapter) {
-  const progress = loadProgress(chapterId);
+  const progress = loadProgress(_manager.mode, chapterId);
   const total = chapter.count;
   const answered = Object.keys(progress.answers).length;
   const correct = Object.values(progress.answers).filter(a => a.isCorrect).length;
   return { total, answered, correct, wrong: answered - correct, lastQuestion: progress.lastQuestion || 1 };
 }
 
-// ===== IMAGE RESOLUTION =====
+// ===== IMAGE RESOLUTION & PRELOADING =====
 function getImageSrc(imageName) {
-  // Try images600 first (for questions with 600-set images), then fallback
   return `images/images600/${imageName}`;
 }
 
+function preloadNextQuestion(currentIdx) {
+  const nextIdx = currentIdx + 1;
+  if (nextIdx < _studyState.questions.length) {
+    const nextQ = _manager.getQuestion(_studyState.questions[nextIdx]);
+    if (nextQ && nextQ.image) {
+      const img = new Image();
+      img.src = getImageSrc(nextQ.image);
+    }
+  }
+}
+
 // ===== DATA LOADING =====
-let allQuestions = null;
-let allExplanations = null;
+let allQuestionsRaw = null;
+let allExplanationsRaw = null;
 
 async function loadData() {
-  if (allQuestions && allExplanations) return true;
+  if (allQuestionsRaw && allExplanationsRaw) return true;
   try {
     const [qRes, eRes] = await Promise.all([
       fetch('questions600.json'),
       fetch('questions600explain.json')
     ]);
-    allQuestions = await qRes.json();
-    allExplanations = await eRes.json();
+    allQuestionsRaw = await qRes.json();
+    allExplanationsRaw = await eRes.json();
     return true;
   } catch (err) {
     console.error('Failed to load study data:', err);
@@ -144,22 +86,20 @@ function closeChapterModal() {
 }
 
 function buildModal() {
-  // Overlay
   modalOverlayEl = document.createElement('div');
   modalOverlayEl.className = 's600-overlay';
   modalOverlayEl.addEventListener('click', (e) => {
     if (e.target === modalOverlayEl) closeChapterModal();
   });
 
-  // Modal box
   modalEl = document.createElement('div');
   modalEl.className = 's600-modal';
 
-  // Header
+  const title = _manager.mode === 'a1' ? '📖 Ôn Tập 250 Câu (A1/A)' : '📖 Ôn Tập 600 Câu';
   modalEl.innerHTML = `
     <div class="s600-modal-header">
       <div>
-        <h2 class="s600-modal-title">📖 Ôn Tập 600 Câu</h2>
+        <h2 class="s600-modal-title">${title}</h2>
         <p class="s600-modal-subtitle">Chọn chương để bắt đầu học</p>
       </div>
       <button class="s600-close-btn" onclick="closeChapterModal()">✕</button>
@@ -174,36 +114,43 @@ function buildModal() {
 function updateModalProgress() {
   const grid = document.getElementById('s600ChaptersGrid');
   if (!grid) return;
-  grid.innerHTML = CHAPTERS.map(ch => {
+  
+  grid.innerHTML = _manager.chapters.map(ch => {
     const stats = getChapterStats(ch.id, ch);
     const pct = stats.total > 0 ? Math.round((stats.answered / stats.total) * 100) : 0;
-    const correctPct = stats.answered > 0 ? Math.round((stats.correct / stats.answered) * 100) : 0;
+    
+    // Default colors if not provided in config
+    const color = ch.color || '#4f46e5';
+    const colorBg = ch.colorBg || 'rgba(79,70,229,0.1)';
+    const icon = ch.icon || '📚';
+    const desc = ch.desc || ch.subtitle;
+
     return `
-      <div class="s600-chapter-card" onclick="startChapter(${ch.id})" style="--ch-color: ${ch.color}; --ch-bg: ${ch.colorBg};">
+      <div class="s600-chapter-card" onclick="startChapter(${ch.id})" style="--ch-color: ${color}; --ch-bg: ${colorBg};">
         <div class="s600-ch-top">
-          <span class="s600-ch-icon" style="background:${ch.colorBg}; color:${ch.color};">${ch.icon}</span>
+          <span class="s600-ch-icon" style="background:${colorBg}; color:${color};">${icon}</span>
           <div class="s600-ch-info">
             <div class="s600-ch-title">${ch.title}</div>
             <div class="s600-ch-sub">${ch.subtitle}</div>
           </div>
         </div>
-        <div class="s600-ch-desc">${ch.desc}</div>
+        <div class="s600-ch-desc">${desc}</div>
         <div class="s600-ch-meta">
           <span class="s600-ch-range">Câu ${ch.range[0]}–${ch.range[1]}</span>
           <span class="s600-ch-count">${ch.count} câu</span>
         </div>
         <div class="s600-ch-progress-bar">
-          <div class="s600-ch-progress-fill" style="width:${pct}%; background:${ch.color};"></div>
+          <div class="s600-ch-progress-fill" style="width:${pct}%; background:${color};"></div>
         </div>
         <div class="s600-ch-stats">
           ${stats.answered > 0
             ? `<span class="s600-stat-done">✓ ${stats.correct} đúng</span>
                ${stats.wrong > 0 ? `<span class="s600-stat-wrong">✗ ${stats.wrong} sai</span>` : ''}
-               <span class="s600-stat-pct" style="color:${ch.color}">${pct}% hoàn thành</span>`
+               <span class="s600-stat-pct" style="color:${color}">${pct}% hoàn thành</span>`
             : `<span class="s600-stat-new">Chưa bắt đầu</span>`
           }
         </div>
-        <button class="s600-ch-btn" style="background:${ch.color};">
+        <button class="s600-ch-btn" style="background:${color};">
           ${stats.answered > 0 ? '▶ Tiếp tục học' : '▶ Bắt đầu học'}
         </button>
       </div>
@@ -211,26 +158,32 @@ function updateModalProgress() {
   }).join('');
 }
 
-async function startChapter(chapterId) {
+function startChapter(chapterId) {
   closeChapterModal();
-  // Navigate to study page
-  window.location.href = `study600.html?chapter=${chapterId}`;
+  window.location.href = `study600.html?mode=${_manager.mode}&chapter=${chapterId}`;
 }
 
 // ===== STUDY PAGE LOGIC =====
-// These functions run only on study600.html
 
 function getQueryParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
 
-let _studyState = null;
+function updateURL(mode, chapterId, questionId) {
+    const url = new URL(window.location);
+    url.searchParams.set('mode', mode);
+    url.searchParams.set('chapter', chapterId);
+    url.searchParams.set('question', questionId);
+    window.history.replaceState({}, '', url);
+}
 
-function renderStudyLayout(chapter, questions, explMap, progress, currentIdx) {
-  _studyState = { chapter, questions, explMap, progress, currentIdx };
+function renderStudyLayout(chapter, questions, progress, currentIdx) {
+  _studyState = { chapter, questions, progress, currentIdx };
 
   const root = document.getElementById('s600StudyRoot');
   if (!root) return;
+
+  const modeTitle = _manager.mode === 'a1' ? 'Ôn tập 250 câu' : 'Ôn tập 600 câu';
 
   root.innerHTML = `
     <div class="s600-study-wrap">
@@ -238,7 +191,7 @@ function renderStudyLayout(chapter, questions, explMap, progress, currentIdx) {
       <div class="s600-top-bar">
         <a href="${getReferrerMenu()}" class="s600-back-btn">← Quay lại</a>
         <div class="s600-top-center">
-          <span class="s600-label">Ôn tập</span>
+          <span class="s600-label">${modeTitle}</span>
           <span class="s600-chapter-name">${chapter.title}: ${chapter.subtitle}</span>
         </div>
         <div class="s600-top-right">
@@ -274,11 +227,11 @@ function renderStudyLayout(chapter, questions, explMap, progress, currentIdx) {
 
 function getReferrerMenu() {
   const ref = document.referrer;
-  const menus = ['class-b-menu.html','class-a-menu.html','class-a1-menu.html','class-c-menu.html','class-c1-menu.html'];
+  const menus = ['class-a1-menu.html','class-a-menu.html','class-b-menu.html','class-c-menu.html','class-c1-menu.html'];
   for (const m of menus) {
     if (ref && ref.includes(m)) return m;
   }
-  return 'class-b-menu.html';
+  return _manager.mode === 'a1' ? 'class-a1-menu.html' : 'class-b-menu.html';
 }
 
 function renderGrid() {
@@ -286,46 +239,44 @@ function renderGrid() {
   const grid = document.getElementById('s600Grid');
   if (!grid) return;
 
-  grid.innerHTML = questions.map((q, idx) => {
-    const ans = progress.answers[q.id];
+  grid.innerHTML = questions.map((qId, idx) => {
+    const q = _manager.getQuestion(qId);
+    const ans = progress.answers[qId];
     let cls = 's600-grid-btn';
-    let label = q.id;
     if (idx === currentIdx) cls += ' s600-grid-current';
     else if (ans) cls += ans.isCorrect ? ' s600-grid-correct' : ' s600-grid-wrong';
     
-    if (q.is_critical) {
+    if (q && q.is_critical) {
       cls += ' s600-grid-critical';
     }
 
-    return `<button class="${cls}" onclick="jumpToQuestion(${idx})" title="Câu ${q.id} ${q.is_critical ? '(Điểm liệt)' : ''}">${label}</button>`;
+    return `<button class="${cls}" onclick="jumpToQuestion(${idx})" title="Câu ${qId} ${q?.is_critical ? '(Điểm liệt)' : ''}">${qId}</button>`;
   }).join('');
 
-  // Scroll current into view
   const currentBtn = grid.querySelector('.s600-grid-current');
   if (currentBtn) {
     currentBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
-  // Update progress text
   const answered = Object.keys(progress.answers).length;
   const pEl = document.getElementById('s600ProgressText');
   if (pEl) pEl.textContent = `Câu đã làm: ${answered}/${questions.length} câu`;
 }
 
 function renderQuestion() {
-  const { chapter, questions, explMap, progress, currentIdx } = _studyState;
-  const q = questions[currentIdx];
+  const { chapter, questions, progress, currentIdx } = _studyState;
+  const qId = questions[currentIdx];
+  const q = _manager.getQuestion(qId);
   if (!q) return;
 
-  const ans = progress.answers[q.id];
+  const ans = progress.answers[qId];
   const area = document.getElementById('s600QuestionArea');
   if (!area) return;
 
   const imgHtml = q.image
-    ? `<div class="s600-q-img-wrap"><img src="${getImageSrc(q.image)}" alt="Hình câu ${q.id}" onerror="this.src='images/q${q.id}.webp'; this.onerror=null;" loading="lazy"></div>`
+    ? `<div class="s600-q-img-wrap"><img src="${getImageSrc(q.image)}" alt="Hình câu ${q.displayId}" onerror="this.src='images/q${q.id}.webp'; this.onerror=null;" loading="lazy"></div>`
     : '';
 
-  // Numbered answer options: 1. 2. 3. 4.
   const optionsHtml = q.options.map((opt, i) => {
     let cls = 's600-ans-btn';
     if (ans) {
@@ -338,7 +289,6 @@ function renderQuestion() {
     </button>`;
   }).join('');
 
-  // Explanation with id for auto-scroll
   let explHtml = '';
   if (ans) {
     let explClass = ans.isCorrect ? 's600-expl-correct' : 's600-expl-wrong';
@@ -360,24 +310,21 @@ function renderQuestion() {
           ? `<div style="font-weight:700; color:#e11d48; margin-bottom:10px; font-size:15px;">Đây là câu điểm liệt. Nếu sai câu này trong bài thi thật, bạn sẽ bị trượt ngay.</div>` 
           : ''
         }
-        <div class="s600-expl-body">${explMap[q.id] || 'Không có giải thích.'}</div>
+        <div class="s600-expl-body">${q.explanation || 'Không có giải thích.'}</div>
        </div>`;
   }
 
-  // Critical badge (separate pill)
-  const criticalBadge = q.is_critical
-    ? `<span class="s600-critical-badge">⚠️ CÂU ĐIỂM LIỆT</span>`
-    : '';
+  const criticalBadge = q.is_critical ? `<span class="s600-critical-badge">⚠️ CÂU ĐIỂM LIỆT</span>` : '';
 
   area.innerHTML = `
     <div class="s600-q-header">
       <div class="s600-q-header-left">
-        <span class="s600-q-index">Câu ${q.id} / 600</span>
+        <span class="s600-q-index">Câu ${q.displayId} / ${_manager.total}</span>
         ${criticalBadge}
       </div>
     </div>
     <div class="s600-q-text ${q.is_critical ? 's600-q-text-critical' : ''}">
-      <span class="s600-q-num">Câu ${q.id}:</span> ${q.question}
+      <span class="s600-q-num">Câu ${q.displayId}:</span> ${q.question}
     </div>
     ${imgHtml}
     <div class="s600-answers">${optionsHtml}</div>
@@ -391,34 +338,36 @@ function renderQuestion() {
       </button>
     </div>
   `;
+
+  updateURL(_manager.mode, chapter.id, q.displayId);
+  preloadNextQuestion(currentIdx);
 }
 
 function selectAnswer(optId) {
   const { questions, progress, currentIdx, chapter } = _studyState;
-  const q = questions[currentIdx];
+  const qId = questions[currentIdx];
+  const q = _manager.getQuestion(qId);
   if (!q) return;
 
   const isCorrect = optId === q.correct_answer;
-  progress.answers[q.id] = { selectedId: optId, isCorrect };
-  progress.lastQuestion = q.id;
-  saveProgress(chapter.id, progress);
+  progress.answers[qId] = { selectedId: optId, isCorrect };
+  progress.lastQuestion = qId;
+  saveProgress(_manager.mode, chapter.id, progress);
 
   renderQuestion();
   renderGrid();
 
-  // Auto-scroll to explanation after a short delay
   setTimeout(() => {
     const expl = document.getElementById('s600Explanation');
-    if (expl) {
-      expl.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Changed to center for better visibility
-    }
-  }, 150); // Slightly faster delay
+    if (expl) expl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 150);
 }
 
 function jumpToQuestion(idx) {
   _studyState.currentIdx = idx;
-  _studyState.progress.lastQuestion = _studyState.questions[idx]?.id;
-  saveProgress(_studyState.chapter.id, _studyState.progress);
+  const qId = _studyState.questions[idx];
+  _studyState.progress.lastQuestion = qId;
+  saveProgress(_manager.mode, _studyState.chapter.id, _studyState.progress);
   renderQuestion();
   renderGrid();
 }
@@ -433,11 +382,10 @@ function nextQuestion() {
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
-  // If on study600.html, init study page
   if (document.getElementById('s600StudyRoot')) {
+    const modeParam = getQueryParam('mode') || 'default';
     const chParam = parseInt(getQueryParam('chapter') || '1');
-    const chapter = CHAPTERS.find(c => c.id === chParam);
-    if (!chapter) return;
+    const qParam = parseInt(getQueryParam('question'));
 
     (async () => {
       const ok = await loadData();
@@ -446,22 +394,39 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const questions = allQuestions.filter(q => q.id >= chapter.range[0] && q.id <= chapter.range[1]);
-      const explMap = {};
-      allExplanations.forEach(e => { explMap[e.id] = e.explanation; });
-
-      const progress = loadProgress(chParam);
+      // Initialize Manager
+      _manager = createQuestionManager(modeParam, allQuestionsRaw, allExplanationsRaw);
+      
+      const chapter = _manager.chapters.find(c => c.id === chParam) || _manager.chapters[0];
+      const questions = _manager.getQuestionsByChapter(chapter.id);
+      
+      const progress = loadProgress(_manager.mode, chapter.id);
       let currentIdx = 0;
 
-      if (progress.lastQuestion) {
-        const restoreIdx = questions.findIndex(q => q.id === progress.lastQuestion);
+      // 1. Check Deep Link Question
+      if (qParam && qParam >= 1 && qParam <= _manager.total) {
+          const foundIdx = questions.indexOf(qParam);
+          if (foundIdx >= 0) {
+              currentIdx = foundIdx;
+          } else {
+              // If question is in another chapter, we could redirect, or just find it.
+              // For simplicity, if it's in the current range, use it.
+              // If not, we found it by calling getMapping
+              const m = _manager.getMapping(qParam);
+              if (m && m.chapterId !== chapter.id) {
+                  window.location.href = `study600.html?mode=${_manager.mode}&chapter=${m.chapterId}&question=${qParam}`;
+                  return;
+              }
+          }
+      } 
+      // 2. Fallback to Progress
+      else if (progress.lastQuestion) {
+        const restoreIdx = questions.indexOf(progress.lastQuestion);
         if (restoreIdx >= 0) currentIdx = restoreIdx;
       }
 
-      // Update page title
       document.title = `${chapter.title}: ${chapter.subtitle} | thigplx.site`;
-
-      renderStudyLayout(chapter, questions, explMap, progress, currentIdx);
+      renderStudyLayout(chapter, questions, progress, currentIdx);
       initHotkeys();
     })();
   }
@@ -469,24 +434,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initHotkeys() {
   document.addEventListener('keydown', (e) => {
-    // Only handle if no modal is open
     if (modalOverlayEl && modalOverlayEl.classList.contains('s600-active')) return;
     if (!_studyState) return;
 
-    // Arrow keys for navigation
-    if (e.key === 'ArrowRight') {
-      nextQuestion();
-    } else if (e.key === 'ArrowLeft') {
-      prevQuestion();
-    }
+    if (e.key === 'ArrowRight') nextQuestion();
+    else if (e.key === 'ArrowLeft') prevQuestion();
 
-    // Number keys 1-4 for answer selection
     const num = parseInt(e.key);
     if (!isNaN(num) && num >= 1 && num <= 4) {
-      const q = _studyState.questions[_studyState.currentIdx];
-      if (q && q.options[num - 1]) {
-        selectAnswer(q.options[num - 1].id);
-      }
+      const qId = _studyState.questions[_studyState.currentIdx];
+      const q = _manager.getQuestion(qId);
+      if (q && q.options[num - 1]) selectAnswer(q.options[num - 1].id);
     }
   });
 }
