@@ -8,7 +8,7 @@ let _studyState = null;
 let _license = 'default';
 
 // ===== LOCAL STORAGE HELPERS =====
-const LS_KEY = (license, mode, chId) => `gplx_prog_${license}_${mode}_ch${chId}`;
+const LS_KEY = (license, mode, chId) => `gplx_${license}_${mode}_chapter_${chId}`;
 
 function loadProgress(license, mode, chapterId) {
   try {
@@ -40,8 +40,9 @@ function getImageSrc(imageName) {
 function preloadNextQuestion(currentIdx) {
   const nextIdx = currentIdx + 1;
   if (nextIdx < _studyState.questions.length) {
-    const nextQ = _manager.getQuestion(_studyState.questions[nextIdx]);
-    if (nextQ && nextQ.image) {
+    const nextQId = _studyState.questions[nextIdx];
+    const nextQ = _manager.getQuestion(nextQId);
+    if (nextQ && nextQ.image && nextQ.image !== 'null') {
       const img = new Image();
       img.src = getImageSrc(nextQ.image);
     }
@@ -283,8 +284,14 @@ function renderGrid() {
 function renderQuestion() {
   const { chapter, questions, progress, currentIdx } = _studyState;
   const qId = questions[currentIdx];
-  const q = _manager.getQuestion(qId);
-  if (!q) return;
+  let q = _manager.getQuestion(qId);
+  if (!q) {
+      console.warn("Invalid questionId:", qId);
+      if (currentIdx !== 0) {
+          jumpToQuestion(0);
+      }
+      return;
+  }
 
   const ans = progress.answers[qId];
   const area = document.getElementById('s600QuestionArea');
@@ -410,8 +417,9 @@ function nextQuestion() {
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('s600StudyRoot');
   if (root) {
-    _license = String(getQueryParam('license') || 'b').trim().toLowerCase();
-    const modeParam = getQueryParam('mode') || 'default';
+    const params = new URLSearchParams(window.location.search);
+    _license = String(params.get('license') || 'b').trim().toLowerCase();
+    const modeParam = params.get('mode') || 'default';
 
     (async () => {
       const ok = await loadData();
@@ -424,18 +432,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const mode = String(modeParam || 'default').trim().toLowerCase();
       _manager = createQuestionManager(mode, allQuestionsRaw, allExplanationsRaw);
 
-      const chParamRaw = getQueryParam('chapter');
-      const qParamRaw = getQueryParam('question');
+      const chParamRaw = params.get('chapter');
+      const qParamRaw = params.get('question');
+      
+      const chapterId = parseInt(chParamRaw, 10);
+      const questionId = parseInt(qParamRaw, 10);
+      
+      // Dev mode debug logs
+      console.log("Mode:", _manager.mode);
+      console.log("License:", _license);
+      console.log("Chapter:", isNaN(chapterId) ? "none" : chapterId);
+      console.log("Question:", isNaN(questionId) ? "none" : questionId);
 
-      if (!chParamRaw && !qParamRaw) {
+      if (isNaN(chapterId) && isNaN(questionId)) {
         // No chapter/question specified -> show modal immediately
         document.title = `Ôn tập GPLX - Hạng ${_license.toUpperCase()}`;
         root.innerHTML = ''; // Keep it clean
         openChapterModal();
       } else {
         // Parameters present -> Load specific state
-        const chParam = parseInt(chParamRaw || '1');
-        const qParam = parseInt(qParamRaw);
+        const chParam = isNaN(chapterId) ? 1 : chapterId;
+        const qParam = isNaN(questionId) ? 1 : questionId;
 
         const chapter = _manager.chapters.find(c => c.id === chParam) || _manager.chapters[0];
         const questions = _manager.getQuestionsByChapter(chapter.id);
@@ -452,9 +469,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (m && m.chapterId !== chapter.id) {
               window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${m.chapterId}&question=${qParam}`;
               return;
+            } else {
+              console.warn("Invalid question map link:", qParam);
             }
           }
-        } 
+        } else if (qParam) {
+           console.warn("Invalid question out of bounds:", qParam);
+        }
         // 2. Fallback to Progress
         else if (progress.lastQuestion) {
           const restoreIdx = questions.indexOf(progress.lastQuestion);

@@ -11,6 +11,53 @@ const CHAPTERS_A1 = [
   { id: 5, name: 'Sa hình và xử lý tình huống giao thông', originalChapterId: 6, questionIds: Array.from({ length: 35 }, (_, i) => i + 486) }
 ];
 
+// ===== CHAPTER METADATA (UI/UX) =====
+const CHAPTER_META = {
+  1: {
+    icon: "📘",
+    color: "#3B82F6",
+    name: "Quy định chung và quy tắc giao thông đường bộ",
+    description: "Chương này cung cấp kiến thức nền tảng về luật giao thông đường bộ, bao gồm các quy định chung, nguyên tắc tham gia giao thông, quyền và nghĩa vụ của người điều khiển phương tiện, cũng như các quy tắc xử lý tình huống cơ bản khi lưu thông trên đường."
+  },
+  2: {
+    icon: "🧠",
+    color: "#10B981",
+    name: "Văn hóa giao thông và đạo đức người lái xe",
+    description: "Tập trung vào việc xây dựng ý thức, trách nhiệm và đạo đức của người lái xe khi tham gia giao thông. Chương này giúp người học hiểu rõ tầm quan trọng của hành vi ứng xử văn minh, an toàn và tôn trọng người khác trên đường."
+  },
+  3: {
+    icon: "🚗",
+    color: "#F59E0B",
+    name: "Kỹ thuật lái xe",
+    description: "Trang bị các kiến thức và kỹ năng điều khiển phương tiện an toàn, bao gồm thao tác lái xe cơ bản, xử lý tình huống khi di chuyển, cách kiểm soát tốc độ, khoảng cách và phản ứng trong các điều kiện giao thông khác nhau."
+  },
+  4: {
+    icon: "⚙️",
+    color: "#EF4444",
+    name: "Cấu tạo và sửa chữa",
+    description: "Giới thiệu cấu tạo cơ bản của phương tiện, nguyên lý hoạt động của các bộ phận chính và các kiến thức sửa chữa đơn giản. Giúp người lái hiểu xe để vận hành an toàn và xử lý sự cố cơ bản."
+  },
+  5: {
+    icon: "🚦",
+    color: "#8B5CF6",
+    name: "Báo hiệu đường bộ",
+    description: "Cung cấp kiến thức về hệ thống biển báo, vạch kẻ đường, tín hiệu đèn giao thông và hiệu lệnh của người điều khiển giao thông. Đây là phần quan trọng giúp người học nhận biết và tuân thủ đúng quy định khi tham gia giao thông."
+  },
+  6: {
+    icon: "🛣️",
+    color: "#06B6D4",
+    name: "Giải thế sa hình và kỹ năng xử lý tình huống giao thông",
+    description: "Rèn luyện khả năng quan sát và phân tích tình huống giao thông thông qua các bài sa hình. Giúp người học nâng cao kỹ năng phán đoán, xử lý tình huống phức tạp và đưa ra quyết định chính xác khi lái xe."
+  }
+};
+
+function getRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 const CRITICAL_IDS = [19, 20, 21, 22, 24, 26, 27, 28, 30, 47, 48, 52, 53, 63, 64, 65, 68, 70, 71, 72];
 
 /**
@@ -36,24 +83,45 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
       }));
       mapping = mapping.concat(chapterQuestions);
       
+      const meta = CHAPTER_META[ch.originalChapterId];
       chapters.push({
         id: ch.id,
         title: `Chương ${Romanize(ch.id)}`,
-        subtitle: ch.name,
+        subtitle: meta ? meta.name : ch.name,
+        desc: meta ? meta.description : '',
+        icon: meta ? meta.icon : '📚',
+        color: meta ? meta.color : '#4f46e5',
+        colorBg: meta ? getRgba(meta.color, 0.1) : 'rgba(79,70,229,0.1)',
         count: ch.questionIds.length,
         range: [chapterQuestions[0].newId, chapterQuestions[chapterQuestions.length - 1].newId]
       });
     });
   } else {
     // Default 600 mode
-    chapters = [
-      { id: 1, title: 'Chương I', subtitle: 'Quy định chung và quy tắc giao thông đường bộ', range: [1, 180], count: 180 },
-      { id: 2, title: 'Chương II', subtitle: 'Văn hóa giao thông và đạo đức người lái xe', range: [181, 205], count: 25 },
-      { id: 3, title: 'Chương III', subtitle: 'Kỹ thuật lái xe', range: [206, 263], count: 58 },
-      { id: 4, title: 'Chương IV', subtitle: 'Cấu tạo và sửa chữa', range: [264, 300], count: 37 },
-      { id: 5, title: 'Chương V', subtitle: 'Báo hiệu đường bộ', range: [301, 485], count: 185 },
-      { id: 6, title: 'Chương VI', subtitle: 'Sa hình và xử lý tình huống', range: [486, 600], count: 115 }
+    const default600Chapters = [
+      { id: 1, range: [1, 180], count: 180 },
+      { id: 2, range: [181, 205], count: 25 },
+      { id: 3, range: [206, 263], count: 58 },
+      { id: 4, range: [264, 300], count: 37 },
+      { id: 5, range: [301, 485], count: 185 },
+      { id: 6, range: [486, 600], count: 115 }
     ];
+
+    chapters = default600Chapters.map(ch => {
+      const meta = CHAPTER_META[ch.id];
+      return {
+        id: ch.id,
+        title: `Chương ${Romanize(ch.id)}`,
+        subtitle: meta.name,
+        desc: meta.description,
+        icon: meta.icon,
+        color: meta.color,
+        colorBg: getRgba(meta.color, 0.1),
+        range: ch.range,
+        count: ch.count
+      };
+    });
+
     // For 600, mapping is 1:1
     for (let i = 1; i <= 600; i++) {
         const ch = chapters.find(c => i >= c.range[0] && i <= c.range[1]);
