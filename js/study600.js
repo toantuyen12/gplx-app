@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Initialize Manager
       const mode = String(modeParam || 'default').trim().toLowerCase();
-      _manager = createQuestionManager(mode, allQuestionsRaw, allExplanationsRaw);
+      _manager = createQuestionManager(mode, allQuestionsRaw, allExplanationsRaw, _license);
 
       const chParamRaw = params.get('chapter');
       const qParamRaw = params.get('question');

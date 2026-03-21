@@ -52,8 +52,9 @@ const CRITICAL_IDS = [19, 20, 21, 22, 24, 26, 27, 28, 30, 47, 48, 52, 53, 63, 64
  * createQuestionManager(mode, questions600, questions600explain)
  * @param {string} mode - 'a1' or 'default' (600)
  */
-function createQuestionManager(mode, questions600 = [], questions600explain = []) {
+function createQuestionManager(mode, questions600 = [], questions600explain = [], licenseParam = 'b') {
   const normalizedMode = String(mode || 'default').trim().toLowerCase();
+  const normalizedLicense = String(licenseParam || 'b').trim().toLowerCase();
   const isA1 = normalizedMode === 'a1';
   
   // 1. Setup Data Source
@@ -61,24 +62,33 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
   let chapters = [];
   
   if (normalizedMode === 'critical') {
+    const isA1Critical = (normalizedLicense === 'a1' || normalizedLicense === 'a');
+    const critCount = isA1Critical ? 20 : 60;
+
     chapters = [{
       id: 1, 
-      title: '60 Câu Điểm Liệt', 
-      subtitle: 'Tình huống nghiệm trọng', 
+      title: `${critCount} Câu Điểm Liệt`, 
+      subtitle: 'Tình huống nghiêm trọng', 
       desc: 'Bắt buộc phải trả lời đúng. Sai 1 câu sẽ bị đánh trượt toàn bộ.', 
       icon: '☢️', 
       color: '#f97316', 
       colorBg: 'rgba(249,115,22,0.1)', 
-      count: 60, 
-      range: [1, 60]
+      count: critCount, 
+      range: [1, critCount]
     }];
 
     let newIdCtr = 1;
-    questions600.forEach(q => {
-      if (q.is_critical === true) {
-        mapping.push({ newId: newIdCtr++, originalId: q.id, chapterId: 1 });
-      }
-    });
+    if (isA1Critical) {
+      CRITICAL_IDS.forEach(cId => {
+        mapping.push({ newId: newIdCtr++, originalId: cId, chapterId: 1 });
+      });
+    } else {
+      questions600.forEach(q => {
+        if (q.is_critical === true) {
+          mapping.push({ newId: newIdCtr++, originalId: q.id, chapterId: 1 });
+        }
+      });
+    }
   } else if (isA1) {
     let newIdCounter = 1;
     CHAPTERS_A1.forEach(ch => {
