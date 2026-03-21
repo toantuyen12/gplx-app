@@ -172,7 +172,7 @@ function startChapter(chapterId) {
   console.log("CLICKED CHAPTER:", chapterId);
   closeChapterModal();
   console.log("NAVIGATE TO:", chapterId);
-  window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${chapterId}`;
+  window.location.replace(`study600.html?license=${_license}&mode=${_manager.mode}&chapter=${chapterId}`);
 }
 
 // ===== STUDY PAGE LOGIC =====
@@ -391,11 +391,6 @@ function selectAnswer(optId) {
 
   renderQuestion();
   renderGrid();
-
-  setTimeout(() => {
-    const expl = document.getElementById('s600Explanation');
-    if (expl) expl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 150);
 }
 
 function jumpToQuestion(idx) {

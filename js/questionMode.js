@@ -14,40 +14,28 @@ const CHAPTERS_A1 = [
 // ===== CHAPTER METADATA (UI/UX) =====
 const CHAPTER_META = {
   1: {
-    icon: "📘",
-    color: "#3B82F6",
-    name: "Quy định chung và quy tắc giao thông đường bộ",
-    description: "Chương này cung cấp kiến thức nền tảng về luật giao thông đường bộ, bao gồm các quy định chung, nguyên tắc tham gia giao thông, quyền và nghĩa vụ của người điều khiển phương tiện, cũng như các quy tắc xử lý tình huống cơ bản khi lưu thông trên đường."
+    icon: "📘", color: "#3B82F6", name: "Quy định chung và quy tắc giao thông đường bộ",
+    description: "Nắm vững luật và quy tắc cơ bản khi tham gia giao thông."
   },
   2: {
-    icon: "🧠",
-    color: "#10B981",
-    name: "Văn hóa giao thông và đạo đức người lái xe",
-    description: "Tập trung vào việc xây dựng ý thức, trách nhiệm và đạo đức của người lái xe khi tham gia giao thông. Chương này giúp người học hiểu rõ tầm quan trọng của hành vi ứng xử văn minh, an toàn và tôn trọng người khác trên đường."
+    icon: "🧠", color: "#10B981", name: "Văn hóa giao thông và đạo đức người lái xe",
+    description: "Trách nhiệm, ý thức và văn hóa ứng xử văn minh của người lái xe."
   },
   3: {
-    icon: "🚗",
-    color: "#F59E0B",
-    name: "Kỹ thuật lái xe",
-    description: "Trang bị các kiến thức và kỹ năng điều khiển phương tiện an toàn, bao gồm thao tác lái xe cơ bản, xử lý tình huống khi di chuyển, cách kiểm soát tốc độ, khoảng cách và phản ứng trong các điều kiện giao thông khác nhau."
+    icon: "🚗", color: "#F59E0B", name: "Kỹ thuật lái xe",
+    description: "Kỹ năng điều khiển phương tiện an toàn và xử lý tình huống."
   },
   4: {
-    icon: "⚙️",
-    color: "#EF4444",
-    name: "Cấu tạo và sửa chữa",
-    description: "Giới thiệu cấu tạo cơ bản của phương tiện, nguyên lý hoạt động của các bộ phận chính và các kiến thức sửa chữa đơn giản. Giúp người lái hiểu xe để vận hành an toàn và xử lý sự cố cơ bản."
+    icon: "⚙️", color: "#EF4444", name: "Cấu tạo và sửa chữa",
+    description: "Hiểu cấu tạo xe cơ bản và các kỹ năng sửa chữa bảo dưỡng đơn giản."
   },
   5: {
-    icon: "🚦",
-    color: "#8B5CF6",
-    name: "Báo hiệu đường bộ",
-    description: "Cung cấp kiến thức về hệ thống biển báo, vạch kẻ đường, tín hiệu đèn giao thông và hiệu lệnh của người điều khiển giao thông. Đây là phần quan trọng giúp người học nhận biết và tuân thủ đúng quy định khi tham gia giao thông."
+    icon: "🚦", color: "#8B5CF6", name: "Báo hiệu đường bộ",
+    description: "Nhận biết hệ thống biển báo, vạch kẻ đường và hiệu lệnh giao thông."
   },
   6: {
-    icon: "🛣️",
-    color: "#06B6D4",
-    name: "Giải thế sa hình và kỹ năng xử lý tình huống giao thông",
-    description: "Rèn luyện khả năng quan sát và phân tích tình huống giao thông thông qua các bài sa hình. Giúp người học nâng cao kỹ năng phán đoán, xử lý tình huống phức tạp và đưa ra quyết định chính xác khi lái xe."
+    icon: "🛣️", color: "#06B6D4", name: "Giải thế sa hình và kỹ năng xử lý tình huống giao thông",
+    description: "Phân tích tình huống sa hình phức tạp và ra quyết định chính xác."
   }
 };
 
@@ -142,9 +130,18 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
   mapping.forEach(m => mappingMap.set(m.newId, m));
 
   const criticalOriginalSet = new Set(CRITICAL_IDS);
-  const criticalNewIdSet = new Set(
-    mapping.filter(m => criticalOriginalSet.has(m.originalId)).map(m => m.newId)
-  );
+  const criticalNewIdSet = new Set();
+  
+  if (isA1) {
+    mapping.forEach(m => {
+      if (criticalOriginalSet.has(m.originalId)) criticalNewIdSet.add(m.newId);
+    });
+  } else {
+    mapping.forEach(m => {
+      const qData = questionsMap.get(m.originalId);
+      if (qData && qData.is_critical) criticalNewIdSet.add(m.newId);
+    });
+  }
 
   // 3. Return Manager API
   return {
@@ -164,15 +161,29 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
         console.warn("Missing explanation for question:", m.originalId);
       }
 
+      // Clone to avoid mutating internal map
+      let resultData = { ...qData };
+      if ([180, 205, 263, 300, 485].includes(resultData.id)) {
+        resultData.options = resultData.options.map(opt => {
+          let text = opt.text;
+          const match = text.match(/CH(_|ƯƠ)NG\s+[IVX]+\..*/i);
+          if (match) {
+             text = text.substring(0, match.index).trim();
+             if (text.endsWith('.')) text = text.substring(0, text.length - 1);
+          }
+          return { ...opt, text };
+        });
+      }
+
       // Wrap data to include mode-specific metadata
       return {
-        ...qData,
+        ...resultData,
         explanation: explanation || "",
         displayId: m.newId,
         newId: m.newId,
         chapterId: m.chapterId,
-        is_critical: criticalOriginalSet.has(m.originalId),
-        isCritical: criticalOriginalSet.has(m.originalId)
+        is_critical: criticalNewIdSet.has(m.newId),
+        isCritical: criticalNewIdSet.has(m.newId)
       };
     },
 
