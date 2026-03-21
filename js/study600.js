@@ -169,8 +169,10 @@ function updateModalProgress() {
 }
 
 function startChapter(chapterId) {
+  console.log("CLICKED CHAPTER:", chapterId);
   closeChapterModal();
-  window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${chapterId}&question=1`;
+  console.log("NAVIGATE TO:", chapterId);
+  window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${chapterId}`;
 }
 
 // ===== STUDY PAGE LOGIC =====
@@ -441,8 +443,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Dev mode debug logs
       console.log("Mode:", _manager.mode);
       console.log("License:", _license);
-      console.log("Chapter:", isNaN(chapterId) ? "none" : chapterId);
+      console.log("URL PARAM chapter:", chParamRaw);
+      console.log("PARSED chapterId:", chapterId);
       console.log("Question:", isNaN(questionId) ? "none" : questionId);
+      const targetChapterId = isNaN(chapterId) ? 1 : chapterId;
+      console.log("FETCHING QUESTIONS FOR:", targetChapterId);
+      console.log("getQuestionsByChapter called with:", targetChapterId);
 
       if (isNaN(chapterId) && isNaN(questionId)) {
         // No chapter/question specified -> show modal immediately
@@ -452,7 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         // Parameters present -> Load specific state
         const chParam = isNaN(chapterId) ? 1 : chapterId;
-        const qParam = isNaN(questionId) ? 1 : questionId;
 
         const chapter = _manager.chapters.find(c => c.id === chParam) || _manager.chapters[0];
         const questions = _manager.getQuestionsByChapter(chapter.id);
@@ -460,25 +465,26 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentIdx = 0;
 
         // 1. Check Deep Link Question range
-        if (qParam && qParam >= 1 && qParam <= _manager.total) {
-          const foundIdx = questions.indexOf(qParam);
+        if (!isNaN(questionId) && questionId >= 1 && questionId <= _manager.total) {
+          const foundIdx = questions.indexOf(questionId);
           if (foundIdx >= 0) {
             currentIdx = foundIdx;
           } else {
-            const m = _manager.getMapping(qParam);
+            const m = _manager.getMapping(questionId);
             if (m && m.chapterId !== chapter.id) {
-              window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${m.chapterId}&question=${qParam}`;
+              window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${m.chapterId}&question=${questionId}`;
               return;
             } else {
-              console.warn("Invalid question map link:", qParam);
+              console.warn("Invalid question map link:", questionId);
             }
           }
-        } else if (qParam) {
-           console.warn("Invalid question out of bounds:", qParam);
+        } else if (!isNaN(questionId)) {
+           console.warn("Invalid question out of bounds:", questionId);
         }
-        // 2. Fallback to Progress
-        else if (progress.lastQuestion) {
-          const restoreIdx = questions.indexOf(progress.lastQuestion);
+        // 2. Fallback to Progress or first question
+        else {
+          const fallbackQ = progress.lastQuestion || questions[0];
+          const restoreIdx = questions.indexOf(fallbackQ);
           if (restoreIdx >= 0) currentIdx = restoreIdx;
         }
 
