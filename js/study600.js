@@ -8,7 +8,10 @@ let _studyState = null;
 let _license = 'default';
 
 // ===== LOCAL STORAGE HELPERS =====
-const LS_KEY = (license, mode, chId) => `gplx_${license}_${mode}_chapter_${chId}`;
+const LS_KEY = (license, mode, chId) => {
+  if (mode === 'critical') return `gplx_${license}_critical_progress`;
+  return `gplx_${license}_${mode}_chapter_${chId}`;
+};
 
 function loadProgress(license, mode, chapterId) {
   try {
@@ -446,10 +449,23 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("getQuestionsByChapter called with:", targetChapterId);
 
       if (isNaN(chapterId) && isNaN(questionId)) {
-        // No chapter/question specified -> show modal immediately
-        document.title = `Ôn tập GPLX - Hạng ${_license.toUpperCase()}`;
-        root.innerHTML = ''; // Keep it clean
-        openChapterModal();
+        if (_manager.mode === 'critical') {
+           const chapter = _manager.chapters[0];
+           const questions = _manager.getQuestionsByChapter(chapter.id);
+           const progress = loadProgress(_license, _manager.mode, chapter.id);
+           
+           document.title = `${chapter.title} | thigplx.site`;
+           const fallbackQ = progress.lastQuestion || questions[0];
+           const restoreIdx = questions.indexOf(fallbackQ);
+           const currentIdx = restoreIdx >= 0 ? restoreIdx : 0;
+           
+           renderStudyLayout(chapter, questions, progress, currentIdx);
+        } else {
+           // No chapter/question specified -> show modal immediately
+           document.title = `Ôn tập GPLX - Hạng ${_license.toUpperCase()}`;
+           root.innerHTML = ''; // Keep it clean
+           openChapterModal();
+        }
       } else {
         // Parameters present -> Load specific state
         const chParam = isNaN(chapterId) ? 1 : chapterId;

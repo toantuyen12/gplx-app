@@ -60,7 +60,26 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
   let mapping = [];
   let chapters = [];
   
-  if (isA1) {
+  if (normalizedMode === 'critical') {
+    chapters = [{
+      id: 1, 
+      title: '60 Câu Điểm Liệt', 
+      subtitle: 'Tình huống nghiệm trọng', 
+      desc: 'Bắt buộc phải trả lời đúng. Sai 1 câu sẽ bị đánh trượt toàn bộ.', 
+      icon: '☢️', 
+      color: '#f97316', 
+      colorBg: 'rgba(249,115,22,0.1)', 
+      count: 60, 
+      range: [1, 60]
+    }];
+
+    let newIdCtr = 1;
+    questions600.forEach(q => {
+      if (q.is_critical === true) {
+        mapping.push({ newId: newIdCtr++, originalId: q.id, chapterId: 1 });
+      }
+    });
+  } else if (isA1) {
     let newIdCounter = 1;
     CHAPTERS_A1.forEach(ch => {
       const chapterQuestions = ch.questionIds.map(origId => ({
@@ -132,7 +151,9 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
   const criticalOriginalSet = new Set(CRITICAL_IDS);
   const criticalNewIdSet = new Set();
   
-  if (isA1) {
+  if (mode === 'critical') {
+    mapping.forEach(m => criticalNewIdSet.add(m.newId));
+  } else if (isA1) {
     mapping.forEach(m => {
       if (criticalOriginalSet.has(m.originalId)) criticalNewIdSet.add(m.newId);
     });
