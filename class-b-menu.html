@@ -367,44 +367,66 @@ fetch("/feedback.html?v=3")
 
 <script>
 let currentCritLicense = '';
+const CRIT_TOTAL = 60;
+
 function openCriticalPopup(license) {
     currentCritLicense = license;
     const modal = document.getElementById('criticalModal');
     modal.style.display = 'flex';
-    // Small timeout to allow display:flex to apply before adding opacity transition class
     setTimeout(() => { modal.classList.add('s600-active'); }, 10);
     document.getElementById('critTitle').textContent = `Câu điểm liệt hạng ${license.toUpperCase()}`;
     
     const lsKey = `gplx_${license}_critical`;
     let answeredCount = 0;
+    let correct = 0;
+    let wrong = 0;
     try {
         const data = JSON.parse(localStorage.getItem(lsKey));
         if (data && data.answers) {
             answeredCount = Object.keys(data.answers).length;
+            for (const key in data.answers) {
+                if (data.answers[key].isCorrect) correct++;
+                else wrong++;
+            }
         }
     } catch(e) {}
     
-    document.getElementById('critProgressText').textContent = `${answeredCount} / 60 câu`;
-    const pct = Math.min(100, Math.round((answeredCount / 60) * 100));
+    document.getElementById('critProgressText').textContent = `${answeredCount} / ${CRIT_TOTAL} câu`;
+    const pct = Math.min(100, Math.round((answeredCount / CRIT_TOTAL) * 100));
     document.getElementById('critProgressBar').style.width = `${pct}%`;
     
     const statsContainer = document.getElementById('critStatusContainer');
     if (answeredCount === 0) {
         statsContainer.innerHTML = `<span class="s600-stat-new">Chưa bắt đầu</span>`;
-    } else if (answeredCount < 60) {
-        statsContainer.innerHTML = `<span class="s600-stat-pct" style="color:#f97316">${pct}% Đang học</span>`;
     } else {
-        statsContainer.innerHTML = `<span class="s600-stat-done" style="color:#22c55e">✓ Hoàn thành</span>`;
+        let statsHtml = `<span class="s600-stat-done">✓ ${correct} đúng</span>`;
+        if (wrong > 0) statsHtml += ` <span class="s600-stat-wrong" style="margin-left:8px;">✗ ${wrong} sai</span>`;
+        statsHtml += ` <span class="s600-stat-pct" style="color:#f97316; margin-left:8px;">${pct}% hoàn thành</span>`;
+        statsContainer.innerHTML = statsHtml;
     }
 }
+
 function closeCriticalPopup() {
     const modal = document.getElementById('criticalModal');
     modal.classList.remove('s600-active');
     setTimeout(() => { modal.style.display = 'none'; }, 300);
 }
+
 function startCritical() {
+    document.getElementById('criticalModal').style.display = 'none'; // Break BFCache
     window.location.href = `study600.html?license=${currentCritLicense}&mode=critical`;
 }
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCriticalPopup();
+});
+
+window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+        document.getElementById('criticalModal').style.display = 'none';
+        document.getElementById('criticalModal').classList.remove('s600-active');
+    }
+});
 </script>
 </body>
 

@@ -95,6 +95,14 @@ function closeChapterModal() {
   }
 }
 
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (modalOverlayEl && modalOverlayEl.classList.contains('s600-active')) {
+      closeChapterModal();
+    }
+  }
+});
+
 function buildModal() {
   modalOverlayEl = document.createElement('div');
   modalOverlayEl.className = 's600-overlay';
