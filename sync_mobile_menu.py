@@ -7,26 +7,49 @@ HEADER_CONTENT = """<header>
     <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
-<button class="menu-toggle" aria-label="Toggle menu">
+<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
 </button>
 <nav class="main-nav">
 <a href="index.html">Trang chủ</a>
-<a href="about.html">Giới thiệu</a>
-<a href="privacy.html">Chính sách bảo mật</a>
-<a href="terms.html">Điều khoản</a>
+<a href="cand-menu.html">600 Câu Hỏi</a>
+<a href="meo-thi-gplx.html">Mẹo Thi</a>
+<a href="sahinh.html">Sa Hình</a>
+<a href="signs.html">Biển Báo</a>
 <a href="contact.html">Liên hệ</a>
 </nav>
 </div>
 <!-- Mobile Menu -->
 <nav class="mobile-menu">
 <a href="index.html">Trang chủ</a>
-<a href="about.html">Giới thiệu</a>
-<a href="privacy.html">Chính sách bảo mật</a>
-<a href="terms.html">Điều khoản</a>
+<a href="cand-menu.html">600 Câu Hỏi</a>
+<a href="meo-thi-gplx.html">Mẹo Thi</a>
+<a href="sahinh.html">Sa Hình</a>
+<a href="signs.html">Biển Báo</a>
 <a href="contact.html">Liên hệ</a>
 </nav>
 </header>"""
+
+TOGGLE_SCRIPT = """<!-- Global UI Scripts -->
+<script>
+function toggleMenu() {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('active');
+    }
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const toggleBtn = document.querySelector('.menu-toggle');
+    if (mobileMenu && mobileMenu.classList.contains('active')) {
+        if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+            mobileMenu.classList.remove('active');
+        }
+    }
+});
+</script>"""
 
 FEEDBACK_LOADER_CONTENT = """<div id="feedbackContainer"></div>
 <script>
@@ -56,22 +79,29 @@ for file in html_files:
         content = f.read()
 
     # 1. Clean up old feedback container logic and old fetch scripts
-    # We remove the block containing the feedback stuff to prevent duplication
     content = re.sub(r'<div id="feedbackContainer">.*?<script src="/js/feedback\.js.*?>.*?</script>', '', content, flags=re.DOTALL)
-    
-    # Just in case there's slight variations, let's also remove old explicit emailjs tags manually
     content = re.sub(r'<script src="https://cdn\.jsdelivr\.net/npm/emailjs-com@3/dist/email\.min\.js"></script>', '', content)
     content = re.sub(r'<script>\s*\(function\(\)\{\s*emailjs\.init\("Gn37aooYVlLuKdN9j"\);\s*\}\)\(\);\s*</script>', '', content, flags=re.DOTALL)
     content = re.sub(r'<link rel="stylesheet" href="/css/feedback\.css.*?">', '', content)
 
-    # 2. Replace the header to remove the "Góp ý" nav link
+    # 2. Replace the header
     content = re.sub(r'<header>.*?</header>', HEADER_CONTENT, content, flags=re.DOTALL)
 
-    # 3. Inject the clean unified FEEDBACK_LOADER_CONTENT right before </body>
-    if "feedbackContainer" not in content:
+    # 3. Handle Toggle Scripts: Remove all occurrences of the old scripts and add the new one
+    # Remove older toggles that look like the one we're replacing
+    content = re.sub(r'<!-- Global UI Scripts -->.*?function toggleMenu\(\).*?</script>', '', content, flags=re.DOTALL)
+    
+    # Just in case there are script blocks without the comment
+    content = re.sub(r'<script>\s*function toggleMenu\(\).*?</script>', '', content, flags=re.DOTALL)
+
+    # 4. Inject Unified Toggle Script and Feedback Loader right before </body>
+    if "function toggleMenu()" not in content:
+        content = content.replace('</body>', f'\n{TOGGLE_SCRIPT}\n</body>')
+    
+    if "id=\"feedbackContainer\"" not in content:
         content = content.replace('</body>', f'\n{FEEDBACK_LOADER_CONTENT}\n</body>')
 
     with open(file, 'w', encoding='utf-8') as f:
         f.write(content)
 
-print(f"Removed nav links and injected universal feedback loader into {len(html_files) - 1} files.")
+print(f"Updated header, unified toggle scripts, and feedback loader in {len(html_files) - 1} files.")

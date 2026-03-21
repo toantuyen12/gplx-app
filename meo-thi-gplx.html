@@ -102,7 +102,7 @@
     <header>
 <div class="nav-container">
 <a href="index.html" class="logo" style="display:flex; align-items:center;">
-    <img loading="lazy" src="assets/logo.svg" alt="Thi GPLX Logo" style="height:32px; margin-right:10px;">
+    <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
 <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
@@ -1337,131 +1337,47 @@
 
 
 
-    <!-- Global UI Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuBtn = document.querySelector('.menu-toggle');
-            const mobileMenu = document.querySelector('.mobile-menu');
+    
 
-            if (menuBtn && mobileMenu) {
-                menuBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    mobileMenu.classList.toggle('active');
-                });
 
-                document.addEventListener('click', (e) => {
-                    if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                        mobileMenu.classList.remove('active');
-                    }
-                });
-            }
-        });
-    </script>
-
-    <div id="feedbackContainer"></div>
-    <script>
-        fetch("/feedback.html?v=3")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("feedbackContainer").innerHTML = data;
-            });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script>
-        (function () {
-            emailjs.init("Gn37aooYVlLuKdN9j");
-        })();
-    </script>
-    <link rel="stylesheet" href="/css/feedback.css?v=3">
-    <script src="/js/feedback.js?v=3"></script>
-    <!-- Real Analytics Fetching -->
-    <script>
-        function getPersistentExtraVisits() {
-            const todayStr = new Date().toDateString();
-            const storedData = localStorage.getItem('gplx_extra_visits');
-            if (storedData) {
-                try {
-                    const parsed = JSON.parse(storedData);
-                    if (parsed.date === todayStr) {
-                        return parseInt(parsed.count) || 0;
-                    }
-                } catch (e) { }
-            }
-            return 0;
-        }
-
-        function savePersistentExtraVisits(count) {
-            const todayStr = new Date().toDateString();
-            localStorage.setItem('gplx_extra_visits', JSON.stringify({
-                date: todayStr,
-                count: count
-            }));
-        }
-
-        let localExtraVisits = getPersistentExtraVisits();
-        let baseToday = 0; // Store the base from API to survive API failures
-
-        // Immediately set the text to stored visits before API finishes
-        const todayUsersEl = document.getElementById("todayUsers");
-        if (todayUsersEl) {
-            todayUsersEl.textContent = localExtraVisits;
-        }
-
-        async function fetchAnalytics() {
-            try {
-                const res = await fetch("/api/analytics");
-                if (res.ok) {
-                    const data = await res.json();
-                    document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
-                    baseToday = parseInt(data.todayUsers) || 0;
-                    document.getElementById("totalUsers").textContent = typeof data.totalUsers === 'number' ? data.totalUsers.toLocaleString() : "0";
-                }
-            } catch (error) {
-                console.error("Error fetching analytics:", error);
-            } finally {
-                // Re-check persistent visits to sync across potential multiple tabs
-                localExtraVisits = getPersistentExtraVisits();
-                if (document.getElementById("todayUsers")) {
-                    document.getElementById("todayUsers").textContent = baseToday + localExtraVisits;
-                }
-            }
-        }
-
-        // Fetch initially when page loads
-        fetchAnalytics();
-        // Then fetch periodically every 60 seconds
-        setInterval(fetchAnalytics, 60000);
-
-        // Increment local counter independently every 60s
-        setInterval(() => {
-            localExtraVisits = getPersistentExtraVisits() + 1;
-            savePersistentExtraVisits(localExtraVisits);
-
-            const todayEl = document.getElementById("todayUsers");
-            if (todayEl) {
-                todayEl.textContent = baseToday + localExtraVisits;
-            }
-        }, 60000);
-    </script>
 
 <!-- Global UI Scripts -->
 <script>
 function toggleMenu() {
-    const nav = document.querySelector('.main-nav');
-    if (nav) {
-        nav.classList.toggle('active');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('active');
     }
 }
+
+// Close menu when clicking outside
 document.addEventListener('click', function(e) {
-    const nav = document.querySelector('.main-nav');
-    const toggle = document.querySelector('.menu-toggle');
-    if (nav && nav.classList.contains('active')) {
-        if (!nav.contains(e.target) && (!toggle || !toggle.contains(e.target))) {
-            nav.classList.remove('active');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const toggleBtn = document.querySelector('.menu-toggle');
+    if (mobileMenu && mobileMenu.classList.contains('active')) {
+        if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+            mobileMenu.classList.remove('active');
         }
     }
 });
 </script>
+
+<div id="feedbackContainer"></div>
+<script>
+fetch("/feedback.html?v=3")
+.then(res=>res.text())
+.then(data=>{
+    document.getElementById("feedbackContainer").innerHTML=data;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Gn37aooYVlLuKdN9j");
+})();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
 </body>
 
 </html>

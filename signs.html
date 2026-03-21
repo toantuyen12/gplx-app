@@ -781,7 +781,7 @@
   <header>
 <div class="nav-container">
 <a href="index.html" class="logo" style="display:flex; align-items:center;">
-    <img loading="lazy" src="assets/logo.svg" alt="Thi GPLX Logo" style="height:32px; margin-right:10px;">
+    <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
 <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
@@ -971,392 +971,47 @@
 </div>
 </footer>
 
-  <!-- Global UI Scripts -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const menuBtn = document.querySelector('.menu-toggle');
-      const mobileMenu = document.querySelector('.mobile-menu');
+  
 
-      if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          mobileMenu.classList.toggle('active');
-        });
 
-        document.addEventListener('click', (e) => {
-          if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-            mobileMenu.classList.remove('active');
-          }
-        });
-      }
-    });
-  </script>
-
-  <!-- Traffic Signs App Script -->
-  <script>
-    (function () {
-      'use strict';
-
-      // ── State ──────────────────────────────────────────────────────────────
-      let allData = null;
-      let currentCategory = 'all';
-
-      // ── DOM References ────────────────────────────────────────────────────
-      const container = document.getElementById('signsContainer');
-      const skeletonGrid = document.getElementById('skeletonGrid');
-      const categorySelect = document.getElementById('categorySelect');
-      const countBadge = document.getElementById('signCountBadge');
-      const overlay = document.getElementById('signModalOverlay');
-      const modal = document.getElementById('signModal');
-      const modalCode = document.getElementById('modalSignCode');
-      const modalCategory = document.getElementById('modalSignCategory');
-      const modalName = document.getElementById('modalSignName');
-      const modalImgWrap = document.getElementById('modalImgWrap');
-      const modalDesc = document.getElementById('modalSignDesc');
-      const modalCloseBtn = document.getElementById('modalCloseBtn');
-
-      // ── Load JSON Data ────────────────────────────────────────────────────
-      async function loadData() {
-        try {
-          const res = await fetch('data/traffic-signs.json?v=1');
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          allData = await res.json();
-          init();
-        } catch (err) {
-          console.error('Không tải được dữ liệu biển báo:', err);
-          skeletonGrid.remove();
-          container.innerHTML = `
-        <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
-          <i class="fa-solid fa-circle-exclamation" style="font-size:48px; display:block; margin-bottom:16px; opacity:0.4;"></i>
-          <p style="font-size:15px;">Không tải được dữ liệu biển báo. Vui lòng thử lại sau.</p>
-        </div>`;
-        }
-      }
-
-      // ── Init ──────────────────────────────────────────────────────────────
-      function init() {
-        buildSelectOptions();
-        renderSigns('all');
-
-        categorySelect.addEventListener('change', () => {
-          currentCategory = categorySelect.value;
-          renderSigns(currentCategory);
-        });
-      }
-
-      // ── Build dropdown options ────────────────────────────────────────────
-      function buildSelectOptions() {
-        const categoryMetadata = {
-          'bien-bao-cam': { color: '#ef4444', icon: 'fa-ban' },
-          'bien-bao-nguy-hiem': { color: '#f59e0b', icon: 'fa-triangle-exclamation' },
-          'bien-bao-hieu-lenh': { color: '#3b82f6', icon: 'fa-circle-info' },
-          'bien-bao-chi-dan': { color: '#10b981', icon: 'fa-signs-post' },
-          'bien-bao-phu': { color: '#6b7280', icon: 'fa-circle-plus' }
-        };
-
-        allData.categories.forEach(cat => {
-          const meta = categoryMetadata[cat.id] || { color: '#6366f1', icon: 'fa-circle' };
-          cat.color = meta.color;
-          cat.icon = meta.icon;
-          cat.description = cat.description || `Các loại ${cat.name.toLowerCase()}.`;
-
-          const opt = document.createElement('option');
-          opt.value = cat.id;
-          opt.textContent = `${cat.name} (${cat.signs.length})`;
-          categorySelect.appendChild(opt);
-        });
-      }
-
-      // ── Count total visible signs ─────────────────────────────────────────
-      function getTotalCount(catId) {
-        if (catId === 'all') {
-          return allData.categories.reduce((sum, c) => sum + c.signs.length, 0);
-        }
-        const cat = allData.categories.find(c => c.id === catId);
-        return cat ? cat.signs.length : 0;
-      }
-
-      // ── Render signs ──────────────────────────────────────────────────────
-      function renderSigns(catId) {
-        // Remove skeleton & old content
-        if (skeletonGrid) skeletonGrid.remove();
-        container.innerHTML = '';
-
-        const categoriesToShow = catId === 'all'
-          ? allData.categories
-          : allData.categories.filter(c => c.id === catId);
-
-        const total = getTotalCount(catId);
-        countBadge.textContent = `${total} biển báo`;
-
-        if (total === 0) {
-          container.innerHTML = `<div class="signs-empty"><i class="fa-solid fa-magnifying-glass"></i>Không có biển báo nào trong nhóm này.</div>`;
-          return;
-        }
-
-        categoriesToShow.forEach((cat, catIdx) => {
-          const group = document.createElement('div');
-          group.className = 'category-group';
-          group.style.animationDelay = `${catIdx * 0.07}s`;
-
-          // Category Header
-          group.innerHTML = `
-        <div class="signs-category-header">
-          <div class="signs-category-icon" style="background: ${cat.color};">
-            <i class="fa-solid ${cat.icon}"></i>
-          </div>
-          <div>
-            <div class="signs-category-name">${cat.name}</div>
-            <div class="signs-category-desc">${cat.description}</div>
-          </div>
-          <span class="signs-category-count">${cat.signs.length} biển</span>
-        </div>`;
-
-          // Cards Grid
-          const grid = document.createElement('div');
-          grid.className = 'signs-grid';
-
-          cat.signs.forEach((sign, i) => {
-            const card = createSignCard(sign, cat);
-            card.style.animationDelay = `${(catIdx * 0.07) + (i * 0.04)}s`;
-            grid.appendChild(card);
-          });
-
-          group.appendChild(grid);
-          container.appendChild(group);
-        });
-      }
-
-      // ── Create a single sign card ─────────────────────────────────────────
-      function createSignCard(sign, cat) {
-        const card = document.createElement('div');
-        card.className = 'sign-card category-group';
-        card.style.setProperty('--card-accent', cat.color);
-        card.setAttribute('tabindex', '0');
-        card.setAttribute('role', 'button');
-        const nameParts = sign.name.split(':');
-        const code = nameParts[0].trim();
-        const title = (nameParts[1] || '').trim();
-        const shortDesc = sign.description.length > 60 ? sign.description.substring(0, 60) + '...' : sign.description;
-
-        card.setAttribute('aria-label', `${code} – ${title}`);
-
-        // Image: lazy load with IntersectionObserver
-        const imgHtml = `
-      <div class="sign-img-wrap">
-        <img
-          data-src="${sign.image}"
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='75' height='75'%3E%3C/svg%3E"
-          alt="${title}"
-          loading="lazy"
-          class="lazy-sign-img"
-          onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'sign-img-placeholder\\'><i class=\\'fa-solid fa-triangle-exclamation\\'></i></div>'"
-        >
-      </div>`;
-
-        card.innerHTML = `
-      <div class="sign-card-inner">
-        ${imgHtml}
-        <span class="sign-code" style="background:${cat.color};">${code}</span>
-        <div class="sign-title">${title}</div>
-        <div class="sign-short-desc">${shortDesc}</div>
-      </div>`;
-
-        // Lazy load via IntersectionObserver
-        const img = card.querySelector('.lazy-sign-img');
-        if ('IntersectionObserver' in window) {
-          lazyObserver.observe(img);
-        } else {
-          img.src = sign.image;
-        }
-
-        // Click / keyboard → open modal
-        card.addEventListener('click', () => openModal(sign, cat));
-        card.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openModal(sign, cat);
-          }
-        });
-
-        return card;
-      }
-
-      // ── Lazy image observer ───────────────────────────────────────────────
-      const lazyObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            const src = img.getAttribute('data-src');
-            if (src) {
-              img.src = src;
-              img.removeAttribute('data-src');
-            }
-            lazyObserver.unobserve(img);
-          }
-        });
-      }, { rootMargin: '200px' });
-
-      // ── Open Modal ────────────────────────────────────────────────────────
-      function openModal(sign, cat) {
-        // Set content
-        const nameParts = sign.name.split(':');
-        const code = nameParts[0].trim();
-        const title = (nameParts[1] || '').trim();
-
-        modalCode.textContent = code;
-        modalCode.style.background = cat.color;
-        modalCategory.textContent = cat.name;
-        modalName.textContent = title;
-        modalDesc.textContent = sign.description;
-        modalDesc.style.borderLeftColor = cat.color;
-
-        // Image
-        modalImgWrap.innerHTML = '';
-        const img = document.createElement('img');
-        img.alt = title;
-        img.src = sign.image;
-        img.onerror = function () {
-          modalImgWrap.innerHTML = `<div class="sign-modal-placeholder" style="color:${cat.color};">
-        <i class="fa-solid ${cat.icon}"></i>
-      </div>`;
-        };
-        modalImgWrap.appendChild(img);
-
-        // Show
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        modal.scrollTop = 0;
-
-        // Trap focus
-        setTimeout(() => modalCloseBtn.focus(), 350);
-      }
-
-      // ── Close Modal ───────────────────────────────────────────────────────
-      function closeModal() {
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      // ── Event Listeners ───────────────────────────────────────────────────
-      modalCloseBtn.addEventListener('click', closeModal);
-
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeModal();
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-      });
-
-      // Stop clicks inside modal from closing
-      modal.addEventListener('click', (e) => e.stopPropagation());
-
-      // ── Kick off ──────────────────────────────────────────────────────────
-      loadData();
-
-    })();
-  </script>
-
-  <div id="feedbackContainer"></div>
-  <script>
-    fetch("/feedback.html?v=3")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("feedbackContainer").innerHTML = data;
-      });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function () {
-      emailjs.init("Gn37aooYVlLuKdN9j");
-    })();
-  </script>
-  <link rel="stylesheet" href="/css/feedback.css?v=3">
-  <script src="/js/feedback.js?v=3"></script>
-  <!-- Real Analytics Fetching -->
-  <script>
-    function getPersistentExtraVisits() {
-      const todayStr = new Date().toDateString();
-      const storedData = localStorage.getItem('gplx_extra_visits');
-      if (storedData) {
-        try {
-          const parsed = JSON.parse(storedData);
-          if (parsed.date === todayStr) {
-            return parseInt(parsed.count) || 0;
-          }
-        } catch (e) { }
-      }
-      return 0;
-    }
-
-    function savePersistentExtraVisits(count) {
-      const todayStr = new Date().toDateString();
-      localStorage.setItem('gplx_extra_visits', JSON.stringify({
-        date: todayStr,
-        count: count
-      }));
-    }
-
-    let localExtraVisits = getPersistentExtraVisits();
-    let baseToday = 0;
-
-    const todayUsersEl = document.getElementById("todayUsers");
-    if (todayUsersEl) {
-      todayUsersEl.textContent = localExtraVisits;
-    }
-
-    async function fetchAnalytics() {
-      try {
-        const res = await fetch("/api/analytics");
-        if (res.ok) {
-          const data = await res.json();
-          document.getElementById("onlineUsers").textContent = data.activeUsers || 0;
-          baseToday = parseInt(data.todayUsers) || 0;
-          document.getElementById("totalUsers").textContent = typeof data.totalUsers === 'number' ? data.totalUsers.toLocaleString() : "0";
-        }
-      } catch (error) {
-        console.error("Error fetching analytics:", error);
-      } finally {
-        localExtraVisits = getPersistentExtraVisits();
-        if (document.getElementById("todayUsers")) {
-          document.getElementById("todayUsers").textContent = baseToday + localExtraVisits;
-        }
-      }
-    }
-
-    fetchAnalytics();
-    setInterval(fetchAnalytics, 60000);
-
-    setInterval(() => {
-      localExtraVisits = getPersistentExtraVisits() + 1;
-      savePersistentExtraVisits(localExtraVisits);
-
-      const todayEl = document.getElementById("todayUsers");
-      if (todayEl) {
-        todayEl.textContent = baseToday + localExtraVisits;
-      }
-    }, 60000);
-  </script>
 
 <!-- Global UI Scripts -->
 <script>
 function toggleMenu() {
-    const nav = document.querySelector('.main-nav');
-    if (nav) {
-        nav.classList.toggle('active');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('active');
     }
 }
+
+// Close menu when clicking outside
 document.addEventListener('click', function(e) {
-    const nav = document.querySelector('.main-nav');
-    const toggle = document.querySelector('.menu-toggle');
-    if (nav && nav.classList.contains('active')) {
-        if (!nav.contains(e.target) && (!toggle || !toggle.contains(e.target))) {
-            nav.classList.remove('active');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const toggleBtn = document.querySelector('.menu-toggle');
+    if (mobileMenu && mobileMenu.classList.contains('active')) {
+        if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+            mobileMenu.classList.remove('active');
         }
     }
 });
 </script>
+
+<div id="feedbackContainer"></div>
+<script>
+fetch("/feedback.html?v=3")
+.then(res=>res.text())
+.then(data=>{
+    document.getElementById("feedbackContainer").innerHTML=data;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Gn37aooYVlLuKdN9j");
+})();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
 </body>
 
 </html>
