@@ -5,26 +5,27 @@
 
 let _manager = null;
 let _studyState = null;
+let _license = 'default';
 
 // ===== LOCAL STORAGE HELPERS =====
-const LS_KEY = (mode, chId) => `gplx_study_${mode}_ch${chId}`;
+const LS_KEY = (license, mode, chId) => `gplx_prog_${license}_${mode}_ch${chId}`;
 
-function loadProgress(mode, chapterId) {
+function loadProgress(license, mode, chapterId) {
   try {
-    const raw = localStorage.getItem(LS_KEY(mode, chapterId));
+    const raw = localStorage.getItem(LS_KEY(license, mode, chapterId));
     if (raw) return JSON.parse(raw);
   } catch (e) {}
   return { answers: {}, lastQuestion: 1 };
 }
 
-function saveProgress(mode, chapterId, progress) {
+function saveProgress(license, mode, chapterId, progress) {
   try {
-    localStorage.setItem(LS_KEY(mode, chapterId), JSON.stringify(progress));
+    localStorage.setItem(LS_KEY(license, mode, chapterId), JSON.stringify(progress));
   } catch (e) {}
 }
 
 function getChapterStats(chapterId, chapter) {
-  const progress = loadProgress(_manager.mode, chapterId);
+  const progress = loadProgress(_license, _manager.mode, chapterId);
   const total = chapter.count;
   const answered = Object.keys(progress.answers).length;
   const correct = Object.values(progress.answers).filter(a => a.isCorrect).length;
@@ -82,6 +83,11 @@ function closeChapterModal() {
   if (modalOverlayEl) {
     modalOverlayEl.classList.remove('s600-active');
     document.body.style.overflow = '';
+    
+    // Redirect back to menu if no chapter is active
+    if (!_studyState) {
+        window.location.href = getReferrerMenu();
+    }
   }
 }
 
@@ -95,7 +101,10 @@ function buildModal() {
   modalEl = document.createElement('div');
   modalEl.className = 's600-modal';
 
-  const title = _manager.mode === 'a1' ? '📖 Ôn Tập 250 Câu (A1/A)' : '📖 Ôn Tập 600 Câu';
+  const modeText = _manager.mode === 'a1' ? 'Bộ 250 Câu' : 'Bộ 600 Câu';
+  const licenseText = _license.toUpperCase();
+  const title = `📖 Ôn Tập ${modeText} - Hạng ${licenseText}`;
+  
   modalEl.innerHTML = `
     <div class="s600-modal-header">
       <div>
@@ -160,7 +169,7 @@ function updateModalProgress() {
 
 function startChapter(chapterId) {
   closeChapterModal();
-  window.location.href = `study600.html?mode=${_manager.mode}&chapter=${chapterId}&question=1`;
+  window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${chapterId}&question=1`;
 }
 
 // ===== STUDY PAGE LOGIC =====
@@ -184,6 +193,7 @@ function renderStudyLayout(chapter, questions, progress, currentIdx) {
   if (!root) return;
 
   const modeTitle = _manager.mode === 'a1' ? 'Ôn tập 250 câu' : 'Ôn tập 600 câu';
+  const fullTitle = `${modeTitle} - Hạng ${_license.toUpperCase()}`;
 
   root.innerHTML = `
     <div class="s600-study-wrap">
@@ -191,7 +201,7 @@ function renderStudyLayout(chapter, questions, progress, currentIdx) {
       <div class="s600-top-bar">
         <a href="${getReferrerMenu()}" class="s600-back-btn">← Quay lại</a>
         <div class="s600-top-center">
-          <span class="s600-label">${modeTitle}</span>
+          <span class="s600-label">${fullTitle}</span>
           <span class="s600-chapter-name">${chapter.title}: ${chapter.subtitle}</span>
         </div>
         <div class="s600-top-right">
@@ -231,7 +241,14 @@ function getReferrerMenu() {
   for (const m of menus) {
     if (ref && ref.includes(m)) return m;
   }
-  return _manager.mode === 'a1' ? 'class-a1-menu.html' : 'class-b-menu.html';
+  // Fallback based on current license
+  if (_license === 'a1') return 'class-a1-menu.html';
+  if (_license === 'a') return 'class-a-menu.html';
+  if (_license === 'b1' || _license === 'b2' || _license === 'b') return 'class-b-menu.html';
+  if (_license === 'c') return 'class-c-menu.html';
+  if (_license === 'c1') return 'class-c1-menu.html';
+  
+  return 'index.html';
 }
 
 function renderGrid() {
@@ -339,8 +356,17 @@ function renderQuestion() {
     </div>
   `;
 
-  updateURL(_manager.mode, chapter.id, q.displayId);
+  updateURL(_license, _manager.mode, chapter.id, q.displayId);
   preloadNextQuestion(currentIdx);
+}
+
+function updateURL(license, mode, chapterId, questionId) {
+    const url = new URL(window.location);
+    url.searchParams.set('license', license);
+    url.searchParams.set('mode', mode);
+    url.searchParams.set('chapter', chapterId);
+    url.searchParams.set('question', questionId);
+    window.history.replaceState({}, '', url);
 }
 
 function selectAnswer(optId) {
@@ -352,7 +378,7 @@ function selectAnswer(optId) {
   const isCorrect = optId === q.correct_answer;
   progress.answers[qId] = { selectedId: optId, isCorrect };
   progress.lastQuestion = qId;
-  saveProgress(_manager.mode, chapter.id, progress);
+  saveProgress(_license, _manager.mode, chapter.id, progress);
 
   renderQuestion();
   renderGrid();
@@ -367,7 +393,7 @@ function jumpToQuestion(idx) {
   _studyState.currentIdx = idx;
   const qId = _studyState.questions[idx];
   _studyState.progress.lastQuestion = qId;
-  saveProgress(_manager.mode, _studyState.chapter.id, _studyState.progress);
+  saveProgress(_license, _manager.mode, _studyState.chapter.id, _studyState.progress);
   renderQuestion();
   renderGrid();
 }
@@ -382,12 +408,15 @@ function nextQuestion() {
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('s600StudyRoot')) {
+  const root = document.getElementById('s600StudyRoot');
+  if (root) {
+    _license = String(getQueryParam('license') || 'b').trim().toLowerCase();
     const modeParam = getQueryParam('mode') || 'default';
+
     (async () => {
       const ok = await loadData();
       if (!ok) {
-        document.getElementById('s600StudyRoot').innerHTML = '<p style="text-align:center;padding:40px;color:#ef4444">Không tải được dữ liệu. Vui lòng thử lại.</p>';
+        root.innerHTML = '<p style="text-align:center;padding:40px;color:#ef4444">Không tải được dữ liệu. Vui lòng thử lại.</p>';
         return;
       }
 
@@ -395,21 +424,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const mode = String(modeParam || 'default').trim().toLowerCase();
       _manager = createQuestionManager(mode, allQuestionsRaw, allExplanationsRaw);
 
-      const root = document.getElementById('s600StudyRoot');
       const chParamRaw = getQueryParam('chapter');
       const qParamRaw = getQueryParam('question');
 
       if (!chParamRaw && !qParamRaw) {
-        // No chapter/question specified -> show landing state + modal
-        document.title = _manager.mode === 'a1' ? 'Ôn tập 250 Câu (A1/A) | thigplx.site' : 'Ôn tập 600 Câu GPLX | thigplx.site';
-        root.innerHTML = `
-          <div class="s600-study-wrap" style="display:flex; align-items:center; justify-content:center; min-height:80vh; flex-direction:column; text-align:center; padding:20px;">
-            <div style="font-size:64px; margin-bottom:20px;">📖</div>
-            <h1 style="font-size:24px; color:#1e293b; margin-bottom:10px;">${_manager.mode === 'a1' ? 'Ôn tập 250 Câu (A1/A)' : 'Ôn tập 600 Câu'}</h1>
-            <p style="color:#64748b; margin-bottom:30px; max-width:400px;">Vui lòng chọn một chương để bắt đầu quá trình ôn tập và theo dõi tiến độ của bạn.</p>
-            <button class="primary-btn" onclick="openChapterModal()" style="padding:14px 30px; font-size:16px;">Chọn chương để học</button>
-          </div>
-        `;
+        // No chapter/question specified -> show modal immediately
+        document.title = `Ôn tập GPLX - Hạng ${_license.toUpperCase()}`;
+        root.innerHTML = ''; // Keep it clean
         openChapterModal();
       } else {
         // Parameters present -> Load specific state
@@ -418,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const chapter = _manager.chapters.find(c => c.id === chParam) || _manager.chapters[0];
         const questions = _manager.getQuestionsByChapter(chapter.id);
-        const progress = loadProgress(_manager.mode, chapter.id);
+        const progress = loadProgress(_license, _manager.mode, chapter.id);
         let currentIdx = 0;
 
         // 1. Check Deep Link Question range
@@ -429,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
             const m = _manager.getMapping(qParam);
             if (m && m.chapterId !== chapter.id) {
-              window.location.href = `study600.html?mode=${_manager.mode}&chapter=${m.chapterId}&question=${qParam}`;
+              window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${m.chapterId}&question=${qParam}`;
               return;
             }
           }
