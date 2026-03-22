@@ -6,6 +6,7 @@
 let _manager = null;
 let _studyState = null;
 let _license = 'default';
+let isS600ModalOpen = false;
 
 // ===== LOCAL STORAGE HELPERS =====
 const LS_KEY = (license, mode, chId) => {
@@ -88,12 +89,33 @@ function closeChapterModal() {
     modalOverlayEl.classList.remove('s600-active');
     document.body.style.overflow = '';
     
-    // Redirect back to menu if no chapter is active
-    if (!_studyState) {
+    isS600ModalOpen = false;
+
+    // Redirect back to menu if no chapter is active AND we are explicitly on the study page
+    const isStudyPage = document.getElementById('s600StudyRoot') !== null;
+    if (isStudyPage && !_studyState) {
         window.location.href = getReferrerMenu();
     }
   }
 }
+
+window.openPopup = async function(e, license, mode = 'default') {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  _license = license;
+  isS600ModalOpen = true;
+  
+  const ok = await loadData();
+  if (!ok) {
+    alert("Không tải được dữ liệu. Vui lòng thử lại.");
+    return;
+  }
+  
+  _manager = createQuestionManager(mode, allQuestionsRaw, allExplanationsRaw, license);
+  openChapterModal();
+};
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {

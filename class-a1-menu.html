@@ -154,7 +154,7 @@
         <div class="category-grid">
 
             <!-- Ôn tập 250 câu -->
-            <a href="study600.html?license=a1&mode=a1" class="cat-card">
+            <a href="#" class="cat-card" onclick="openPopup(event, 'a1', 'a1')">
                 <div class="cat-icon" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1);"><i
                         class="fa-solid fa-book-open-reader"></i></div>
                 <div class="cat-title">1. Ôn tập 250 câu</div>
@@ -314,6 +314,9 @@ fetch("/feedback.html?v=3")
 </script>
 <link rel="stylesheet" href="/css/feedback.css?v=3">
 <script src="/js/feedback.js?v=3"></script>
+
+<script src="js/questionMode.js?v=4"></script>
+<script src="js/study600.js?v=4"></script>
 
 <!-- Critical Mode Modal -->
 <div id="criticalModal" class="s600-overlay" style="display:none;" onclick="if(event.target===this) closeCriticalPopup()">
