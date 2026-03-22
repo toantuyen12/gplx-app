@@ -7,7 +7,7 @@ HEADER_CONTENT = """<header>
     <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
-<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu(event)">
     <i class="fa-solid fa-bars"></i>
 </button>
 <nav class="main-nav">
@@ -32,20 +32,51 @@ HEADER_CONTENT = """<header>
 
 TOGGLE_SCRIPT = """<!-- Global UI Scripts -->
 <script>
-function toggleMenu() {
+function toggleMenu(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const mobileMenu = document.querySelector('.mobile-menu');
+    let overlay = document.querySelector('.menu-overlay');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'menu-overlay';
+        document.body.appendChild(overlay);
+        
+        overlay.addEventListener('click', function() {
+            if (mobileMenu) mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
     if (mobileMenu) {
-        mobileMenu.classList.toggle('active');
+        const isActive = mobileMenu.classList.contains('active');
+        if (isActive) {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     }
 }
 
-// Close menu when clicking outside
+// Close menu when clicking outside (fallback)
 document.addEventListener('click', function(e) {
     const mobileMenu = document.querySelector('.mobile-menu');
     const toggleBtn = document.querySelector('.menu-toggle');
+    const overlay = document.querySelector('.menu-overlay');
+    
     if (mobileMenu && mobileMenu.classList.contains('active')) {
-        if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+        if (!mobileMenu.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
             mobileMenu.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
     }
 });
@@ -89,13 +120,13 @@ for file in html_files:
 
     # 3. Handle Toggle Scripts: Remove all occurrences of the old scripts and add the new one
     # Remove older toggles that look like the one we're replacing
-    content = re.sub(r'<!-- Global UI Scripts -->.*?function toggleMenu\(\).*?</script>', '', content, flags=re.DOTALL)
+    content = re.sub(r'<!-- Global UI Scripts -->.*?function toggleMenu\(.*?\).*?</script>', '', content, flags=re.DOTALL)
     
     # Just in case there are script blocks without the comment
-    content = re.sub(r'<script>\s*function toggleMenu\(\).*?</script>', '', content, flags=re.DOTALL)
+    content = re.sub(r'<script>\s*function toggleMenu\(.*?\).*?</script>', '', content, flags=re.DOTALL)
 
     # 4. Inject Unified Toggle Script and Feedback Loader right before </body>
-    if "function toggleMenu()" not in content:
+    if "function toggleMenu" not in content:
         content = content.replace('</body>', f'\n{TOGGLE_SCRIPT}\n</body>')
     
     if "id=\"feedbackContainer\"" not in content:

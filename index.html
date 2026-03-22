@@ -496,6 +496,10 @@
 
 
 
+
+
+
+
 <!-- Global UI Scripts -->
 <script>
 function toggleMenu(e) {
@@ -504,18 +508,45 @@ function toggleMenu(e) {
       e.stopPropagation();
     }
     const mobileMenu = document.querySelector('.mobile-menu');
+    let overlay = document.querySelector('.menu-overlay');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'menu-overlay';
+        document.body.appendChild(overlay);
+        
+        overlay.addEventListener('click', function() {
+            if (mobileMenu) mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
     if (mobileMenu) {
-        mobileMenu.classList.toggle('active');
+        const isActive = mobileMenu.classList.contains('active');
+        if (isActive) {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     }
 }
 
-// Close menu when clicking outside
+// Close menu when clicking outside (fallback)
 document.addEventListener('click', function(e) {
     const mobileMenu = document.querySelector('.mobile-menu');
     const toggleBtn = document.querySelector('.menu-toggle');
+    const overlay = document.querySelector('.menu-overlay');
+    
     if (mobileMenu && mobileMenu.classList.contains('active')) {
-        if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+        if (!mobileMenu.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
             mobileMenu.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
     }
 });

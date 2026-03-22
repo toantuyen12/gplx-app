@@ -284,47 +284,9 @@
 
 
 
-<!-- Global UI Scripts -->
-<script>
-function toggleMenu(e) {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    const mobileMenu = document.querySelector('.mobile-menu');
-    if (mobileMenu) {
-        mobileMenu.classList.toggle('active');
-    }
-}
 
-// Close menu when clicking outside
-document.addEventListener('click', function(e) {
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const toggleBtn = document.querySelector('.menu-toggle');
-    if (mobileMenu && mobileMenu.classList.contains('active')) {
-        if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
-            mobileMenu.classList.remove('active');
-        }
-    }
-});
-</script>
 
-<div id="feedbackContainer"></div>
-<script>
-fetch("/feedback.html?v=3")
-.then(res=>res.text())
-.then(data=>{
-    document.getElementById("feedbackContainer").innerHTML=data;
-});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-(function(){
-    emailjs.init("Gn37aooYVlLuKdN9j");
-})();
-</script>
-<link rel="stylesheet" href="/css/feedback.css?v=3">
-<script src="/js/feedback.js?v=3"></script>
+
 
 <script src="js/questionMode.js?v=4"></script>
 <script src="js/study600.js?v=4"></script>
@@ -436,6 +398,75 @@ window.addEventListener('pageshow', (e) => {
     }
 });
 </script>
+
+<!-- Global UI Scripts -->
+<script>
+function toggleMenu(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const mobileMenu = document.querySelector('.mobile-menu');
+    let overlay = document.querySelector('.menu-overlay');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'menu-overlay';
+        document.body.appendChild(overlay);
+        
+        overlay.addEventListener('click', function() {
+            if (mobileMenu) mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (mobileMenu) {
+        const isActive = mobileMenu.classList.contains('active');
+        if (isActive) {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+}
+
+// Close menu when clicking outside (fallback)
+document.addEventListener('click', function(e) {
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const toggleBtn = document.querySelector('.menu-toggle');
+    const overlay = document.querySelector('.menu-overlay');
+    
+    if (mobileMenu && mobileMenu.classList.contains('active')) {
+        if (!mobileMenu.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
+            mobileMenu.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+});
+</script>
+
+<div id="feedbackContainer"></div>
+<script>
+fetch("/feedback.html?v=3")
+.then(res=>res.text())
+.then(data=>{
+    document.getElementById("feedbackContainer").innerHTML=data;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Gn37aooYVlLuKdN9j");
+})();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
 </body>
 
 </html>
