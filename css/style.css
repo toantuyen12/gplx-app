@@ -667,6 +667,9 @@ nav.main-nav a:hover {
   padding: 5px;
   margin: 0;
   box-shadow: none;
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
 }
 .menu-toggle:hover {
   background: none;

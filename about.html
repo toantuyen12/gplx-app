@@ -101,7 +101,7 @@
     <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
     Thi GPLX
 </a>
-<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu(event)">
     <i class="fa-solid fa-bars"></i>
 </button>
 <nav class="main-nav">
@@ -240,7 +240,11 @@ chịu trách nhiệm.
 
 <!-- Global UI Scripts -->
 <script>
-function toggleMenu() {
+function toggleMenu(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const mobileMenu = document.querySelector('.mobile-menu');
     if (mobileMenu) {
         mobileMenu.classList.toggle('active');

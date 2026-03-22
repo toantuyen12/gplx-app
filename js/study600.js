@@ -203,9 +203,9 @@ function updateModalProgress() {
 
 function startChapter(chapterId) {
   console.log("CLICKED CHAPTER:", chapterId);
-  closeChapterModal();
+  // Intentionally leaving the modal open so BFCache restores it upon back navigation
   console.log("NAVIGATE TO:", chapterId);
-  window.location.replace(`study600.html?license=${_license}&mode=${_manager.mode}&chapter=${chapterId}`);
+  window.location.href = `study600.html?license=${_license}&mode=${_manager.mode}&chapter=${chapterId}`;
 }
 
 // ===== STUDY PAGE LOGIC =====
@@ -235,7 +235,7 @@ function renderStudyLayout(chapter, questions, progress, currentIdx) {
     <div class="s600-study-wrap">
       <!-- TOP BAR -->
       <div class="s600-top-bar">
-        <a href="${getReferrerMenu()}" class="s600-back-btn">← Quay lại</a>
+        <a href="#" onclick="handleStudyBack(event)" class="s600-back-btn">← Quay lại</a>
         <div class="s600-top-center">
           <span class="s600-label">${fullTitle}</span>
           <span class="s600-chapter-name">${chapter.title}: ${chapter.subtitle}</span>
@@ -286,6 +286,18 @@ function getReferrerMenu() {
   
   return 'index.html';
 }
+
+window.handleStudyBack = function(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  if (document.referrer) {
+    window.history.back();
+  } else {
+    window.location.href = getReferrerMenu();
+  }
+};
 
 function renderGrid() {
   const { questions, progress, currentIdx } = _studyState;
