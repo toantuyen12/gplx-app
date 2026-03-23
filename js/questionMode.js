@@ -4,11 +4,11 @@
 
 // ===== A1/A LICENSE CONFIGURATION =====
 const CHAPTERS_A1 = [
-  { id: 1, name: 'Quy tắc giao thông đường bộ', originalChapterId: 1, questionIds: Array.from({ length: 100 }, (_, i) => i + 1) },
-  { id: 2, name: 'Văn hóa giao thông và đạo đức người lái xe', originalChapterId: 2, questionIds: [181, 187, 188, 192, 193, 194, 195, 199, 203, 205] },
-  { id: 3, name: 'Kỹ thuật lái xe', originalChapterId: 3, questionIds: [211, 214, 215, 217, 219, 221, 224, 230, 237, 239, 243, 245, 248, 258, 260] },
-  { id: 4, name: 'Hệ thống biển báo hiệu đường bộ', originalChapterId: 5, questionIds: Array.from({ length: 90 }, (_, i) => 301 + i) },
-  { id: 5, name: 'Sa hình và xử lý tình huống giao thông', originalChapterId: 6, questionIds: Array.from({ length: 35 }, (_, i) => i + 486) }
+  { id: 1, name: 'Quy tắc giao thông đường bộ', originalChapterId: 1, questionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 24, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 54, 56, 57, 59, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 80, 81, 87, 88, 90, 91, 92, 93, 94, 96, 97, 98, 99, 100, 102, 103, 107, 109, 110, 111, 119, 123, 124, 125, 126, 137, 138, 140, 141, 142, 145, 146, 151, 155, 163, 167, 178] },
+  { id: 2, name: 'Văn hóa giao thông và đạo đức người lái xe', originalChapterId: 2, questionIds: [182, 185, 187, 189, 191, 192, 193, 194, 195, 200] },
+  { id: 3, name: 'Kỹ thuật lái xe', originalChapterId: 3, questionIds: [206, 215, 219, 232, 233, 240, 241, 242, 254, 255, 257, 258, 259, 260, 261] },
+  { id: 4, name: 'Hệ thống biển báo hiệu đường bộ', originalChapterId: 5, questionIds: [303, 304, 305, 306, 307, 313, 314, 315, 317, 318, 322, 323, 324, 325, 326, 329, 330, 335, 345, 346, 347, 348, 349, 350, 351, 354, 360, 362, 364, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 380, 381, 382, 386, 387, 389, 390, 391, 393, 394, 395, 397, 398, 400, 401, 411, 412, 413, 415, 419, 422, 427, 430, 431, 432, 433, 434, 435, 437, 438, 439, 440, 441, 442, 445, 450, 451, 452, 454, 455, 457, 458, 459, 460, 461, 474, 475, 476, 478] },
+  { id: 5, name: 'Sa hình và xử lý tình huống giao thông', originalChapterId: 6, questionIds: [486, 487, 490, 492, 495, 499, 500, 503, 504, 505, 507, 508, 509, 517, 520, 525, 527, 528, 529, 538, 539, 540, 543, 548, 553, 556, 559, 560, 562, 565, 567, 568, 583, 592, 600] }
 ];
 
 // ===== CHAPTER METADATA (UI/UX) =====
@@ -56,24 +56,24 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
   const normalizedMode = String(mode || 'default').trim().toLowerCase();
   const normalizedLicense = String(licenseParam || 'b').trim().toLowerCase();
   const isA1 = normalizedMode === 'a1';
-  
+
   // 1. Setup Data Source
   let mapping = [];
   let chapters = [];
-  
+
   if (normalizedMode === 'critical') {
     const isA1Critical = (normalizedLicense === 'a1' || normalizedLicense === 'a');
     const critCount = isA1Critical ? 20 : 60;
 
     chapters = [{
-      id: 1, 
-      title: `${critCount} Câu Điểm Liệt`, 
-      subtitle: 'Tình huống nghiêm trọng', 
-      desc: 'Bắt buộc phải trả lời đúng. Sai 1 câu sẽ bị đánh trượt toàn bộ.', 
-      icon: '☢️', 
-      color: '#f97316', 
-      colorBg: 'rgba(249,115,22,0.1)', 
-      count: critCount, 
+      id: 1,
+      title: `${critCount} Câu Điểm Liệt`,
+      subtitle: 'Tình huống nghiêm trọng',
+      desc: 'Bắt buộc phải trả lời đúng. Sai 1 câu sẽ bị đánh trượt toàn bộ.',
+      icon: '☢️',
+      color: '#f97316',
+      colorBg: 'rgba(249,115,22,0.1)',
+      count: critCount,
       range: [1, critCount]
     }];
 
@@ -100,7 +100,7 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
         originalChapterId: ch.originalChapterId
       }));
       mapping = mapping.concat(chapterQuestions);
-      
+
       const meta = CHAPTER_META[ch.originalChapterId];
       chapters.push({
         id: ch.id,
@@ -142,8 +142,8 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
 
     // For 600, mapping is 1:1
     for (let i = 1; i <= 600; i++) {
-        const ch = chapters.find(c => i >= c.range[0] && i <= c.range[1]);
-        mapping.push({ newId: i, originalId: i, chapterId: ch ? ch.id : 1 });
+      const ch = chapters.find(c => i >= c.range[0] && i <= c.range[1]);
+      mapping.push({ newId: i, originalId: i, chapterId: ch ? ch.id : 1 });
     }
   }
 
@@ -161,7 +161,7 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
 
   const criticalOriginalSet = new Set(CRITICAL_IDS);
   const criticalNewIdSet = new Set();
-  
+
   if (mode === 'critical') {
     mapping.forEach(m => criticalNewIdSet.add(m.newId));
   } else if (isA1) {
@@ -180,11 +180,11 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
     mode,
     total: mapping.length,
     chapters: chapters,
-    
+
     getQuestion(newId) {
       const m = mappingMap.get(newId);
       if (!m) return null;
-      
+
       const qData = questionsMap.get(m.originalId);
       if (!qData) return null;
 
@@ -200,8 +200,8 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
           let text = opt.text;
           const match = text.match(/CH(_|ƯƠ)NG\s+[IVX]+\..*/i);
           if (match) {
-             text = text.substring(0, match.index).trim();
-             if (text.endsWith('.')) text = text.substring(0, text.length - 1);
+            text = text.substring(0, match.index).trim();
+            if (text.endsWith('.')) text = text.substring(0, text.length - 1);
           }
           return { ...opt, text };
         });
@@ -228,7 +228,7 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
     },
 
     getMapping(newId) {
-        return mappingMap.get(newId) || null;
+      return mappingMap.get(newId) || null;
     }
   };
 }
