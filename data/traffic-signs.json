@@ -1035,56 +1035,56 @@
           "id": "146",
           "name": "R.301a: Các xe chỉ được đi thẳng",
           "category": "Biển hiệu lệnh",
-          "description": "Được đặt trước ngã ba, ngã tư. Các xe chỉ được đi thẳng ở khu vực ngã ba, ngã tư.",
+          "description": "Khi đặt biển số R.301a ở trước nơi đường giao nhau thì hiệu lực tác dụng của biển là ở phạm vi khu vực nơi đường giao nhau phía sau biển tức là cấm xe rẽ phải hay rẽ trái. Nếu biển này đặt ở sau nơi đường giao nhau (bắt đầu vào đoạn đường phố) thì hiệu lực tác dụng của biển là từ vị trí đặt biển đến nơi đường giao nhau. Trong trường hợp này cấm rẽ trái và quay đầu trong vùng tác dụng của biển, chỉ cho phép rẽ vào cổng nhà hoặc ngõ phố có trên đoạn đường từ nơi đường giao nhau đặt biển đến nơi đường giao nhau tiếp theo.",
           "image": "images/signs/p146.webp"
         },
         {
           "id": "147",
           "name": "R.301b: Các xe chỉ được rẽ phải",
           "category": "Biển hiệu lệnh",
-          "description": "Được đặt sau ngã ba, ngã tư. Các xe chỉ được rẽ phải ở khu vực trước mặt biển.",
+          "description": "Biển số R.301b được đặt ở sau nơi đường giao nhau nhằm chỉ hướng cho phép xe đi ngang qua nơi đường giao nhau và ngăn chặn hướng đi ngược chiều trên đường phố với đường một chiều. Biển bắt buộc người tham gia giao thông chỉ được phép rẽ phải hoặc rẽ trái ở phạm vi nơi đường giao nhau trước mặt biển.",
           "image": "images/signs/p147.webp"
         },
         {
           "id": "148",
           "name": "R.301c: Các xe chỉ được rẽ trái",
           "category": "Biển hiệu lệnh",
-          "description": "Được đặt sau ngã ba, ngã tư. Các xe chỉ được rẽ trái ở khu vực trước mặt biển.",
+          "description": "Biển số R.301c được đặt ở sau nơi đường giao nhau nhằm chỉ hướng cho phép xe đi ngang qua nơi đường giao nhau và ngăn chặn hướng đi ngược chiều trên đường phố với đường một chiều. Biển bắt buộc người tham gia giao thông chỉ được phép rẽ phải hoặc rẽ trái ở phạm vi nơi đường giao nhau trước mặt biển.",
           "image": "images/signs/p148.webp"
         },
         {
           "id": "149",
           "name": "R.301d: Các xe chỉ được rẽ phải",
           "category": "Biển hiệu lệnh",
-          "description": "Được đặt trước ngã ba, ngã tư. Các xe chỉ được rẽ phải ở phạm vi ngã ba, ngã tư đằng sau mặt biển.",
+          "description": " Biển số R.301d được đặt ở trước nơi đường giao nhau. Biển bắt buộc người tham gia giao thông chỉ được phép rẽ phải hoặc rẽ trái ở phạm vi nơi đường giao nhau đằng sau mặt biển.",
           "image": "images/signs/p149.webp"
         },
         {
           "id": "150",
           "name": "R.301e: Các xe chỉ được rẽ trái",
           "category": "Biển hiệu lệnh",
-          "description": "Được đặt trước ngã ba, ngã tư. Các xe chỉ được rẽ trái ở phạm vi ngã ba, ngã tư đằng sau mặt biển.",
+          "description": " Biển số R.301e được đặt ở trước nơi đường giao nhau. Biển bắt buộc người tham gia giao thông chỉ được phép rẽ phải hoặc rẽ trái ở phạm vi nơi đường giao nhau đằng sau mặt biển.",
           "image": "images/signs/p150.webp"
         },
         {
           "id": "151",
           "name": "R.301f: Các xe chỉ được đi thẳng và rẽ phải",
           "category": "Biển hiệu lệnh",
-          "description": "Được đặt trước ngã ba, ngã tư. Các xe chỉ được phép đi thẳng hay rẽ phải ở khu vực sau mặt biển",
+          "description": "Biển số R.301f được đặt ở trước nơi đường giao nhau. Biển bắt buộc người tham gia giao thông chỉ được phép đi thẳng hay rẽ phải ở phạm vi nơi đường giao nhau đằng sau mặt biển.",
           "image": "images/signs/p151.webp"
         },
         {
           "id": "152",
           "name": "R.301g: Các xe chỉ được đi thẳng và rẽ trái",
           "category": "Biển hiệu lệnh",
-          "description": "Biển hiệu lệnh cho các xe chỉ được đi thẳng hoặc rẽ phải.",
+          "description": "Biển số R.301g được đặt ở trước nơi đường giao nhau và người tham gia giao thông chỉ được phép đi thẳng hay rẽ trái và được phép quay đầu xe để đi theo hướng ngược lại.",
           "image": "images/signs/p152.webp"
         },
         {
           "id": "153",
           "name": "R.301h: Các xe chỉ được rẽ trái và phải",
           "category": "Biển hiệu lệnh",
-          "description": "Biển hiệu lệnh cho các xe chỉ được đi thẳng hoặc rẽ trái.",
+          "description": "Biển số R.301h được đặt ở sau nơi đường giao nhau nhằm ngăn ngừa chuyển động ngược chiều trên đường phố với đường một chiều. Biển bắt buộc người tham gia giao thông chỉ được phép rẽ trái, quay đầu hoặc rẽ phải ở phạm vi nơi đường giao nhau trước mặt biển.",
           "image": "images/signs/p153.webp"
         },
         {

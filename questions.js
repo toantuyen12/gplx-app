@@ -875,7 +875,7 @@ const questions = [
     "question": "Câu 96: Xe cơ giới dưới đây, xe nào là xe quá tải trọng?",
     "options": [
       "Xe có khối lượng toàn bộ vượt quá khối lượng cho phép của xe hoặc vượt quá tải trọng của đường bộ.",
-      "Xe có khối lượng toàn bộ phân bổ lên trục xe, cụm trục xe vượt quá tải trọng của trục xe, cụm trục xe hoặc vượt |quá tải trọng của đường bộ.",
+      "Xe có khối lượng toàn bộ phân bổ lên trục xe, cụm trục xe vượt quá tải trọng của trục xe, cụm trục xe hoặc vượt quá tải trọng của đường bộ.",
       "Cả hai ý trên."
     ]
   },
@@ -1704,7 +1704,7 @@ const questions = [
   },
   {
     "id": 181,
-    "question": "Câu 181: Biển nào báo hiệu của chui?",
+    "question": "Câu 181: Biển nào báo hiệu cửa chui?",
     "options": [
       "Biển 1.",
       "Biển 2.",
@@ -1810,7 +1810,7 @@ const questions = [
   },
   {
     "id": 191,
-    "question": "Câu 191: Biển nào cảnh báo đường ngầm có nguy",
+    "question": "Câu 191: Biển nào cảnh báo đường ngầm có nguy cơ lũ quét",
     "options": [
       "Biển 1.",
       "Biển 2."
@@ -1918,7 +1918,7 @@ const questions = [
   },
   {
     "id": 202,
-    "question": "Câu 202: Biển nào để cảnh báo các loại xe ô tô, máy kéo, rơ moóc hoặc sơ mi rơ moóc được kéo | bởi xe ô tô hoặc ô tô đầu kéo, xe máy chuyên dùng | đang đỗ chiếm một phần đường xe chạy?",
+    "question": "Câu 202: Biển nào để cảnh báo các loại xe ô tô, máy kéo, rơ moóc hoặc sơ mi rơ moóc được kéo bởi xe ô tô hoặc ô tô đầu kéo, xe máy chuyên dùng đang đỗ chiếm một phần đường xe chạy?",
     "options": [
       "Biển 1.",
       "Biển 2"
