@@ -248,7 +248,7 @@ const questions = [
   },
   {
     "id": 28,
-    "question": "Câu 28: Khi hiệu lệnh của người điều khiển giao thông trái với tín hiệu đèn giao thông, biển báo hiệu đường bộ, người tham gia giao thông đường | bộ phải chấp hành như thế nào?",
+    "question": "Câu 28: Khi hiệu lệnh của người điều khiển giao thông trái với tín hiệu đèn giao thông, biển báo hiệu đường bộ, người tham gia giao thông đường bộ phải chấp hành như thế nào?",
     "options": [
       "Hiệu lệnh của người điều khiển giao thông.",
       "Tín hiệu đèn giao thông.",
@@ -390,8 +390,9 @@ const questions = [
   },
   {
     "id": 44,
-    "question": "Câu 44: Trên đường có nhiều làn đường cho xe đi cùng chiều được phân biệt bằng vạch kẻ phân làn đường, người điều khiển phương tiện tham gia giao thông đường bộ phải tuân theo quy tắc nào? 1. Phải cho xe đi trong một làn đường và chỉ được chuyển làn đường ở những nơi cho phép.",
+    "question": "Câu 44: Trên đường có nhiều làn đường cho xe đi cùng chiều được phân biệt bằng vạch kẻ phân làn đường, người điều khiển phương tiện tham gia giao thông đường bộ phải tuân theo quy tắc nào?",
     "options": [
+      "Phải cho xe đi trong một làn đường và chỉ được chuyển làn đường ở những nơi cho phép.",
       "Mỗi lần chuyển làn đường chỉ được phép chuyển sang một làn đường liền kề.",
       "Khi chuyển làn đường phải có tín hiệu báo trước; phải quan sát bảo đảm khoảng cách an toàn với xe phía trước, phía sau và hai bên mới được chuyển làn.",
       "Cả ba ý trên."
