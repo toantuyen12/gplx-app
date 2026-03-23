@@ -402,7 +402,7 @@ const questions = [
     "id": 45,
     "question": "Câu 45: Người điều khiển xe thô sơ, xe cơ giới và xe máy chuyên dùng phải đi như thế nào trên đường một chiều có vạch kẻ phân làn đường?",
     "options": [
-      "Xe thô sơ phải đi trên làn đường bên phải trong cùng xe cơ giới, xe máy chuyên dùng đi trên làn đường bên trái",
+      "Xe thô sơ phải đi trên làn đường bên phải trong cùng, xe cơ giới, xe máy chuyên dùng đi trên làn đường bên trái",
       "Xe thô sơ phải đi trên làn đường bên trái trong cùng, xe cơ giới, xe máy chuyên dùng đi trên làn đường bên phải.",
       "Xe thô sơ đi trên làn đường phù hợp không gây cản trở giao thông, xe cơ giới, xe máy chuyên dùng đi trên làn đường bên phải."
     ]
@@ -624,7 +624,7 @@ const questions = [
   },
   {
     "id": 69,
-    "question": "Câu 69: Trên đường phố, người điều khiển phương tiện giao thông đường bộ khi dừng xe, xe phải tuân theo quy tắc nào?",
+    "question": "Câu 69: Trên đường phố, người điều khiển phương tiện giao thông đường bộ khi dừng xe, đỗ xe phải tuân theo quy tắc nào?",
     "options": [
       "Chỉ được dừng xe, đỗ xe sát theo lề đường, vỉa hè phía bên phải theo chiều đi của mình.",
       "Bánh xe gần nhất không được cách xa lề đường, vỉa hè quá 0,25 mét và không gây cản trở, nguy hiểm cho người và phương tiện tham gia giao thông đường bộ.",
@@ -741,7 +741,7 @@ const questions = [
   },
   {
     "id": 82,
-    "question": "Câu 82: Trên đường cao tốc người lái xe chỉ được 2 dừng, đỗ xe trong trường hợp nào?",
+    "question": "Câu 82: Trên đường cao tốc người lái xe chỉ được dừng, đỗ xe trong trường hợp nào?",
     "options": [
       "Chỉ được dừng xe, đỗ xe ở nơi quy định;",
       "Trường hợp gặp sự cố kỹ thuật hoặc bất khả kháng khác buộc phải dừng xe, đỗ xe thì được dừng xe,",

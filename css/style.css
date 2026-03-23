@@ -520,6 +520,7 @@ margin-bottom:8px;
   padding: 0;
   color: var(--text-main);
   font-weight: 600;
+  text-wrap: wrap;
 }
 
 /* ===== LAYOUT CÂU HỎI ===== */
