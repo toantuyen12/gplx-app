@@ -13,7 +13,7 @@ const questions = [
     "question": "Câu 2: Trong Luật TTATGTĐB, \"làn đường\" được quy định như thế nào?",
     "options": [
       "Là phần của đường bộ được sử dụng cho phương tiện giao thông đi lại.",
-      "Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có đủ chiều rộng cho xe chạy an",
+      "Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có đủ chiều rộng cho xe chạy an toàn",
       "Cả hai ý trên."
     ]
   },
@@ -4458,7 +4458,7 @@ const questions = [
     "id": 464,
     "question": "Câu 464: Tiêu chí văn hoá giao thông đường bộ do Bộ Văn hoá, Thể thao và Du lịch ban hành quy định tiêu chí cụ thể cho những đổi tượng nào dưới đây?",
     "options": [
-      "Cơ quan quản lý nhà nước về giao thông; lực lượng |làm nhiệm vụ bảo đảm trật tự, an toàn giao thông.",
+      "Cơ quan quản lý nhà nước về giao thông; lực lượng làm nhiệm vụ bảo đảm trật tự, an toàn giao thông.",
       "Người tham gia giao thông; chủ phương tiện tham gia giao thông.",
       "Cư dân sinh sống bên đường giao thông.",
       "Cả ba ý trên."
