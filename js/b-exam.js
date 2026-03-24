@@ -101,25 +101,22 @@ function getQuestionsByChapter(chapterId) {
 
 // ===== EXAM GENERATION =====
 function generateBExam() {
+    console.log("--- B Exam Generation Started ---");
     let recentIds = [];
     try {
         recentIds = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
     } catch(e) {}
 
-    // Build pools per chapter using manager mapping
-    const allIds = Array.from({ length: _manager.total }, (_, i) => i + 1);
+    // 1. Get Pools from Manager
+    const critPool = _manager.getQuestionsByChapter(1).filter(id => _manager.isCritical(id));
+    const ch1NonCrit = _manager.getQuestionsByChapter(1).filter(id => !_manager.isCritical(id));
+    const ch2 = _manager.getQuestionsByChapter(2);
+    const ch3 = _manager.getQuestionsByChapter(3);
+    const ch4 = _manager.getQuestionsByChapter(4);
+    const ch5 = _manager.getQuestionsByChapter(5);
+    const ch6 = _manager.getQuestionsByChapter(6);
 
-    const critPool = allIds.filter(id => _manager.isCritical(id));
-    const ch1AllIds = allIds.filter(id => {
-        const m = _manager.getMapping(id);
-        return m && m.chapterId === 1;
-    });
-    const ch1NonCrit = ch1AllIds.filter(id => !_manager.isCritical(id));
-    const ch2 = allIds.filter(id => { const m = _manager.getMapping(id); return m && m.chapterId === 2; });
-    const ch3 = allIds.filter(id => { const m = _manager.getMapping(id); return m && m.chapterId === 3; });
-    const ch4 = allIds.filter(id => { const m = _manager.getMapping(id); return m && m.chapterId === 4; });
-    const ch5 = allIds.filter(id => { const m = _manager.getMapping(id); return m && m.chapterId === 5; });
-    const ch6 = allIds.filter(id => { const m = _manager.getMapping(id); return m && m.chapterId === 6; });
+    console.log(`Pools: Crit=${critPool.length}, Ch1NonCrit=${ch1NonCrit.length}, Ch2=${ch2.length}, Ch3=${ch3.length}, Ch4=${ch4.length}, Ch5=${ch5.length}, Ch6=${ch6.length}`);
 
     const filterRecent = (arr) => arr.filter(id => !recentIds.includes(id));
 
@@ -133,9 +130,10 @@ function generateBExam() {
 
     const { ch1NonCrit: n1, ch2: n2, ch3: n3, ch4: n4, ch5: n5, ch6: n6, critical: nc } = EXAM_RULE;
 
-    // Reset if any pool is too small
+    // 2. Reset if any pool is too small
     if (pCrit.length < nc || pCh1.length < n1 || pCh2.length < n2 ||
         pCh3.length < n3 || pCh4.length < n4 || pCh5.length < n5 || pCh6.length < n6) {
+        console.warn("Recent list too saturated, resetting for better variety.");
         recentIds = [];
         pCrit = critPool;
         pCh1 = ch1NonCrit;
@@ -146,6 +144,7 @@ function generateBExam() {
         pCh6 = ch6;
     }
 
+    // 3. Assemble Quiz
     quiz = shuffle([
         ...shuffle(pCrit).slice(0, nc),
         ...shuffle(pCh1).slice(0, n1),
@@ -155,6 +154,11 @@ function generateBExam() {
         ...shuffle(pCh5).slice(0, n5),
         ...shuffle(pCh6).slice(0, n6)
     ]);
+
+    console.log(`Final Quiz Length: ${quiz.length}`);
+    if (quiz.length === 0) {
+        console.error("ERROR: Quiz generation resulted in 0 questions!");
+    }
 
     recentIds.push(...quiz);
     if (recentIds.length > RECENT_MAX) recentIds = [...quiz];
@@ -171,7 +175,7 @@ function startExam() {
     timeLeft = EXAM_DURATION;
     startTimer();
 
-    document.getElementById("loadingDiv").style.display = "none";
+    document.getElementById("initialLoading").style.display = "none";
     document.getElementById("bExamRoot").style.display = "block";
 
     renderGrid();
