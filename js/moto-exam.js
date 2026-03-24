@@ -210,7 +210,7 @@ function renderQuestion() {
         // Exam mode - no feedback
         optionsHtml = q.options.map((opt, i) => {
             let cls = 's600-ans-btn';
-            let style = (ans === opt.id) ? 'box-shadow: 0 0 0 2px #3b82f6; border-color:#3b82f6; background-color:#eff6ff;' : '';
+            let style = (ans === opt.id) ? 'box-shadow: 0 0 0 3px #1d4ed8; border-color:#1d4ed8; background-color:#dbeafe; font-weight:600; color:#1e3a8a;' : '';
 
             return `<button class="${cls}" style="${style}" onclick="choose(${opt.id})">
                 <span class="s600-ans-num">${i + 1}.</span>
@@ -249,12 +249,21 @@ function renderQuestion() {
             }
         }
     
+        let userOption = q.options.find(opt => opt.id === ans);
+        let correctOption = q.options.find(opt => opt.id === q.correct_answer);
+        let userText = userOption ? userOption.text : "Chưa chọn";
+        let correctText = correctOption ? correctOption.text : "Không xác định";
+
         explHtml = `<div class="s600-explanation ${explClass}">
             <div class="s600-expl-header">${title}</div>
             ${q.is_critical && !isCorrect 
                 ? `<div style="font-weight:700; color:#e11d48; margin-bottom:10px; font-size:15px;">Câu điểm liệt sai! Áp dụng trượt trực tiếp toàn bộ bài thi.</div>` 
                 : ''}
-            <div class="s600-expl-body">${q.explanation || 'Không có giải thích.'}</div>
+            <div style="margin-bottom: 15px; font-size: 15px; line-height: 1.6; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 10px;">
+                <div><b>Bạn chọn:</b> ${userText}</div>
+                <div><b style="color: #16a34a;">Đáp án đúng:</b> ${correctText}</div>
+            </div>
+            <div class="s600-expl-body"><b>Giải thích:</b> ${q.explanation || 'Không có giải thích.'}</div>
            </div>`;
     }
 
