@@ -154,11 +154,10 @@ function renderGrid() {
         quiz.forEach((qId, idx) => {
             let user = userAns[idx];
             let q = _manager.getQuestion(qId);
-            let correct = Array.from(q.options).findIndex(opt => opt.id === q.correct_answer);
             
             let cls = 's600-grid-btn';
             if (idx === current) cls += ' s600-grid-current';
-            else if (user === correct) cls += ' s600-grid-correct';
+            else if (user === q.correct_answer) cls += ' s600-grid-correct';
             else cls += ' s600-grid-wrong';
             
             let iconHTML = '';
@@ -211,25 +210,20 @@ function renderQuestion() {
         // Exam mode - no feedback
         optionsHtml = q.options.map((opt, i) => {
             let cls = 's600-ans-btn';
-            if (ans === i) cls += ' s600-ans-correct'; // using this class just for a blue/selected highlight! Wait, let's use a clear styling
-            
-            // Adjust to match the styling or add an inline style if cand-study.html doesnt have a neutral "selected" state. Since the prompt forbids proper correct/wrong highlighting during exam.
-            let style = (ans === i) ? 'box-shadow: 0 0 0 2px #3b82f6; border-color:#3b82f6; background-color:#eff6ff;' : '';
+            let style = (ans === opt.id) ? 'box-shadow: 0 0 0 2px #3b82f6; border-color:#3b82f6; background-color:#eff6ff;' : '';
 
-            return `<button class="${cls}" style="${style}" onclick="choose(${i})">
+            return `<button class="${cls}" style="${style}" onclick="choose(${opt.id})">
                 <span class="s600-ans-num">${i + 1}.</span>
                 <span class="s600-ans-text">${opt.text}</span>
             </button>`;
         }).join('');
     } else {
         // Result mode - feedback
-        const correctIndex = Array.from(q.options).findIndex(opt => opt.id === q.correct_answer);
-        
         optionsHtml = q.options.map((opt, i) => {
             let cls = 's600-ans-btn';
-            if (i === correctIndex) {
+            if (opt.id === q.correct_answer) {
                  cls += ' s600-ans-correct';
-            } else if (i === ans && i !== correctIndex) {
+            } else if (opt.id === ans && opt.id !== q.correct_answer) {
                  cls += ' s600-ans-wrong';
             }
             return `<button class="${cls}" style="cursor:default;">
@@ -241,8 +235,7 @@ function renderQuestion() {
 
     let explHtml = '';
     if (isSubmitted) {
-        const correctIndex = Array.from(q.options).findIndex(opt => opt.id === q.correct_answer);
-        const isCorrect = ans === correctIndex;
+        const isCorrect = ans === q.correct_answer;
         let explClass = isCorrect ? 's600-expl-correct' : 's600-expl-wrong';
         let title = isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng';
         
@@ -297,9 +290,9 @@ function renderQuestion() {
     }
 }
 
-function choose(index) {
+function choose(optId) {
     if (isSubmitted) return;
-    userAns[current] = index;
+    userAns[current] = optId;
     renderGrid();
     renderQuestion();
 }
@@ -364,9 +357,8 @@ function submit() {
     quiz.forEach((qId, i) => {
         let user = userAns[i];
         let q = _manager.getQuestion(qId);
-        let correctIndex = Array.from(q.options).findIndex(opt => opt.id === q.correct_answer);
         
-        if (user === correctIndex) {
+        if (user === q.correct_answer) {
             score++;
         } else if (q.is_critical) {
             wrongCritical = true;
@@ -453,7 +445,7 @@ document.addEventListener("keydown", function(event) {
         let index = parseInt(event.key) - 1;
         let q = _manager.getQuestion(quiz[current]);
         if(index < q.options.length) {
-            choose(index);
+            choose(q.options[index].id);
         }
     }
 });
