@@ -97,26 +97,27 @@ function generateCExam() {
         recentIds = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
     } catch(e) {}
 
-    // 1. Get Pools from Manager
-    const critPool = _manager.getQuestionsByChapter(1).filter(id => _manager.isCritical(id));
-    const ch1NonCrit = _manager.getQuestionsByChapter(1).filter(id => !_manager.isCritical(id));
-    const ch2 = _manager.getQuestionsByChapter(2);
-    const ch3 = _manager.getQuestionsByChapter(3);
-    const ch4 = _manager.getQuestionsByChapter(4);
-    const ch5 = _manager.getQuestionsByChapter(5);
-    const ch6 = _manager.getQuestionsByChapter(6);
+    // 1. Get Pools from Manager (Strictly separated)
+    const criticalPool = _manager.getCriticalPool();
+    const ch1NonCrit = _manager.getQuestionsByChapterFiltered(1, false);
+    const ch2NonCrit = _manager.getQuestionsByChapterFiltered(2, false);
+    const ch3NonCrit = _manager.getQuestionsByChapterFiltered(3, false);
+    const ch4NonCrit = _manager.getQuestionsByChapterFiltered(4, false);
+    const ch5NonCrit = _manager.getQuestionsByChapterFiltered(5, false);
+    const ch6NonCrit = _manager.getQuestionsByChapterFiltered(6, false);
 
-    console.log(`Pools: Crit=${critPool.length}, Ch1NonCrit=${ch1NonCrit.length}, Ch2=${ch2.length}, Ch3=${ch3.length}, Ch4=${ch4.length}, Ch5=${ch5.length}, Ch6=${ch6.length}`);
+    console.log(`Pools (NonCrit): Ch1=${ch1NonCrit.length}, Ch2=${ch2NonCrit.length}, Ch3=${ch3NonCrit.length}, Ch4=${ch4NonCrit.length}, Ch5=${ch5NonCrit.length}, Ch6=${ch6NonCrit.length}`);
+    console.log(`Pool (Critical): Total=${criticalPool.length}`);
 
     const filterRecent = (arr) => arr.filter(id => !recentIds.includes(id));
 
-    let pCrit = filterRecent(critPool);
+    let pCrit = filterRecent(criticalPool);
     let pCh1 = filterRecent(ch1NonCrit);
-    let pCh2 = filterRecent(ch2);
-    let pCh3 = filterRecent(ch3);
-    let pCh4 = filterRecent(ch4);
-    let pCh5 = filterRecent(ch5);
-    let pCh6 = filterRecent(ch6);
+    let pCh2 = filterRecent(ch2NonCrit);
+    let pCh3 = filterRecent(ch3NonCrit);
+    let pCh4 = filterRecent(ch4NonCrit);
+    let pCh5 = filterRecent(ch5NonCrit);
+    let pCh6 = filterRecent(ch6NonCrit);
 
     const { ch1NonCrit: n1, ch2: n2, ch3: n3, ch4: n4, ch5: n5, ch6: n6, critical: nc } = EXAM_RULE;
 
@@ -125,13 +126,13 @@ function generateCExam() {
         pCh3.length < n3 || pCh4.length < n4 || pCh5.length < n5 || pCh6.length < n6) {
         console.warn("Recent list too saturated, resetting for variety.");
         recentIds = [];
-        pCrit = critPool;
+        pCrit = criticalPool;
         pCh1 = ch1NonCrit;
-        pCh2 = ch2;
-        pCh3 = ch3;
-        pCh4 = ch4;
-        pCh5 = ch5;
-        pCh6 = ch6;
+        pCh2 = ch2NonCrit;
+        pCh3 = ch3NonCrit;
+        pCh4 = ch4NonCrit;
+        pCh5 = ch5NonCrit;
+        pCh6 = ch6NonCrit;
     }
 
     // 3. Assemble Quiz
@@ -146,8 +147,12 @@ function generateCExam() {
     ]);
 
     console.log(`Final Quiz Length: ${quiz.length}`);
-    if (quiz.length === 0) {
-        console.error("ERROR: Category C Quiz generation resulted in 0 questions!");
+    const finalCritCount = quiz.filter(id => _manager.isCritical(id)).length;
+    console.log(`Final Critical Count: ${finalCritCount}`);
+
+    if (finalCritCount !== 1) {
+        console.error("ERROR: Multiple critical questions detected! Force regenerating...");
+        return generateCExam();
     }
 
     recentIds.push(...quiz);

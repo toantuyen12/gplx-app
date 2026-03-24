@@ -28,11 +28,53 @@ let timeLeft = 0;
 let timerInterval = null;
 let isSubmitted = false;
 
-// Format title
+const CONFIG = {
+    a1: {
+        title: "Thi Thử GPLX Hạng A1 Online – 25 Câu Hỏi Sát Hạch",
+        seoTitle: "Thi Thử GPLX Hạng A1 Online – 25 Câu Hỏi Sát Hạch",
+        seoDesc: "Chào mừng bạn đến với hệ thống thi thử lý thuyết lái xe mô tô hạng A1. Bộ đề thi gồm 25 câu hỏi được trích xuất từ bộ 250 câu hỏi ôn tập, bao gồm các câu điểm liệt quan trọng.",
+        timeValue: "19 Phút",
+        countValue: "25 Câu",
+        passValue: "21/25 câu",
+        metaDesc: "Chào mừng bạn đến với hệ thống thi thử lý thuyết lái xe mô tô hạng A1. Bộ đề thi gồm 25 câu hỏi được trích xuất từ bộ 250 câu hỏi ôn tập, bao gồm các câu điểm liệt quan trọng."
+    },
+    a: {
+        title: "Thi Thử GPLX Hạng A Online – 25 Câu Hỏi Sát Hạch",
+        seoTitle: "Thi Thử GPLX Hạng A Online – 25 Câu Hỏi Sát Hạch",
+        seoDesc: "Chào mừng bạn đến với hệ thống thi thử lý thuyết lái xe mô tô hạng A. Bộ đề thi gồm 25 câu hỏi được trích xuất từ bộ 250 câu hỏi ôn tập, bao gồm các câu điểm liệt quan trọng.",
+        timeValue: "19 Phút",
+        countValue: "25 Câu",
+        passValue: "23/25 câu",
+        metaDesc: "Chào mừng bạn đến với hệ thống thi thử lý thuyết lái xe mô tô hạng A. Bộ đề thi gồm 25 câu hỏi được trích xuất từ bộ 250 câu hỏi ôn tập, bao gồm các câu điểm liệt quan trọng."
+    }
+};
+
+// Format title and SEO content
 document.addEventListener("DOMContentLoaded", () => {
-    document.title = `Thi Đề 25 Câu GPLX Hạng ${license.toUpperCase()} Online | thigplx.site`;
+    const cfg = CONFIG[license] || CONFIG.a1;
+
+    document.title = `${cfg.title} | thigplx.site`;
+    
+    // Update labels
     const label = document.getElementById("pageTitleLabel");
     if(label) label.textContent = `Thi Thử Sát Hạch Hạng ${license.toUpperCase()}`;
+
+    // Update Meta Description
+    const meta = document.getElementById("metaDesc");
+    if (meta) meta.setAttribute("content", cfg.metaDesc);
+
+    // Update SEO Hero Content
+    const seoTitle = document.getElementById("seoTitle");
+    const seoDesc = document.getElementById("seoDesc");
+    const hTime = document.getElementById("heroTime");
+    const hCount = document.getElementById("heroCount");
+    const hPass = document.getElementById("heroPass");
+
+    if (seoTitle) seoTitle.textContent = cfg.seoTitle;
+    if (seoDesc) seoDesc.textContent = cfg.seoDesc;
+    if (hTime) hTime.textContent = cfg.timeValue;
+    if (hCount) hCount.textContent = cfg.countValue;
+    if (hPass) hPass.textContent = cfg.passValue;
 });
 
 async function loadData() {
@@ -65,56 +107,60 @@ function shuffle(array) {
 }
 
 function generateMotoExam() {
+    console.log(`--- Moto Exam Generation Started (${license}) ---`);
     let recentIds = [];
     try {
         recentIds = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
     } catch(e) {}
 
-    const ch1 = _manager.getQuestionsByChapter(1);
-    const ch2 = _manager.getQuestionsByChapter(2);
-    const ch3 = _manager.getQuestionsByChapter(3);
-    const ch4 = _manager.getQuestionsByChapter(4);
-    const ch5 = _manager.getQuestionsByChapter(5);
-
-    const criticalPool = ch1.filter(id => _manager.isCritical(id));
-    const ch1NonCritical = ch1.filter(id => !_manager.isCritical(id));
+    // 1. Get Pools from Manager (Strictly separated)
+    const criticalPool = _manager.getCriticalPool();
+    const ch1NonCrit = _manager.getQuestionsByChapterFiltered(1, false);
+    const ch2NonCrit = _manager.getQuestionsByChapterFiltered(2, false);
+    const ch3NonCrit = _manager.getQuestionsByChapterFiltered(3, false);
+    const ch4NonCrit = _manager.getQuestionsByChapterFiltered(4, false);
+    const ch5NonCrit = _manager.getQuestionsByChapterFiltered(5, false);
 
     const filterRecent = (arr) => arr.filter(id => !recentIds.includes(id));
 
     let poolCrit = filterRecent(criticalPool);
-    let poolCh1 = filterRecent(ch1NonCritical);
-    let poolCh2 = filterRecent(ch2);
-    let poolCh3 = filterRecent(ch3);
-    let poolCh4 = filterRecent(ch4);
-    let poolCh5 = filterRecent(ch5);
+    let poolCh1 = filterRecent(ch1NonCrit);
+    let poolCh2 = filterRecent(ch2NonCrit);
+    let poolCh3 = filterRecent(ch3NonCrit);
+    let poolCh4 = filterRecent(ch4NonCrit);
+    let poolCh5 = filterRecent(ch5NonCrit);
 
     if (poolCrit.length < 1 || poolCh1.length < 8 || poolCh2.length < 1 || poolCh3.length < 1 || poolCh4.length < 8 || poolCh5.length < 6) {
+        console.warn("Recent list too saturated, resetting pools.");
         recentIds = [];
         poolCrit = criticalPool;
-        poolCh1 = ch1NonCritical;
-        poolCh2 = ch2;
-        poolCh3 = ch3;
-        poolCh4 = ch4;
-        poolCh5 = ch5;
+        poolCh1 = ch1NonCrit;
+        poolCh2 = ch2NonCrit;
+        poolCh3 = ch3NonCrit;
+        poolCh4 = ch4NonCrit;
+        poolCh5 = ch5NonCrit;
     }
 
-    quiz = [
+    // 2. Assemble and shuffle
+    quiz = shuffle([
         ...shuffle(poolCrit).slice(0, 1),
         ...shuffle(poolCh1).slice(0, 8),
         ...shuffle(poolCh2).slice(0, 1),
         ...shuffle(poolCh3).slice(0, 1),
         ...shuffle(poolCh4).slice(0, 8),
         ...shuffle(poolCh5).slice(0, 6)
-    ];
+    ]);
 
-    quiz = shuffle(quiz);
+    // 3. Final Safety Check
+    const finalCritCount = quiz.filter(id => _manager.isCritical(id)).length;
+    console.log(`Final Quiz: ${quiz.length} questions, ${finalCritCount} critical.`);
+    if (finalCritCount !== 1) {
+        console.error("CRITICAL ERROR: Multiple critical questions detected! Force regenerating...");
+        return generateMotoExam(); // Recursion as fallback
+    }
 
     recentIds.push(...quiz);
-    
-    if (recentIds.length > 125) {
-        recentIds = [...quiz];
-    }
-    
+    if (recentIds.length > 100) recentIds = [...quiz]; 
     recentIds = [...new Set(recentIds)];
     localStorage.setItem(RECENT_KEY, JSON.stringify(recentIds));
 }

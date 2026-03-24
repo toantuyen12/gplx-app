@@ -227,6 +227,15 @@ function createQuestionManager(mode, questions600 = [], questions600explain = []
       return mapping.filter(m => m.chapterId === chapterId).map(m => m.newId);
     },
 
+    getQuestionsByChapterFiltered(chapterId, isCritical) {
+      return mapping.filter(m => m.chapterId === chapterId && criticalNewIdSet.has(m.newId) === isCritical).map(m => m.newId);
+    },
+
+    getCriticalPool() {
+      // Returns all critical NEW IDs available in this mode/license
+      return Array.from(criticalNewIdSet);
+    },
+
     getMapping(newId) {
       return mappingMap.get(newId) || null;
     }
