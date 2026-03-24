@@ -13,14 +13,17 @@ def generate_sitemap():
         "home": {"priority": "1.0", "changefreq": "daily", "files": ["index.html"]},
         "menus": {"priority": "0.9", "changefreq": "weekly", "files": [
             "class-a-menu.html", "class-a1-menu.html", "class-b-menu.html", 
-            "class-b1-menu.html", "class-c-menu.html", "class-c1-menu.html", "cand-menu.html"
+            "class-b1-menu.html", "class-c-menu.html", "class-c1-menu.html", 
+            "cand-menu.html", "b-cand-menu.html"
         ]},
         "quizzes": {"priority": "0.8", "changefreq": "weekly", "files": [
-            "cand-exam.html", "cand-study.html"
+            "cand-exam.html", "cand-study.html", "moto-exam.html", 
+            "b-exam.html", "c-exam.html", "c1-exam.html", "study600.html"
         ]},
         "content": {"priority": "0.7", "changefreq": "weekly", "files": [
             "meo-thi-gplx.html", "sahinh.html", "bien-bao-giao-thong.html", 
-            "signs.html", "duong-truong.html", "kinh-nghiem-hoc-gplx.html"
+            "signs.html", "duong-truong.html", "kinh-nghiem-hoc-gplx.html",
+            "sahinh-b-cand.html"
         ]},
         "static": {"priority": "0.7", "changefreq": "monthly", "files": [
             "about.html", "privacy.html", "terms.html", "contact.html"

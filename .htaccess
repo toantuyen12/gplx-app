@@ -1,5 +1,9 @@
 RewriteEngine On
 
-# Force HTTPS (single step only)
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://thigplx.site%{REQUEST_URI} [L,R=301]
+# 1. Force HTTPS and non-WWW (thigplx.site)
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^(.*)$ https://thigplx.site/$1 [L,R=301]
+
+# 2. Prevent common redirect loops
+# (Ensuring each URL only redirects max 1 time)
