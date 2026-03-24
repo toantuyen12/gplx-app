@@ -1798,3 +1798,19 @@ nav.main-nav a:hover {
   .s600-right-panel { padding: 14px 12px; }
   .s600-nav-btns { margin-bottom: 150px; }
 }
+/* ===== FOOTER STICKY LAYOUT (FLEXBOX) ===== */
+.exam-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.exam-page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .s600-nav-btns { margin-bottom: 30px !important; }
+}

@@ -17,6 +17,8 @@
 
 </head>
 <body>
+<div class="exam-page-wrapper">
+<div class="exam-page-content">
 
 <header>
 <div class="nav-container">
@@ -55,7 +57,7 @@
 </main>
 
 <main id="motoExamRoot" style="display: none; background-color: transparent;">
-  <div class="s600-study-wrap">
+  <div class="s600-study-wrap" style="min-height: auto;">
       <!-- TOP BAR -->
       <div class="s600-top-bar">
         <a href="#" onclick="exitHome()" class="s600-back-btn">← Thoát thi</a>
@@ -93,11 +95,52 @@
   </div>
 </main>
 
+</div> <!-- end exam-page-content -->
+
 <footer class="footer">
-<div class="footer-container">
-    <p class="copyright">© 2026 thigplx.site</p>
-</div>
+    <div class="footer-container">
+        <div class="footer-nav">
+            <a href="index.html">Trang chủ</a>
+            <a href="index.html#quiz">Thi GPLX Online</a>
+            <a href="cand-menu.html">600 câu hỏi GPLX</a>
+            <a href="meo-thi-gplx.html">Mẹo thi GPLX</a>
+            <a href="sahinh.html">Sa hình lái xe</a>
+            <a href="signs.html">Biển báo giao thông</a>
+            <a href="class-b-menu.html">Thi thử sát hạch</a>
+        </div>
+
+        <div class="footer-seo-text">
+            <p>Luyện thi GPLX online miễn phí với bộ 600 câu hỏi lý thuyết mới nhất. Website cung cấp thi thử sát
+                hạch lái xe, mẹo thi GPLX, bài sa hình lái xe và hệ thống biển báo giao thông giúp người học ôn
+                luyện hiệu quả.</p>
+        </div>
+
+        <div class="footer-keywords">
+            <span>Thi GPLX B2</span> • <span>Thi GPLX A1</span> • <span>600 câu hỏi GPLX mới nhất</span> • <span>Mẹo
+                thi GPLX đậu nhanh</span> • <span>Sa hình lái xe B2</span> • <span>Biển báo giao thông đường
+                bộ</span>
+        </div>
+
+        <div id="visitorStats">
+            <span>👥 Đang online: <span id="onlineUsers">0</span></span> |
+            <span>📅 Hôm nay: <span id="todayUsers">0</span></span>
+            <span id="totalUsers" style="display:none;">0</span>
+        </div>
+
+        <p class="footer-contact">thigplx.contact@gmail.com</p>
+
+        <div class="footer-bottom-links">
+            <a href="about.html">Giới thiệu</a> |
+            <a href="privacy.html">Chính sách bảo mật</a> |
+            <a href="terms.html">Điều khoản</a> |
+            <a href="contact.html">Liên hệ</a>
+        </div>
+
+        <p class="copyright">© 2026 thigplx.site</p>
+    </div>
 </footer>
+
+</div> <!-- end exam-page-wrapper -->
 
 <style>
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -143,6 +186,32 @@ function toggleMenu(e) {
     }
 }
 </script>
+
+<div id="feedbackContainer"></div>
+<script>
+fetch("/feedback.html?v=3")
+.then(res=>res.text())
+.then(data=>{
+    document.getElementById("feedbackContainer").innerHTML=data;
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Gn37aooYVlLuKdN9j");
+})();
+</script>
+<link rel="stylesheet" href="/css/feedback.css?v=3">
+<script src="/js/feedback.js?v=3"></script>
+
+<script>
+function sendVisit() {
+    fetch("/api/track", { method: "POST" }).catch(() => { });
+}
+sendVisit();
+setInterval(sendVisit, 90000);
+</script>
+
 
 </body>
 </html>

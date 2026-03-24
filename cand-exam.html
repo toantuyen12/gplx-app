@@ -96,6 +96,9 @@
 </head>
 <body>
 
+<div class="exam-page-wrapper">
+<div class="exam-page-content">
+
 <header>
 <div class="nav-container">
 <a href="index.html" class="logo" style="display:flex; align-items:center;">
@@ -155,6 +158,8 @@
         <li><a href="/bai-viet/nhung-dieu-can-biet-ve-bai-thi-sa-hinh-o-to.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Những lỗi hay gặp khi thi Sa Hình</a></li>
     </ul>
 </div>
+
+</div> <!-- end exam-page-content -->
 
 <footer class="footer">
 <div class="footer-container">
@@ -226,6 +231,7 @@
 
 
 <!-- Global UI Scripts -->
+<!-- Global UI Scripts -->
 <script>
 function toggleMenu(e) {
     if (e) {
@@ -248,8 +254,7 @@ function toggleMenu(e) {
     }
 
     if (mobileMenu) {
-        const isActive = mobileMenu.classList.contains('active');
-        if (isActive) {
+        if (mobileMenu.classList.contains('active')) {
             mobileMenu.classList.remove('active');
             overlay.classList.remove('active');
             document.body.style.overflow = '';
@@ -260,21 +265,14 @@ function toggleMenu(e) {
         }
     }
 }
+</script>
 
-// Close menu when clicking outside (fallback)
-document.addEventListener('click', function(e) {
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const toggleBtn = document.querySelector('.menu-toggle');
-    const overlay = document.querySelector('.menu-overlay');
-    
-    if (mobileMenu && mobileMenu.classList.contains('active')) {
-        if (!mobileMenu.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
-            mobileMenu.classList.remove('active');
-            if (overlay) overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-});
+<script>
+function sendVisit() {
+    fetch("/api/track", { method: "POST" }).catch(() => { });
+}
+sendVisit();
+setInterval(sendVisit, 90000);
 </script>
 
 <div id="feedbackContainer"></div>
