@@ -72,7 +72,18 @@ async function loadData() {
         startExam();
     } catch (err) {
         console.error('Failed to load B-exam data:', err);
-        alert("Lỗi tải dữ liệu đề thi!");
+        const ldText = document.getElementById("loadingText");
+        if (ldText) ldText.innerHTML = `<span style="color:#ef4444;">❌ Lỗi tải dữ liệu!</span>`;
+        if (!_manager) {
+            alert("Lỗi tải dữ liệu đề thi!");
+        }
+    } finally {
+        if (_manager && quiz.length > 0) {
+            const ld = document.getElementById("initialLoading");
+            if (ld) ld.style.display = "none";
+            const root = document.getElementById("bExamRoot");
+            if (root) root.style.display = "block";
+        }
     }
 }
 
@@ -134,7 +145,7 @@ function generateBExam() {
     // 2. Reset if any pool is too small
     if (pCrit.length < nc || pCh1.length < n1 || pCh2.length < n2 ||
         pCh3.length < n3 || pCh4.length < n4 || pCh5.length < n5 || pCh6.length < n6) {
-        console.warn("Recent list too saturated, resetting for better variety.");
+        console.warn("Recent list too saturated, resetting for variety.");
         recentIds = [];
         pCrit = criticalPool;
         pCh1 = ch1NonCrit;
@@ -146,24 +157,34 @@ function generateBExam() {
     }
 
     // 3. Assemble Quiz
-    quiz = shuffle([
-        ...shuffle(pCrit).slice(0, nc),
+    const lethal = shuffle(pCrit).slice(0, nc);
+    const normal = [
         ...shuffle(pCh1).slice(0, n1),
         ...shuffle(pCh2).slice(0, n2),
         ...shuffle(pCh3).slice(0, n3),
         ...shuffle(pCh4).slice(0, n4),
         ...shuffle(pCh5).slice(0, n5),
         ...shuffle(pCh6).slice(0, n6)
-    ]);
+    ];
 
-    console.log(`Final Quiz Length: ${quiz.length}`);
+    quiz = shuffle([...lethal, ...normal]);
+    console.log("questions after filter:", quiz.length);
+
     const finalCritCount = quiz.filter(id => _manager.isCritical(id)).length;
     console.log(`Final Critical Count: ${finalCritCount}`);
 
-    if (finalCritCount !== 1) {
-        console.error("ERROR: Multiple critical questions detected! Force regenerating...");
+    if (quiz.length !== EXAM_TOTAL || finalCritCount !== 1) {
+        console.error("ERROR: Invalid quiz composition! Force regenerating...");
+        if (!window.regenB) window.regenB = 0;
+        window.regenB++;
+        if (window.regenB > 10) {
+            quiz = shuffle([...criticalPool.slice(0,1), ...ch1NonCrit.slice(0, EXAM_TOTAL-1)]);
+            window.regenB = 0;
+            return;
+        }
         return generateBExam();
     }
+    window.regenB = 0;
 
     recentIds.push(...quiz);
     if (recentIds.length > RECENT_MAX) recentIds = [...quiz];

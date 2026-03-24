@@ -73,7 +73,18 @@ async function loadData() {
         startExam();
     } catch (err) {
         console.error('Failed to load C-exam data:', err);
-        alert("Lỗi tải dữ liệu đề thi!");
+        const lText = document.getElementById("loadingText");
+        if (lText) lText.innerHTML = `<span style="color:#ef4444;">❌ Lỗi tải dữ liệu!</span>`;
+        if (!_manager) {
+            alert("Lỗi tải dữ liệu đề thi!");
+        }
+    } finally {
+        if (_manager && quiz.length > 0) {
+            const ld = document.getElementById("initialLoading");
+            if (ld) ld.style.display = "none";
+            const root = document.getElementById("cExamRoot");
+            if (root) root.style.display = "block";
+        }
     }
 }
 
@@ -106,8 +117,7 @@ function generateCExam() {
     const ch5NonCrit = _manager.getQuestionsByChapterFiltered(5, false);
     const ch6NonCrit = _manager.getQuestionsByChapterFiltered(6, false);
 
-    console.log(`Pools (NonCrit): Ch1=${ch1NonCrit.length}, Ch2=${ch2NonCrit.length}, Ch3=${ch3NonCrit.length}, Ch4=${ch4NonCrit.length}, Ch5=${ch5NonCrit.length}, Ch6=${ch6NonCrit.length}`);
-    console.log(`Pool (Critical): Total=${criticalPool.length}`);
+    console.log(`Pools: Crit=${criticalPool.length}, Ch1=${ch1NonCrit.length}, Ch2=${ch2NonCrit.length}, Ch3=${ch3NonCrit.length}, Ch4=${ch4NonCrit.length}, Ch5=${ch5NonCrit.length}, Ch6=${ch6NonCrit.length}`);
 
     const filterRecent = (arr) => arr.filter(id => !recentIds.includes(id));
 
@@ -121,10 +131,10 @@ function generateCExam() {
 
     const { ch1NonCrit: n1, ch2: n2, ch3: n3, ch4: n4, ch5: n5, ch6: n6, critical: nc } = EXAM_RULE;
 
-    // 2. Reset if any pool is too small
-    if (pCrit.length < nc || pCh1.length < n1 || pCh2.length < n2 ||
+    // 2. Reset if any pool too small
+    if (pCrit.length < nc || pCh1.length < n1 || pCh2.length < n2 || 
         pCh3.length < n3 || pCh4.length < n4 || pCh5.length < n5 || pCh6.length < n6) {
-        console.warn("Recent list too saturated, resetting for variety.");
+        console.warn("Recent list too saturated for C, resetting.");
         recentIds = [];
         pCrit = criticalPool;
         pCh1 = ch1NonCrit;
@@ -136,27 +146,37 @@ function generateCExam() {
     }
 
     // 3. Assemble Quiz
-    quiz = shuffle([
-        ...shuffle(pCrit).slice(0, nc),
+    const lethal = shuffle(pCrit).slice(0, nc);
+    const normal = [
         ...shuffle(pCh1).slice(0, n1),
         ...shuffle(pCh2).slice(0, n2),
         ...shuffle(pCh3).slice(0, n3),
         ...shuffle(pCh4).slice(0, n4),
         ...shuffle(pCh5).slice(0, n5),
         ...shuffle(pCh6).slice(0, n6)
-    ]);
+    ];
 
-    console.log(`Final Quiz Length: ${quiz.length}`);
+    quiz = shuffle([...lethal, ...normal]);
+    console.log("questions after filter:", quiz.length);
+
     const finalCritCount = quiz.filter(id => _manager.isCritical(id)).length;
     console.log(`Final Critical Count: ${finalCritCount}`);
 
-    if (finalCritCount !== 1) {
-        console.error("ERROR: Multiple critical questions detected! Force regenerating...");
+    if (quiz.length !== EXAM_TOTAL || finalCritCount !== 1) {
+        console.error("ERROR: Invalid quiz composition! Force regenerating...");
+        if (!window.regenC) window.regenC = 0;
+        window.regenC++;
+        if (window.regenC > 10) {
+            quiz = shuffle([...criticalPool.slice(0,1), ...ch1NonCrit.slice(0, EXAM_TOTAL-1)]);
+            window.regenC = 0;
+            return;
+        }
         return generateCExam();
     }
+    window.regenC = 0;
 
     recentIds.push(...quiz);
-    if (recentIds.length > RECENT_MAX) recentIds = [...quiz];
+    if (recentIds.length > RECENT_MAX) recentIds = [...quiz]; 
     recentIds = [...new Set(recentIds)];
     localStorage.setItem(RECENT_KEY, JSON.stringify(recentIds));
 }

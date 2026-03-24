@@ -92,7 +92,20 @@ async function loadData() {
         startExam();
     } catch (err) {
         console.error('Failed to load exam data:', err);
-        alert("Lỗi tải dữ liệu đề thi!");
+        const loadingText = document.getElementById("loadingText");
+        if (loadingText) loadingText.innerHTML = `<span style="color:#ef4444;">❌ Lỗi: Không thể tải dữ liệu đề thi!</span>`;
+        // Only alert if we really have no manager
+        if (!_manager) {
+            alert("Lỗi tải dữ liệu đề thi! Vui lòng kiểm tra kết nối mạng.");
+        }
+    } finally {
+        // Ensure loading is hidden if we have a manager and startExam ran
+        if (_manager && quiz.length > 0) {
+            const ld = document.getElementById("loadingDiv");
+            if (ld) ld.style.display = "none";
+            const root = document.getElementById("motoExamRoot");
+            if (root) root.style.display = "block";
+        }
     }
 }
 
@@ -121,6 +134,8 @@ function generateMotoExam() {
     const ch4NonCrit = _manager.getQuestionsByChapterFiltered(4, false);
     const ch5NonCrit = _manager.getQuestionsByChapterFiltered(5, false);
 
+    console.log(`Pools: Crit=${criticalPool.length}, Ch1=${ch1NonCrit.length}, Ch2=${ch2NonCrit.length}, Ch3=${ch3NonCrit.length}, Ch4=${ch4NonCrit.length}, Ch5=${ch5NonCrit.length}`);
+
     const filterRecent = (arr) => arr.filter(id => !recentIds.includes(id));
 
     let poolCrit = filterRecent(criticalPool);
@@ -131,7 +146,7 @@ function generateMotoExam() {
     let poolCh5 = filterRecent(ch5NonCrit);
 
     if (poolCrit.length < 1 || poolCh1.length < 8 || poolCh2.length < 1 || poolCh3.length < 1 || poolCh4.length < 8 || poolCh5.length < 6) {
-        console.warn("Recent list too saturated, resetting pools.");
+        console.warn("Recent list too saturated, resetting pools for A1/A.");
         recentIds = [];
         poolCrit = criticalPool;
         poolCh1 = ch1NonCrit;
@@ -142,22 +157,38 @@ function generateMotoExam() {
     }
 
     // 2. Assemble and shuffle
-    quiz = shuffle([
-        ...shuffle(poolCrit).slice(0, 1),
+    // Strictly pick 1 lethal and the rest from chapter pools
+    const lethal = shuffle(poolCrit).slice(0, 1);
+    const normal = [
         ...shuffle(poolCh1).slice(0, 8),
         ...shuffle(poolCh2).slice(0, 1),
         ...shuffle(poolCh3).slice(0, 1),
         ...shuffle(poolCh4).slice(0, 8),
         ...shuffle(poolCh5).slice(0, 6)
-    ]);
+    ];
+
+    quiz = shuffle([...lethal, ...normal]);
+    console.log("questions after filter:", quiz.length);
 
     // 3. Final Safety Check
     const finalCritCount = quiz.filter(id => _manager.isCritical(id)).length;
     console.log(`Final Quiz: ${quiz.length} questions, ${finalCritCount} critical.`);
-    if (finalCritCount !== 1) {
-        console.error("CRITICAL ERROR: Multiple critical questions detected! Force regenerating...");
-        return generateMotoExam(); // Recursion as fallback
+    
+    // Ensure exactly 25 questions and 1 critical
+    if (quiz.length !== 25 || finalCritCount !== 1) {
+        console.error("CRITICAL ERROR: Invalid quiz composition! Force regenerating...");
+        // Avoid infinite recursion by checking a counter if needed, but here we just retry
+        if (window.regenCounter === undefined) window.regenCounter = 0;
+        window.regenCounter++;
+        if (window.regenCounter > 10) {
+            console.error("Too many regenerations, falling back to primitive pool.");
+            quiz = shuffle([...criticalPool.slice(0,1), ...ch1NonCrit.slice(0,24)]);
+            window.regenCounter = 0;
+            return;
+        }
+        return generateMotoExam();
     }
+    window.regenCounter = 0;
 
     recentIds.push(...quiz);
     if (recentIds.length > 100) recentIds = [...quiz]; 
