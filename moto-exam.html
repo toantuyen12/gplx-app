@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" type="image/png" href="assets/favicon.webp">
+<title>Thi Đề 25 Câu GPLX Mô Tô Online | thigplx.site</title>
+<meta name="description" content="Thi thử đề ngẫu nhiên 25 câu GPLX hạng A1, A sát với kỳ thi thực tế. Hệ thống chấm điểm tự động, có đáp án và giải thích.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<header>
+<div class="nav-container">
+<a href="index.html" class="logo" style="display:flex; align-items:center;">
+    <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
+    Thi GPLX
+</a>
+<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu(event)">
+    <i class="fa-solid fa-bars"></i>
+</button>
+<nav class="main-nav">
+<a href="index.html">Trang chủ</a>
+<a href="cand-menu.html">600 Câu Hỏi</a>
+<a href="meo-thi-gplx.html">Mẹo Thi</a>
+<a href="sahinh.html">Sa Hình</a>
+<a href="signs.html">Biển Báo</a>
+<a href="contact.html">Liên hệ</a>
+</nav>
+</div>
+<!-- Mobile Menu -->
+<nav class="mobile-menu">
+<a href="index.html">Trang chủ</a>
+<a href="cand-menu.html">600 Câu Hỏi</a>
+<a href="meo-thi-gplx.html">Mẹo Thi</a>
+<a href="sahinh.html">Sa Hình</a>
+<a href="signs.html">Biển Báo</a>
+<a href="contact.html">Liên hệ</a>
+</nav>
+</header>
+
+<nav aria-label="breadcrumb" class="breadcrumb-container" style="padding: 10px 20px; font-size: 14px; color: #666; background: #fff; border-bottom: 1px solid #eaeaea;">
+  <a href="/" style="color: var(--primary-color); text-decoration: none;">Trang chủ</a> 
+  <span style="margin: 0 8px;">/</span> 
+  <a id="bc-menu" href="class-a1-menu.html" style="color: var(--primary-color); text-decoration: none;">Thi Thử GPLX Hạng A1</a>
+  <span style="margin: 0 8px;">/</span> 
+  <span aria-current="page" style="font-weight: 600;">Thi Đề 25 Câu</span>
+</nav>
+
+
+<div class="container">
+    <div id="home" style="display:none;">
+        <h1 id="pageTitle">Thi Thử Sát Hạch GPLX Hạng A1 Online</h1>
+    </div>
+    <div id="quiz" class="card" style="display:none; max-width: 1000px;"></div>
+</div>
+
+
+<div class="related-links-section" style="margin-top: 40px; padding: 20px; background: #f9fafb; border-radius: 8px;">
+    <h3><i class="fa-solid fa-link" style="color:var(--primary-color);"></i> Bài viết liên quan (Có thể bạn quan tâm)</h3>
+    <ul style="list-style-type: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
+        <li><a href="/meo-thi-gplx.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Mẹo thi GPLX B2, C đậu 100%</a></li>
+        <li><a href="/sahinh.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ 11 Bài thi Sa Hình Ô Tô chi tiết</a></li>
+        <li><a href="/bien-bao-giao-thong.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Tổng hợp Biển báo Giao thông mới nhất</a></li>
+        <li><a href="/kinh-nghiem-hoc-gplx.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Kinh nghiệm học lái xe thực tế từ A-Z</a></li>
+        <li><a href="/duong-truong.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Kỹ năng thi lái xe đường trường</a></li>
+        <li><a href="/class-b-menu.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Hệ thống 600 câu hỏi thi GPLX Hạng B</a></li>
+        <li><a href="/class-c-menu.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Đề thi thử lý thuyết Hạng C chuẩn</a></li>
+    </ul>
+</div>
+
+<footer class="footer">
+<div class="footer-container">
+    <p class="copyright">© 2026 thigplx.site</p>
+</div>
+</footer>
+
+<script src="answers.js"></script>
+<script src="questions.js?v=2025"></script>
+<script src="js/questionMode.js"></script>
+<script src="js/moto-exam.js"></script>
+
+<!-- Global UI Scripts -->
+<script>
+function toggleMenu(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const mobileMenu = document.querySelector('.mobile-menu');
+    let overlay = document.querySelector('.menu-overlay');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'menu-overlay';
+        document.body.appendChild(overlay);
+        
+        overlay.addEventListener('click', function() {
+            if (mobileMenu) mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (mobileMenu) {
+        if (mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+}
+</script>
+
+</body>
+</html>

@@ -2305,7 +2305,7 @@ const questions = [
     "question": "Câu 241: Việc bảo dưỡng thường xuyên đối với xe ô tô có tác dụng gì?",
     "options": [
       "Bảo dưỡng thường xuyên làm cho xe ô tô luôn có tính năng kỹ thuật tốt, giảm cường độ hao mòn của các chi tiết.",
-      "Ngăn ngừa và phát hiện kịp thời các hư hỏng và sai lệch kỹ thuật để khắc phục, giữ gìn được hình thức bên |ngoài.",
+      "Ngăn ngừa và phát hiện kịp thời các hư hỏng và sai lệch kỹ thuật để khắc phục, giữ gìn được hình thức bên ngoài.",
       "Cả hai ý trên."
     ]
   },
@@ -2569,7 +2569,7 @@ const questions = [
   },
   {
     "id": 270,
-    "question": "Câu 270: Khi đang điều khiển xe ô tô loại chuyển só cơ khí, muốn đỗ xe, người lái xe phải thực hiện như thế nào?",
+    "question": "Câu 270: Khi đang điều khiển xe ô tô loại chuyển số cơ khí, muốn đỗ xe, người lái xe phải thực hiện như thế nào?",
     "options": [
       "Giảm tốc độ, giảm số, quan sát, xác định điểm đỗ từ xa, kiểm tra an toàn qua gương chiếu hậu.",
       "Bật đèn xi nhan phải, từ từ cho xe chuyển vào làn trong cùng bên phải; chuyển bàn đạp chân ga sang bàn đạp phanh, rà phanh giảm tốc độ, đánh lái cho xe song song và sát với lề đường.",
@@ -2598,7 +2598,7 @@ const questions = [
     "question": "Câu 273: Muốn vượt xe trên đường hai chiều, mỗi bên chỉ có một làn đường tại nơi được phép vượt, người lái xe phải xử lý như thế nào?",
     "options": [
       "Giữ khoảng cách an toàn với xe phía trước, quan sát an toàn bên trái của xe và xe đi ngược chiều đảm bảo không bị khuất tầm nhìn; bật xi nhan trái, có thể kết hợp còi, đèn để xin vượt.",
-      "Khi xe phía trước giảm tốc độ, đã có tín hiệu rè phải và tránh về bên phải, tăng tốc độ của xe ở mức cho phép đồng thời đánh lái sang trái để vượt; khi đã vượt được một khoảng cách an toàn, bật xi nhan phải để trở về làn đường của mình.",
+      "Khi xe phía trước giảm tốc độ, đã có tín hiệu rẽ phải và tránh về bên phải, tăng tốc độ của xe ở mức cho phép đồng thời đánh lái sang trái để vượt; khi đã vượt được một khoảng cách an toàn, bật xi nhan phải để trở về làn đường của mình.",
       "Cả hai ý trên."
     ]
   },
@@ -2650,9 +2650,9 @@ const questions = [
     "id": 279,
     "question": "Câu 279: Xe ô tô tham gia giao thông phải bảo đảm các điều kiện nào?",
     "options": [
-      "Có đủ hệ thống hãm và hệ thống chuyển hướng có hiệu lực, tay lái của xe ô tô ở bên trái, trường hợp xe ô tô của người nước ngoài đăng ký tại nước ngoài có tay lái ở bên phải tham gia giao thông tại Việt Nam thực hiện theo quy | định của Chính phủ.",
+      "Có đủ hệ thống hãm và hệ thống chuyển hướng có hiệu lực, tay lái của xe ô tô ở bên trái, trường hợp xe ô tô của người nước ngoài đăng ký tại nước ngoài có tay lái ở bên phải tham gia giao thông tại Việt Nam thực hiện theo quy định của Chính phủ.",
       "Có đủ đèn chiếu sáng gần và xa, đèn soi biển số, đèn báo hãm, đèn tín hiệu; có đủ gương và các trang thiết bị khác bảo đảm tầm nhìn cho người điều khiển.",
-      "Kính chắn gió, kính cửa phải là loại kính an toàn, có còi với âm lượng đúng quy chuẩn kỹ thuật; có đủ bộ phận giảm thanh, giảm khói, các kết cấu phải đủ độ bền và bảo | đảm tính năng vận hành ổn định.",
+      "Kính chắn gió, kính cửa phải là loại kính an toàn, có còi với âm lượng đúng quy chuẩn kỹ thuật; có đủ bộ phận giảm thanh, giảm khói, các kết cấu phải đủ độ bền và bảo đảm tính năng vận hành ổn định.",
       "Cả ba ý trên."
     ]
   },
@@ -2708,7 +2708,7 @@ const questions = [
     "question": "Câu 285: Người lái xe phải thực hiện như thế nào khi điều khiển xe ô tô vào ban đêm, gặp xe chạy ngược chiều?",
     "options": [
       "Chuyển từ đèn chiếu xa sang đèn chiếu gần, nhìn chếch sang phía bên phải theo chiều chuyển động của xe.",
-      "Chuyển từ đèn chiếu gần sang đèn chiếu xa, không nhìn thẳng vào đèn của xe chạy ngược chiều mà nhìn chech sang phía bên phải theo chiều chuyển động của xe.",
+      "Chuyển từ đèn chiếu gần sang đèn chiếu xa, không nhìn thẳng vào đèn của xe chạy ngược chiều mà nhìn chếch sang phía bên phải theo chiều chuyển động của xe.",
       "Chuyển từ đèn chiếu xa sang đèn chiếu gần, nhìn thẳng vào đèn của xe chạy ngược chiều để tránh xe đảm bảo an toàn."
     ]
   },
@@ -2749,7 +2749,7 @@ const questions = [
   },
   {
     "id": 290,
-    "question": "Câu 290: Khi tiến hoặc lùi xe ô tô loại chuyển số cơ khí, người lái xe phải thực hiện các thao tác |như thế nào?",
+    "question": "Câu 290: Khi tiến hoặc lùi xe ô tô loại chuyển số cơ khí, người lái xe phải thực hiện các thao tác như thế nào?",
     "options": [
       "Kiểm tra an toàn xung quanh xe; đạp bàn đạp ly hợp hết hành trình; vào số 1 hoặc số lùi (số R); nhả hết phanh tay, báo hiệu bằng còi, đèn; nhả từ từ đến 1/2 hành trình bàn đạp ly hợp và giữ trong khoảng 3 giây, kết hợp tăng ga và nhả bàn đạp ly hợp để cho xe di chuyển.",
       "Đạp bàn đạp ly hợp và tăng ga với mức độ phù hợp, vào số và kiểm tra lại xem có bị nhầm số không rồi mới cho xe di chuyển.",
@@ -2794,7 +2794,7 @@ const questions = [
     "question": "Câu 295: Khi điều khiển xe ô tô lên dốc cao, người lái xe cần thực hiện các thao tác nào?",
     "options": [
       "Điều chỉnh ga cho xe đi từ từ lên dốc; đến gần đỉnh dốc phải tăng ga để xe nhanh chóng qua dốc; về sổ thấp; đi sát về phía bên phải đường, có tín hiệu (còi, đèn) để báo cho người lái xe đi ngược chiều biết.",
-      "Về số thấp, điều chỉnh ga cho xe đi từ từ lên dốc; đến gần đỉnh dốc phải đi chậm, đi sát về phía bên phải theo chiều xe chạy, có tín hiệu còi, đèn để báo cho người lái xe |đi ngược chiều biết.",
+      "Về số thấp, điều chỉnh ga cho xe đi từ từ lên dốc; đến gần đỉnh dốc phải đi chậm, đi sát về phía bên phải theo chiều xe chạy, có tín hiệu còi, đèn để báo cho người lái xe đi ngược chiều biết.",
       "Cả hai ý trên."
     ]
   },
@@ -2819,7 +2819,7 @@ const questions = [
     "id": 298,
     "question": "Câu 298: Khi quay đầu xe, người lái xe cần phải quan sát và thực hiện các thao tác nào?",
     "options": [
-      "Quan sát biển báo hiệu để biết nơi được phép quay đầu, sát kỹ địa hình nơi chọn để quay đầu, lựa chọn quỹ đạo quay đâu xe cho thích hợp, bật xi nhan trái và quay đầu xe với tốc độ thấp; nếu quay đầu xe ở nơi nguy hiểm thì đưa đầu xe về phía nguy hiểm đưa đuôi xe về phía an toàn.",
+      "Quan sát biển báo hiệu để biết nơi được phép quay đầu, quan sát kỹ địa hình nơi chọn để quay đầu, lựa chọn quỹ đạo quay đâu xe cho thích hợp, bật xi nhan trái và quay đầu xe với tốc độ thấp; nếu quay đầu xe ở nơi nguy hiểm thì đưa đầu xe về phía nguy hiểm đưa đuôi xe về phía an toàn.",
       "Quan sát biển báo hiệu để biết nơi được phép quay đầu, quan sát kỹ địa hình nơi chọn để quay đầu, lựa chọn quỹ đạo quay đầu xe cho thích hợp, quay đầu xe với tốc độ nhỏ nhất; nếu quay đầu xe ở nơi nguy hiểm thì đưa đuổi xe về phía nguy hiểm và đầu xe về phía an toàn."
     ]
   },
@@ -2890,7 +2890,7 @@ const questions = [
     "question": "Câu 306: Khi điều khiển xe chuyển làn trên đường cao tốc, người lái xe phải làm gì?",
     "options": [
       "Quan sát chướng ngại vật phía trước, phía sau qua gương chiếu hậu; bật xi nhan xin chuyển làn đường để xe khác biết, khi thấy an toàn cho xe chuyển dần sang làn đường liền kề.",
-      "Quan sát góc chết (góc không nhìn được qua gương); quan sát xe chạy sau và chướng ngại vật phía trước, bật xi nhan xin chuyển làn đường để xe khác biết, chuyên ngay sang làn đường cần đổi."
+      "Quan sát góc chết (góc không nhìn được qua gương); quan sát xe chạy sau và chướng ngại vật phía trước, bật xi nhan xin chuyển làn đường để xe khác biết, chuyển ngay sang làn đường cần đổi."
     ]
   },
   {
@@ -2908,7 +2908,7 @@ const questions = [
     "question": "Câu 308: Khi điều khiển xe ô tô trên đường chỉ có một làn xe chạy, biết có xe sau xin vượt nếu đủ điều kiện an toàn người lái xe phải làm gì?",
     "options": [
       "Giảm tốc độ và ra hiệu cho xe sau vượt. Không được gây trở ngại cho xe sau vượt.",
-      "Cho xe tránh về bên phải mình và ra hiệu cho xe sau vượt. Nếu có chướng ngại vật phía trước hoặc thiếu điều | kiện an toàn chưa cho vượt được phải ra hiệu cho xe sau biết. Cấm xe bị vượt gây cản trở cho xe xin vượt.",
+      "Cho xe tránh về bên phải mình và ra hiệu cho xe sau vượt. Nếu có chướng ngại vật phía trước hoặc thiếu điều kiện an toàn chưa cho vượt được phải ra hiệu cho xe sau biết. Cấm xe bị vượt gây cản trở cho xe xin vượt.",
       "Chủ động giảm tốc độ, bật tín hiệu rẽ phải và đi sát về phía bên phải của phần đường xe chạy cho đến khi xe sau đã vượt qua, không được gây trở ngại đối với xe xin vượt."
     ]
   },
@@ -2924,7 +2924,7 @@ const questions = [
   },
   {
     "id": 310,
-    "question": "Câu 310: Khi điều khiển xe ô tô loại chuyển số cơ khí đi vào đường trơn trượt, người lái xe phải xử |lý như thế nào?",
+    "question": "Câu 310: Khi điều khiển xe ô tô loại chuyển số cơ khí đi vào đường trơn trượt, người lái xe phải xử lý như thế nào?",
     "options": [
       "Nên đi vào vệt bánh xe đã đi qua.",
       "Giữ vững tay lái, hạn chế đánh lái.",
@@ -3585,7 +3585,7 @@ const questions = [
   },
   {
     "id": 376,
-    "question": "Câu 376: Những hướng nào xe ô tô tải được phép",
+    "question": "Câu 376: Những hướng nào xe ô tô tải được phép đi",
     "options": [
       "Cả bốn hướng.",
       "Hướng 1, 2 và 3.",
@@ -3627,7 +3627,7 @@ const questions = [
   },
   {
     "id": 380,
-    "question": "Câu 380: Xe nào phải nhường đường là đúng quy",
+    "question": "Câu 380: Xe nào phải nhường đường là đúng quy tắc giao thông?",
     "options": [
       "Xe ô tô tải.",
       "Xe ô tô khách.",
