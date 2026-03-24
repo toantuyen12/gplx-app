@@ -159,7 +159,7 @@
                 <button class="primary-btn" style="background: #3b82f6;">Bắt đầu học</button>
             </a>
             <!-- Thi đề 30 câu -->
-            <a href="#" class="cat-card" onclick="alert('Module đang được cập nhật!')">
+            <a href="#" class="cat-card" onclick="openBExamPopup(); return false;">
                 <div class="cat-icon" style="color: #22c55e; background: rgba(34, 197, 94, 0.1);"><i
                         class="fa-solid fa-stopwatch"></i></div>
                 <div class="cat-title">2. Thi đề 30 câu</div>
@@ -289,6 +289,78 @@
 
 <script src="js/questionMode.js?v=4"></script>
 <script src="js/study600.js?v=4"></script>
+
+<!-- B Exam Popup Modal -->
+<div id="bExamModal" class="s600-overlay" style="display:none;" onclick="if(event.target===this) closeBExamPopup()">
+  <div class="s600-modal">
+    <div class="s600-modal-header">
+      <div>
+        <h2 class="s600-modal-title">Thi Đề 30 Câu - Hạng B</h2>
+        <p class="s600-modal-subtitle">Đề thi ngẫu nhiên theo cấu trúc đề thi thật</p>
+      </div>
+      <button class="s600-close-btn" onclick="closeBExamPopup()">✕</button>
+    </div>
+
+    <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);padding:16px;border-radius:8px;margin-bottom:20px;">
+      <h4 style="color:#16a34a;margin:0 0 10px 0;font-size:15px;"><i class="fa-solid fa-circle-info"></i> Thông tin đề thi</h4>
+      <ul style="margin:0;padding-left:20px;color:#166534;font-size:14px;line-height:1.8;">
+        <li>Số câu hỏi: <b>30 câu</b></li>
+        <li>Thời gian: <b>20 phút</b></li>
+        <li>Điều kiện đậu: <b>≥ 27/30 câu đúng</b></li>
+        <li>Không được sai câu điểm liệt</li>
+        <li>Câu hỏi lấy từ bộ 600 câu GPLX hạng B</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <h4 style="margin:0 0 10px 0;font-size:15px;color:#1e293b;">📋 Lịch sử 5 lần thi gần nhất</h4>
+      <div id="bExamHistoryTable"></div>
+    </div>
+
+    <button class="primary-btn" style="width:100%;background:#22c55e;font-size:16px;padding:14px;border-radius:8px;border:none;color:#fff;cursor:pointer;font-weight:600;" onclick="startBExam()">
+      🚀 Làm đề thi
+    </button>
+  </div>
+</div>
+
+<script>
+function openBExamPopup() {
+    const modal = document.getElementById('bExamModal');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('s600-active'), 10);
+    renderBExamHistory();
+}
+function closeBExamPopup() {
+    const modal = document.getElementById('bExamModal');
+    modal.classList.remove('s600-active');
+    setTimeout(() => modal.style.display = 'none', 300);
+}
+function renderBExamHistory() {
+    let history = [];
+    try { history = JSON.parse(localStorage.getItem('b_exam_history')) || []; } catch(e) {}
+    const el = document.getElementById('bExamHistoryTable');
+    if (!history.length) {
+        el.innerHTML = '<p style="color:#94a3b8;font-size:14px;text-align:center;margin:0;">Chưa có lịch sử thi.</p>';
+        return;
+    }
+    el.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:14px;"><thead><tr style="background:#f8fafc;"><th style="padding:8px;text-align:center;border-bottom:1px solid #e2e8f0;">STT</th><th style="padding:8px;text-align:center;border-bottom:1px solid #e2e8f0;">Điểm</th><th style="padding:8px;text-align:center;border-bottom:1px solid #e2e8f0;">Kết quả</th><th style="padding:8px;text-align:center;border-bottom:1px solid #e2e8f0;">Ngày</th></tr></thead><tbody>' +
+        history.map((h, i) => `<tr><td style="padding:8px;text-align:center;">${i + 1}</td><td style="padding:8px;text-align:center;font-weight:600;">${h.score}/30</td><td style="padding:8px;text-align:center;"><span style="color:${h.isPass ? '#16a34a' : '#dc2626'};font-weight:700;">${h.isPass ? 'ĐẠT' : 'KHÔNG ĐẠT'}</span></td><td style="padding:8px;text-align:center;color:#64748b;">${h.date}</td></tr>`).join('') +
+        '</tbody></table>';
+}
+function startBExam() {
+    document.getElementById('bExamModal').style.display = 'none';
+    window.location.href = 'b-exam.html';
+}
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeBExamPopup();
+});
+window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+        document.getElementById('bExamModal').style.display = 'none';
+        document.getElementById('bExamModal').classList.remove('s600-active');
+    }
+});
+</script>
 
 <!-- Critical Mode Modal -->
 <div id="criticalModal" class="s600-overlay" style="display:none;" onclick="if(event.target===this) closeCriticalPopup()">
