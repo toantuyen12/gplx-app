@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
@@ -47,35 +47,51 @@
 </nav>
 </header>
 
-<nav aria-label="breadcrumb" class="breadcrumb-container" style="padding: 10px 20px; font-size: 14px; color: #666; background: #fff; border-bottom: 1px solid #eaeaea;">
-  <a href="/" style="color: var(--primary-color); text-decoration: none;">Trang chủ</a> 
-  <span style="margin: 0 8px;">/</span> 
-  <a id="bc-menu" href="class-a1-menu.html" style="color: var(--primary-color); text-decoration: none;">Thi Thử GPLX Hạng A1</a>
-  <span style="margin: 0 8px;">/</span> 
-  <span aria-current="page" style="font-weight: 600;">Thi Đề 25 Câu</span>
-</nav>
-
-
-<div class="container">
-    <div id="home" style="display:none;">
-        <h1 id="pageTitle">Thi Thử Sát Hạch GPLX Hạng A1 Online</h1>
+<main id="loadingDiv">
+    <div style="display:flex;align-items:center;justify-content:center;min-height:50vh;flex-direction:column;gap:16px;">
+        <div style="width:48px;height:48px;border:4px solid #e2e8f0;border-top-color:#4f46e5;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+        <p style="color:#64748b;font-family:'Be Vietnam Pro',sans-serif;font-size:15px;" id="loadingText">Đang tạo đề thi ngẫu nhiên...</p>
     </div>
-    <div id="quiz" class="card" style="display:none; max-width: 1000px;"></div>
-</div>
+</main>
 
+<main id="motoExamRoot" style="display: none; background-color: transparent;">
+  <div class="s600-study-wrap">
+      <!-- TOP BAR -->
+      <div class="s600-top-bar">
+        <a href="#" onclick="exitHome()" class="s600-back-btn">← Thoát thi</a>
+        <div class="s600-top-center">
+          <span class="s600-label" id="pageTitleLabel">Thi Đề 25 Câu - Hạng A1</span>
+        </div>
+        <div class="s600-top-right">
+            <div style="font-size:18px;font-weight:bold;color:#ef4444; background: #fee2e2; padding: 4px 12px; border-radius: 6px; display:inline-block;">
+                ⏰ <span id="timerText">19:00</span>
+            </div>
+        </div>
+      </div>
 
-<div class="related-links-section" style="margin-top: 40px; padding: 20px; background: #f9fafb; border-radius: 8px;">
-    <h3><i class="fa-solid fa-link" style="color:var(--primary-color);"></i> Bài viết liên quan (Có thể bạn quan tâm)</h3>
-    <ul style="list-style-type: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
-        <li><a href="/meo-thi-gplx.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Mẹo thi GPLX B2, C đậu 100%</a></li>
-        <li><a href="/sahinh.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ 11 Bài thi Sa Hình Ô Tô chi tiết</a></li>
-        <li><a href="/bien-bao-giao-thong.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Tổng hợp Biển báo Giao thông mới nhất</a></li>
-        <li><a href="/kinh-nghiem-hoc-gplx.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Kinh nghiệm học lái xe thực tế từ A-Z</a></li>
-        <li><a href="/duong-truong.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Kỹ năng thi lái xe đường trường</a></li>
-        <li><a href="/class-b-menu.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Hệ thống 600 câu hỏi thi GPLX Hạng B</a></li>
-        <li><a href="/class-c-menu.html" style="text-decoration: none; color: #2d3748; font-weight: 500;">✓ Đề thi thử lý thuyết Hạng C chuẩn</a></li>
-    </ul>
-</div>
+      <!-- MAIN LAYOUT -->
+      <div class="s600-layout">
+        <!-- LEFT: Question Grid -->
+        <div class="s600-left-panel">
+          <div class="s600-panel-title" style="display:flex; justify-content:space-between; align-items:center;">
+             <span>Danh sách 25 câu</span>
+          </div>
+          <div class="s600-grid" id="motoGrid"></div>
+          <div class="s600-legend">
+            <span class="s600-legend-item"><span class="s600-dot dot-current"></span>Hiện tại</span>
+            <span class="s600-legend-item"><span class="s600-dot" style="background:#3b82f6;"></span>Đã làm</span>
+            <span class="s600-legend-item"><span class="s600-dot dot-critical"></span>Điểm liệt</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Question Content -->
+        <div class="s600-right-panel">
+          <div id="examResultSummary" style="display:none;"></div>
+          <div id="motoQuestionArea"></div>
+        </div>
+      </div>
+  </div>
+</main>
 
 <footer class="footer">
 <div class="footer-container">
@@ -83,10 +99,14 @@
 </div>
 </footer>
 
-<script src="answers.js"></script>
-<script src="questions.js?v=2025"></script>
-<script src="js/questionMode.js"></script>
-<script src="js/moto-exam.js"></script>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<!-- Question Mode provides factory logic -->
+<script src="js/questionMode.js?v=4"></script>
+<!-- Moto Exam Custom Logic -->
+<script src="js/moto-exam.js?v=5"></script>
 
 <!-- Global UI Scripts -->
 <script>
