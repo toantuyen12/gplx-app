@@ -403,7 +403,7 @@ function renderResult(score, isPass, wrongCritical) {
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;justify-content:center;">
         <button onclick="retryExam()" style="padding:10px 16px;font-size:15px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Làm Lại Đề Này</button>
-        <button onclick="startExam()" style="padding:10px 16px;font-size:15px;background:#10b981;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Đề Khác</button>
+        <button onclick="window.location.reload()" style="padding:10px 16px;font-size:15px;background:#10b981;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Đề Khác</button>
         <button onclick="exitHome()" style="padding:10px 16px;font-size:15px;background:#64748b;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Về Trang Chủ</button>
       </div>
     </div>`;
