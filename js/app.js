@@ -139,10 +139,9 @@ function openQuiz(){
 document.getElementById("home").style.display="none";
 document.getElementById("quiz").style.display="block";
 
-// Hide Hero and Loading when quiz starts
-const hero = document.getElementById("examHero");
+// Hide Loading when quiz starts (Keep Hero visible)
+const heroBoundary = document.getElementById("examHero");
 const loading = document.getElementById("loadingDiv");
-if (hero) hero.style.display = "none";
 if (loading) loading.style.display = "none";
 
 render();
