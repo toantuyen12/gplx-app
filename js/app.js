@@ -190,105 +190,98 @@ html+=`
 
 }else{
 
-let minutes = Math.floor(timeLeft/60);
-let seconds = timeLeft % 60;
+        let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
 
-html+=`
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-    <h3 style="margin:0;">CÂU HỎI THI: ${current+1}/${quiz.length}</h3>
-    <div style="font-size:18px;font-weight:bold;color:#ef4444; background: #fee2e2; padding: 8px 15px; border-radius: 8px;">
-        ⏰ <span id="timerText">${minutes}:${seconds.toString().padStart(2,"0")}</span>
-    </div>
-</div>
-`;
+    // START LAYOUT
+    html += `<div class="s600-layout">`;
 
-// MODERN GRID NAVIGATION (Hạng B style) - Tightened for mobile
-html += `
-<div class="s600-layout" style="display: block; margin-bottom: 10px;">
-    <div class="s600-left-panel" style="position: static; max-height: none; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; margin-bottom: 10px;">
-        <div class="s600-panel-title" style="margin-bottom: 8px; font-weight: 700; font-size: 13px; color: #64748b;">DANH SÁCH 30 CÂU</div>
-        <div class="s600-grid" style="display: flex; flex-wrap: wrap; gap: 6px;">
-`;
-
-for(let i=0; i<quiz.length; i++){
-    let statusCls = "s600-grid-btn";
-    if(i === current) statusCls += " s600-grid-current";
-    else if(userAns[i] != null) statusCls += " s600-grid-answered";
-    html += `<button class="${statusCls}" style="width: 38px; height: 38px;" onclick="jumpTo(${i})">${i+1}</button>`;
-}
-
-html += `
+    // LEFT PANEL: Question Grid (Sticky)
+    html += `
+    <div class="s600-left-panel">
+        <div class="s600-panel-title">DANH SÁCH 30 CÂU</div>
+        <div class="s600-grid">
+    `;
+    for (let i = 0; i < quiz.length; i++) {
+        let statusCls = "s600-grid-btn";
+        if (i === current) statusCls += " s600-grid-current";
+        else if (userAns[i] != null) statusCls += " s600-grid-answered";
+        html += `<button class="${statusCls}" onclick="jumpTo(${i})">${i + 1}</button>`;
+    }
+    html += `
         </div>
-        <div class="s600-legend" style="margin-top: 10px; display: flex; gap: 12px; font-size: 11px;">
+        <div class="s600-legend">
             <span class="s600-legend-item"><span class="s600-dot dot-current"></span>Hiện tại</span>
-            <span class="s600-legend-item"><span class="s600-dot dot-answered" style="background:#3b82f6;"></span>Đã làm</span>
+            <span class="s600-legend-item"><span class="s600-dot" style="background:#3b82f6;"></span>Đã làm</span>
         </div>
     </div>
-</div>
-`;
+    `;
 
-}
+    // RIGHT PANEL: Question Content
+    html += `<div class="s600-right-panel">`;
 
-html+=`
-<div class="question-layout">
-
-   <div class="question-left">
-
-<h3>${data.question}</h3>
-
-${data.img ? `<picture><source srcset="${data.img}" type="image/webp"><img src="${data.img.replace('.webp', '.png')}" loading="lazy" decoding="async"></picture>` : ""}
-
-</div>
-
-    <div class="question-right">
-`;
-
-data.options.forEach((o,i)=>{
-
-let cls="";
-
-if(mode==="500" && userAns[current]!=null){
-    if(i===answers[q]) cls="correct";
-    else if(i===userAns[current]) cls="wrong";
-}
-
-if(mode==="30" && userAns[current]!=null){
-    if(i===userAns[current]) cls="selected";
-}
-
-html+=`
-<div class="option ${cls}"
-onclick="choose(${i})"
-ontouchstart="handleOptionTouchStart(event)"
-ontouchmove="handleOptionTouchMove(event)"
-ontouchend="handleOptionTouchEnd(event, ${i})">
-<b>${i+1}.</b> ${o}
-</div>`;
-});
-
-html+=`
+    // Header with Timer and Index
+    html += `
+    <div class="s600-q-header">
+        <div class="s600-q-header-left">
+            <span class="s600-q-index">Câu ${current + 1} / ${quiz.length}</span>
+        </div>
+        <div style="font-size:18px; font-weight:bold; color:#ef4444; background:#fee2e2; padding:4px 12px; border-radius:6px;">
+            ⏰ <span id="timerText">${minutes}:${seconds.toString().padStart(2, "0")}</span>
+        </div>
     </div>
-</div>
-`;
+    `;
 
-html+=`
-<div class="nav-buttons">
-    <button class="secondary-btn" onclick="prev()">⬅ Câu trước</button>
-    <button class="secondary-btn" onclick="next()">Câu sau ➡</button>
-    <button class="danger-btn" onclick="exitHome()">🏠 Thoát</button>
-</div>
-`;
+    let data = questions[quiz[current]];
+    let qText = data.question.replace(/^Câu \d+:\s*/, "");
 
-if(mode==="30" && current===29){
-html+=`
-<br>
-<button style="background:#2e7d32;color:white"
-onclick="submit()">Nộp bài</button>
-`;
+    html += `
+    <div class="s600-q-text">
+        <span class="s600-q-num">Câu ${current + 1}:</span> ${qText}
+    </div>
+    `;
+
+    if (data.img) {
+        html += `
+        <div class="s600-q-img-wrap">
+            <picture>
+                <source srcset="${data.img}" type="image/webp">
+                <img src="${data.img.replace('.webp', '.png')}" alt="Hình câu ${current + 1}" loading="lazy" decoding="async">
+            </picture>
+        </div>
+        `;
+    }
+
+    html += `<div class="s600-answers">`;
+    data.options.forEach((opt, i) => {
+        let cls = "";
+        if (userAns[current] != null && i === userAns[current]) cls = " s600-ans-correct"; // Using correct style for selection in exam mode
+        
+        let isSelected = userAns[current] === i;
+        let style = isSelected ? 'border-color:#1d4ed8; background-color:#dbeafe; font-weight:600; color:#1e3a8a; box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);' : '';
+        
+        html += `
+        <button class="s600-ans-btn${isSelected ? ' s600-ans-correct' : ''}" style="${style}" onclick="choose(${i})">
+            <span class="s600-ans-num">${i + 1}.</span>
+            <span class="s600-ans-text">${opt}</span>
+        </button>
+        `;
+    });
+    html += `</div>`;
+
+    html += `
+    <div class="s600-nav-btns">
+        <button class="s600-nav-btn" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Câu trước</button>
+        <button class="s600-nav-btn s600-nav-next" style="flex:1;" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
+        <button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444;" onclick="submit()">Nộp Bài</button>
+    </div>
+    `;
+
+    html += `</div>`; // End s600-right-panel
+    html += `</div>`; // End s600-layout
+
+    document.getElementById("quiz").innerHTML = html;
 }
-
-document.getElementById("quiz").innerHTML=html;
-
 }
 function gotoQuestion(){
 
@@ -419,30 +412,52 @@ let total = quiz.length;
 let wrong = total - score;
 let isPass = score >= passingScore; 
 
-let html = `
-<div class="result-summary" style="text-align:center; padding: 20px; background: #f8fafc; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-  <h2 style="color: #1e293b; margin-top: 0; margin-bottom: 15px; font-size: 24px;">KẾT QUẢ THI</h2>
-  <div style="font-size: 16px; line-height: 1.8; max-width: 320px; margin: 0 auto; text-align: left; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-    <div style="display: flex; justify-content: space-between;"><b>Số câu hỏi:</b> <span>${total}</span></div>
-    <div style="display: flex; justify-content: space-between;"><b>Số câu đúng:</b> <span style="color: #16a34a; font-weight: bold;">${score}</span></div>
-    <div style="display: flex; justify-content: space-between;"><b>Số câu sai/bỏ qua:</b> <span style="color: #dc2626; font-weight: bold;">${wrong}</span></div>
-    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; font-size: 20px; text-align: center;">
-      <b>Kết quả:</b> <span style="color: ${isPass ? '#16a34a' : '#dc2626'}; font-weight: bold; margin-left: 5px;">${isPass ? 'ĐẠT' : 'KHÔNG ĐẠT'}</span>
-    </div>
-  </div>
-</div>
-`;
+    // START LAYOUT FOR RESULTS (2-Column)
+    html += `<div class="s600-layout">`;
 
-// Thanh điều hướng câu hỏi (Modernized)
-html += `<div class="s600-grid" style="margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">`;
-quiz.forEach((q, i) => {
-    let user = userAns[i];
-    let correct = answers[q];
-    let isCorrect = user === correct;
-    let statusCls = isCorrect ? 's600-grid-correct' : 's600-grid-wrong';
-    html += `<button class="s600-grid-btn ${statusCls}" style="width: 40px; height: 40px;" onclick="document.getElementById('res-q-${i}').scrollIntoView({behavior: 'smooth'})">${i+1}</button>`;
-});
-html += `</div>`;
+    // LEFT PANEL: Results Grid (Sticky)
+    html += `
+    <div class="s600-left-panel">
+        <div class="s600-panel-title">KẾT QUẢ 30 CÂU</div>
+        <div class="s600-grid">
+    `;
+    quiz.forEach((q, i) => {
+        let user = userAns[i];
+        let correct = answers[q];
+        let isCorrect = user === correct;
+        let statusCls = isCorrect ? 's600-grid-correct' : 's600-grid-wrong';
+        html += `<button class="s600-grid-btn ${statusCls}" onclick="document.getElementById('res-q-${i}').scrollIntoView({behavior: 'smooth', block: 'center'})">${i+1}</button>`;
+    });
+    html += `
+        </div>
+        <div class="s600-legend">
+            <span class="s600-legend-item"><span class="s600-dot dot-correct"></span>Đúng</span>
+            <span class="s600-legend-item"><span class="s600-dot dot-wrong"></span>Sai</span>
+        </div>
+    </div>
+    `;
+
+    // RIGHT PANEL: Results Content
+    html += `<div class="s600-right-panel">`;
+
+    // Header kết quả
+    html += `
+    <div class="result-summary" style="padding:24px; background:#fff; border-radius:16px; margin-bottom:25px; border:1px solid #e2e8f0; text-align:center;">
+        <h2 style="color:#1e293b; margin:0 0 15px; font-size:22px;">KẾT QUẢ THI SÁT HẠCH CAND</h2>
+        <div style="font-size:16px; line-height:1.8; max-width:400px; margin:0 auto; text-align:left; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><b>Số câu hỏi:</b> <span>${total}</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><b>Số câu đúng:</b> <span style="color:#16a34a; font-weight:bold;">${score}</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><b>Số câu sai/bỏ qua:</b> <span style="color:#dc2626; font-weight:bold;">${wrong}</span></div>
+            <div style="padding-top:15px; border-top:1px dashed #cbd5e1; font-size:22px; text-align:center;">
+                <b>Kết quả:</b> <span style="color:${isPass ? '#16a34a' : '#dc2626'}; font-weight:bold; margin-left:8px;">${isPass ? 'ĐẠT' : 'KHÔNG ĐẠT'}</span>
+            </div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:25px; justify-content:center;">
+            <button onclick="window.location.reload()" class="s600-nav-btn s600-nav-next">Làm Đề Khác</button>
+            <button onclick="exitHome()" class="s600-nav-btn">Về Trang Chủ</button>
+        </div>
+    </div>
+    `;
 
 // Danh sách câu hỏi
 quiz.forEach((q, i) => {
@@ -518,8 +533,10 @@ html += `
     <button onclick="exitHome()" style="padding: 14px 24px; font-size: 16px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(100,116,139,0.3); outline: none;">🏠 Về Màn Hình Chính</button>
 </div>
 `;
+    html += `</div>`; // End s600-right-panel
+    html += `</div>`; // End s600-layout
 
-document.getElementById("quiz").innerHTML=html;
+    document.getElementById("quiz").innerHTML = html;
 }
 
 function retryExam() {
