@@ -10,14 +10,19 @@
   --border-color: #bcccdc;
 }
 
-body {
+html, body {
   margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body {
   font-family: "Be Vietnam Pro", system-ui, -apple-system, Arial, sans-serif;
   background: var(--bg-gradient);
   color: var(--text-main);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
   line-height: 1.5;
 }
 
@@ -789,7 +794,7 @@ nav.main-nav a:hover {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: rgba(0,0,0,0.5);
   z-index: 9997;
@@ -805,18 +810,19 @@ nav.main-nav a:hover {
 .mobile-menu {
   position: fixed;
   top: 0;
-  right: 0;
-  width: 260px;
-  max-width: 80vw;
+  left: 0;
+  right: auto;
+  width: 280px;
+  max-width: 85%;
   height: 100vh;
   background: white;
   z-index: 9998;
-  box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+  box-shadow: 5px 0 25px rgba(0,0,0,0.15);
   padding: 80px 20px 20px;
   display: flex !important;
   flex-direction: column;
   gap: 15px;
-  transform: translateX(100%);
+  transform: translateX(-100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
   pointer-events: none;

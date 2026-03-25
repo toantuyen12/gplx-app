@@ -202,15 +202,30 @@ html+=`
 </div>
 `;
 
-// QUESTION NAV BAR
-html+=`<div class="q-nav-bar">`;
+// MODERN GRID NAVIGATION (Hạng B style)
+html += `
+<div class="s600-layout" style="display: block; margin-bottom: 20px;">
+    <div class="s600-left-panel" style="position: static; max-height: none; padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; margin-bottom: 20px;">
+        <div class="s600-panel-title" style="margin-bottom: 10px; font-weight: 700; font-size: 14px; color: #64748b;">DANH SÁCH 30 CÂU</div>
+        <div class="s600-grid" style="display: flex; flex-wrap: wrap; gap: 6px;">
+`;
+
 for(let i=0; i<quiz.length; i++){
-    let statusCls = "";
-    if(i === current) statusCls = "current";
-    else if(userAns[i] != null) statusCls = "answered";
-    html+=`<div class="q-nav-btn ${statusCls}" onclick="jumpTo(${i})">${i+1}</div>`;
+    let statusCls = "s600-grid-btn";
+    if(i === current) statusCls += " s600-grid-current";
+    else if(userAns[i] != null) statusCls += " s600-grid-answered";
+    html += `<button class="${statusCls}" style="width: 40px; height: 40px;" onclick="jumpTo(${i})">${i+1}</button>`;
 }
-html+=`</div>`;
+
+html += `
+        </div>
+        <div class="s600-legend" style="margin-top: 15px; display: flex; gap: 15px; font-size: 12px;">
+            <span class="s600-legend-item"><span class="s600-dot dot-current"></span>Hiện tại</span>
+            <span class="s600-legend-item"><span class="s600-dot dot-answered" style="background:#3b82f6;"></span>Đã làm</span>
+        </div>
+    </div>
+</div>
+`;
 
 }
 
@@ -309,9 +324,9 @@ function choose(i){
 
     // Update Question Nav Bar visually
     if (mode === "30") {
-        const navBtns = document.querySelectorAll('.q-nav-btn');
-        if (navBtns[current] && !navBtns[current].classList.contains('answered')) {
-            navBtns[current].classList.add('answered');
+        const navBtns = document.querySelectorAll('.s600-grid-btn');
+        if (navBtns[current] && !navBtns[current].classList.contains('s600-grid-answered')) {
+            navBtns[current].classList.add('s600-grid-answered');
         }
     }
 }
@@ -418,16 +433,14 @@ let html = `
 </div>
 `;
 
-// Thanh điều hướng câu hỏi
-html += `<div class="q-nav-bar" style="margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">`;
+// Thanh điều hướng câu hỏi (Modernized)
+html += `<div class="s600-grid" style="margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">`;
 quiz.forEach((q, i) => {
     let user = userAns[i];
     let correct = answers[q];
     let isCorrect = user === correct;
-    let bgColor = isCorrect ? '#4ade80' : '#f87171';
-    let textColor = isCorrect ? '#064e3b' : '#7f1d1d';
-    // Mặc định màu đỏ (sai) nếu chưa chọn
-    html += `<div class="q-nav-btn" style="background-color: ${bgColor}; color: ${textColor}; border-color: ${bgColor}; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" onclick="document.getElementById('res-q-${i}').scrollIntoView({behavior: 'smooth'})">${i+1}</div>`;
+    let statusCls = isCorrect ? 's600-grid-correct' : 's600-grid-wrong';
+    html += `<button class="s600-grid-btn ${statusCls}" style="width: 40px; height: 40px;" onclick="document.getElementById('res-q-${i}').scrollIntoView({behavior: 'smooth'})">${i+1}</button>`;
 });
 html += `</div>`;
 
