@@ -1507,7 +1507,7 @@ nav.main-nav a:hover {
 /* ---- TWO-PANEL LAYOUT ---- */
 .s600-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 320px 1fr;
   max-width: 1600px;
   margin: 0 auto;
   min-height: calc(100vh - 55px);
@@ -1530,8 +1530,8 @@ nav.main-nav a:hover {
   margin-bottom: 12px;
 }
 .s600-right-panel {
-  padding: 28px 36px;
-  max-width: 960px;
+  padding: 40px 60px;
+  max-width: none;
   box-sizing: border-box;
 }
 
@@ -1539,13 +1539,13 @@ nav.main-nav a:hover {
 .s600-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 8px;
 }
 .s600-grid-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 7px;
-  font-size: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  font-size: 15px;
   font-weight: 600;
   border: 1.5px solid #e2e8f0;
   background: #f8fafc;
