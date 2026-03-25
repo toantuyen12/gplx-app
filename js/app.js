@@ -16,6 +16,7 @@ let timeLeft = 0;
 let timerInterval = null;
 let candType = "C";
 let passingScore = 28;
+let isSubmitted = false;
 
 /* ===== START ===== */
 
@@ -28,112 +29,36 @@ openQuiz();
 }
 
 function start30(){
-const urlParams = new URLSearchParams(window.location.search);
-candType = (urlParams.get('type') || 'C').toUpperCase();
+    const urlParams = new URLSearchParams(window.location.search);
+    candType = (urlParams.get('type') || 'C').toUpperCase();
+    
+    if (candType === 'B') {
+        passingScore = 26;
+    } else {
+        passingScore = 28;
+    }
 
-// Update Hero UI based on type
-const heroTitle = document.getElementById("heroTitle");
-const heroDesc = document.getElementById("heroDesc");
-const passingScoreHero = document.getElementById("passingScoreHero");
-
-if (candType === 'B') {
-    passingScore = 26;
-    if (heroTitle) heroTitle.innerText = "Thi Thử GPLX HẠNG B CAND – 30 Câu Hỏi Sát Hạch";
-    if (passingScoreHero) passingScoreHero.innerText = "26/30";
-} else {
-    passingScore = 28;
-    if (heroTitle) heroTitle.innerText = "Thi Thử GPLX HẠNG C CAND – 30 Câu Hỏi Sát Hạch";
-    if (passingScoreHero) passingScoreHero.innerText = "28/30";
-}
-
-// Ensure Hero is visible and loading is still there (though start30 is called on load)
-const hero = document.getElementById("examHero");
-const loading = document.getElementById("loadingDiv");
-if (hero) hero.style.display = "block";
-if (loading) loading.style.display = "block";
-
-mode="30";
-
-function rand(min,max){
-return Math.floor(Math.random()*(max-min+1))+min;
-}
-
-function pick(rangeStart,rangeEnd,count){
-
-let arr=[];
-
-for(let i=rangeStart;i<=rangeEnd;i++){
-arr.push(i);
-}
-
-arr.sort(()=>0.5-Math.random());
-
-return arr.slice(0,count);
-}
-
-/* số câu theo tỉ lệ */
-
-let n1=rand(6,7);
-let n2=rand(6,7);
-let n3=rand(2,3);
-let n4=rand(3,4);
-let n5=rand(5,6);
-let n6=rand(3,4);
-let n7=rand(0,1);
-
-let total=n1+n2+n3+n4+n5+n6+n7;
-
-/* cân chỉnh cho đúng 30 */
-
-while(total>30){
-if(n5>5){n5--;total--;continue;}
-if(n4>3){n4--;total--;continue;}
-if(n6>3){n6--;total--;continue;}
-if(n3>2){n3--;total--;continue;}
-if(n2>6){n2--;total--;continue;}
-if(n1>6){n1--;total--;continue;}
-}
-
-while(total<30){
-n1++;
-total++;
-}
-
-/* random từng nhóm */
-
-quiz=[
-...pick(1,130,n1),
-...pick(131,240,n2),
-...pick(241,265,n3),
-...pick(266,345,n4),
-...pick(346,455,n5),
-...pick(456,490,n6),
-...pick(491,500,n7)
-];
-
-/* shuffle lại */
-
-quiz.sort(()=>0.5-Math.random());
-
-userAns=new Array(30);
-current=0;
-
-timeLeft = 20 * 60; // 20 phút
-startTimer();
-
-// Hide loading early if questions are ready (usually start30 is sync here)
-if (typeof questions !== 'undefined' && questions.length > 0) {
+    mode = "30";
+    isSubmitted = false;
+    quiz = generateCANDExam();
+    userAns = new Array(30).fill(null);
+    current = 0;
+    timeLeft = 20 * 60;
+    startTimer();
     openQuiz();
-} else {
-    // If questions load later, wait for them
-    let checkInterval = setInterval(() => {
-        if (typeof questions !== 'undefined' && questions.length > 0) {
-            clearInterval(checkInterval);
-            openQuiz();
-        }
-    }, 100);
 }
+
+function generateCANDExam() {
+    let all = [...Array(500).keys()].map(i => i + 1);
+    let picked = [];
+    for(let i=0; i<30; i++){
+        let randIdx = Math.floor(Math.random()*all.length);
+        picked.push(all.splice(randIdx,1)[0]);
+    }
+    return picked;
 }
+
+
 
 function openQuiz(){
 document.getElementById("home").style.display="none";
@@ -204,8 +129,17 @@ html+=`
     `;
     for (let i = 0; i < quiz.length; i++) {
         let statusCls = "s600-grid-btn";
-        if (i === current) statusCls += " s600-grid-current";
-        else if (userAns[i] != null) statusCls += " s600-grid-answered";
+        if (i === current) {
+            statusCls += " s600-grid-current";
+        } else if (!isSubmitted) {
+            if (userAns[i] != null) statusCls += " s600-grid-answered";
+        } else {
+            // Result Mode: Grid colors
+            const qData = questions[quiz[i]];
+            const correctIdx = answers[qData.id];
+            if (userAns[i] === correctIdx) statusCls += " s600-grid-correct";
+            else statusCls += " s600-grid-wrong";
+        }
         html += `<button class="${statusCls}" onclick="jumpTo(${i})">${i + 1}</button>`;
     }
     html += `
@@ -254,26 +188,55 @@ html+=`
 
     html += `<div class="s600-answers">`;
     data.options.forEach((opt, i) => {
-        let cls = "";
-        if (userAns[current] != null && i === userAns[current]) cls = " s600-ans-correct"; // Using correct style for selection in exam mode
+        let cls = 's600-ans-btn';
+        let style = '';
         
-        let isSelected = userAns[current] === i;
-        let style = isSelected ? 'border-color:#1d4ed8; background-color:#dbeafe; font-weight:600; color:#1e3a8a; box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);' : '';
-        
+        if (!isSubmitted) {
+            if (userAns[current] === i) {
+                style = 'box-shadow: 0 0 0 3px #1d4ed8; border-color:#1d4ed8; background-color:#dbeafe; font-weight:600; color:#1e3a8a;';
+            }
+        } else {
+            const correctIdx = answers[data.id];
+            if (i === correctIdx) cls += ' s600-ans-correct';
+            else if (i === userAns[current] && i !== correctIdx) cls += ' s600-ans-wrong';
+            style = 'cursor: default;';
+        }
+
         html += `
-        <button class="s600-ans-btn${isSelected ? ' s600-ans-correct' : ''}" style="${style}" onclick="choose(${i})">
-            <span class="s600-ans-num">${i + 1}.</span>
-            <span class="s600-ans-text">${opt}</span>
-        </button>
+            <button class="${cls}" style="${style}" onclick="choose(${i})">
+                <span class="s600-ans-num">${i + 1}.</span>
+                <span class="s600-ans-text">${opt}</span>
+            </button>
         `;
     });
     html += `</div>`;
 
+    if (isSubmitted) {
+        const correctIdx = answers[data.id];
+        const isCorrect = userAns[current] === correctIdx;
+        const explClass = isCorrect ? 's600-expl-correct' : 's600-expl-wrong';
+        const title = isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng';
+        const userText = userAns[current] != null ? data.options[userAns[current]] : 'Chưa chọn';
+        const correctText = data.options[correctIdx];
+
+        html += `
+            <div class="s600-explanation ${explClass}" style="margin-top: 20px;">
+                <div class="s600-expl-header">${title}</div>
+                <div style="margin-bottom:15px; font-size:15px; line-height:1.6; border-bottom:1px dashed rgba(0,0,0,0.1); padding-bottom:10px;">
+                    <div><b>Bạn chọn:</b> ${userText}</div>
+                    <div style="color:#16a34a;"><b>Đáp án đúng:</b> ${correctText}</div>
+                </div>
+                <div class="s600-expl-body"><b>Giải thích:</b> ${data.explanation || 'Không có giải thích.'}</div>
+            </div>
+        `;
+    }
+
     html += `
-    <div class="s600-nav-btns">
+    <div class="s600-nav-btns" style="margin-top: 30px;">
         <button class="s600-nav-btn" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Câu trước</button>
-        <button class="s600-nav-btn s600-nav-next" style="flex:1;" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
-        <button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444;" onclick="submit()">Nộp Bài</button>
+        <div style="flex: 1;"></div>
+        <button class="s600-nav-btn s600-nav-next" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
+        ${!isSubmitted ? `<button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444;" onclick="submit()">Nộp Bài</button>` : ''}
     </div>
     `;
 
@@ -298,29 +261,33 @@ render();
 
 /* ===== CHỌN ===== */
 
-function choose(i){
+function choose(i) {
+    if (isSubmitted) return;
+    
     userAns[current] = i;
     
-    // Update options visually instead of full re-render to avoid screen jump
-    const options = document.querySelectorAll('.option');
-    options.forEach((opt, idx) => {
-        opt.classList.remove('selected', 'correct', 'wrong');
-        
-        if (mode === "500") {
-            let q = quiz[current];
-            if (idx === answers[q]) opt.classList.add('correct');
-            else if (idx === i) opt.classList.add('wrong');
-        } else if (mode === "30") {
-            if (idx === i) opt.classList.add('selected');
+    // Update answer buttons visually
+    const btns = document.querySelectorAll('.s600-ans-btn');
+    btns.forEach((btn, idx) => {
+        if (idx === i) {
+            btn.style.boxShadow = '0 0 0 3px #1d4ed8';
+            btn.style.borderColor = '#1d4ed8';
+            btn.style.backgroundColor = '#dbeafe';
+            btn.style.fontWeight = '600';
+            btn.style.color = '#1e3a8a';
+        } else {
+            btn.style.boxShadow = '';
+            btn.style.borderColor = '';
+            btn.style.backgroundColor = '';
+            btn.style.fontWeight = '';
+            btn.style.color = '';
         }
     });
 
-    // Update Question Nav Bar visually
-    if (mode === "30") {
-        const navBtns = document.querySelectorAll('.s600-grid-btn');
-        if (navBtns[current] && !navBtns[current].classList.contains('s600-grid-answered')) {
-            navBtns[current].classList.add('s600-grid-answered');
-        }
+    // Update Question Nav Grid visually
+    const gridBtns = document.querySelectorAll('.s600-grid-btn');
+    if (gridBtns[current] && !gridBtns[current].classList.contains('s600-grid-answered')) {
+        gridBtns[current].classList.add('s600-grid-answered');
     }
 }
 
@@ -394,159 +361,84 @@ requestAnimationFrame(render);
 
 /* ===== NỘP ===== */
 
-function submit(){
+function submit() {
+    if (isSubmitted) return;
 
-clearInterval(timerInterval); // DỪNG TIMER
+    const answeredCount = userAns.filter(a => a !== null).length;
+    if (answeredCount < quiz.length && timeLeft > 0) {
+        if (!confirm(`Bạn mới trả lời ${answeredCount}/${quiz.length} câu. Bạn có chắc chắn muốn nộp bài?`)) return;
+    }
 
-let score=0;
-let answered=0;
+    isSubmitted = true;
+    clearInterval(timerInterval);
 
-quiz.forEach((q,i)=>{
-    let user=userAns[i];
-    let correct=answers[q];
-    if(user===correct) score++;
-    if(user!=null) answered++;
-});
-
-let total = quiz.length;
-let wrong = total - score;
-let isPass = score >= passingScore; 
-
-    // START LAYOUT FOR RESULTS (2-Column)
-    html += `<div class="s600-layout">`;
-
-    // LEFT PANEL: Results Grid (Sticky)
-    html += `
-    <div class="s600-left-panel">
-        <div class="s600-panel-title">KẾT QUẢ 30 CÂU</div>
-        <div class="s600-grid">
-    `;
-    quiz.forEach((q, i) => {
-        let user = userAns[i];
-        let correct = answers[q];
-        let isCorrect = user === correct;
-        let statusCls = isCorrect ? 's600-grid-correct' : 's600-grid-wrong';
-        html += `<button class="s600-grid-btn ${statusCls}" onclick="document.getElementById('res-q-${i}').scrollIntoView({behavior: 'smooth', block: 'center'})">${i+1}</button>`;
+    let score = 0;
+    quiz.forEach((qIdx, i) => {
+        const qData = questions[qIdx - 1];
+        const correctIdx = answers[qData.id];
+        if (userAns[i] === correctIdx) score++;
     });
-    html += `
-        </div>
-        <div class="s600-legend">
-            <span class="s600-legend-item"><span class="s600-dot dot-correct"></span>Đúng</span>
-            <span class="s600-legend-item"><span class="s600-dot dot-wrong"></span>Sai</span>
-        </div>
-    </div>
-    `;
 
-    // RIGHT PANEL: Results Content
-    html += `<div class="s600-right-panel">`;
+    const isPass = score >= passingScore;
+    renderResult(score, isPass);
+}
 
-    // Header kết quả
-    html += `
-    <div class="result-summary" style="padding:24px; background:#fff; border-radius:16px; margin-bottom:25px; border:1px solid #e2e8f0; text-align:center;">
-        <h2 style="color:#1e293b; margin:0 0 15px; font-size:22px;">KẾT QUẢ THI SÁT HẠCH CAND</h2>
-        <div style="font-size:16px; line-height:1.8; max-width:400px; margin:0 auto; text-align:left; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><b>Số câu hỏi:</b> <span>${total}</span></div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><b>Số câu đúng:</b> <span style="color:#16a34a; font-weight:bold;">${score}</span></div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><b>Số câu sai/bỏ qua:</b> <span style="color:#dc2626; font-weight:bold;">${wrong}</span></div>
-            <div style="padding-top:15px; border-top:1px dashed #cbd5e1; font-size:22px; text-align:center;">
-                <b>Kết quả:</b> <span style="color:${isPass ? '#16a34a' : '#dc2626'}; font-weight:bold; margin-left:8px;">${isPass ? 'ĐẠT' : 'KHÔNG ĐẠT'}</span>
+function renderResult(score, isPass) {
+    const wrong = quiz.length - score;
+    const title = candType === "B" ? "HẠNG B CAND" : "HẠNG C CAND";
+    
+    let html = `
+    <div class="result-summary" style="padding:24px; background:#fff; border-radius:16px; margin-bottom:24px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1); text-align:center; border: 1px solid #e2e8f0; animation: s600FadeUp 0.4s ease-out;">
+        <h2 style="color:#1e293b; margin-top:0; margin-bottom:20px; font-size:26px; font-weight:800; letter-spacing:-0.5px;">KẾT QUẢ THI LÝ THUYẾT ${title}</h2>
+        
+        <div style="font-size:16px; line-height:1.8; max-width:360px; margin:0 auto; text-align:left; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <b style="color:#64748b;">Số câu hỏi:</b> 
+                <span style="font-weight:700; color:#1e293b;">${quiz.length}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <b style="color:#64748b;">Số câu đúng:</b> 
+                <span style="color:#16a34a; font-weight:800;">${score}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                <b style="color:#64748b;">Số câu sai/bỏ qua:</b> 
+                <span style="color:#dc2626; font-weight:800;">${wrong}</span>
+            </div>
+            
+            <div style="margin-top:15px; padding-top:15px; border-top:2px dashed #e2e8f0; text-align:center;">
+                <div style="font-size:14px; color:#64748b; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px; font-weight:700;">Kết quả chung cuộc</div>
+                <div style="font-size:32px; color:${isPass ? '#16a34a' : '#dc2626'}; font-weight:900;">
+                    ${isPass ? 'ĐẠT' : 'KHÔNG ĐẠT'}
+                </div>
             </div>
         </div>
-        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:25px; justify-content:center;">
-            <button onclick="window.location.reload()" class="s600-nav-btn s600-nav-next">Làm Đề Khác</button>
-            <button onclick="exitHome()" class="s600-nav-btn">Về Trang Chủ</button>
+        
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; justify-content:center;">
+            <button class="primary-btn" onclick="retryExam()" style="padding:12px 24px; font-size:15px; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(59,130,246,0.3);"> LÀM LẠI ĐỀ NÀY</button>
+            <button class="secondary-btn" onclick="location.reload()" style="padding:12px 24px; font-size:15px; background:#10b981; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(16,185,129,0.3);"> ĐỀ KHÁC</button>
+            <button class="secondary-btn" onclick="exitHome()" style="padding:12px 24px; font-size:15px; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(100,116,139,0.3);"> VỀ TRANG CHỦ</button>
         </div>
     </div>
-    `;
-
-// Danh sách câu hỏi
-quiz.forEach((q, i) => {
-    let user = userAns[i];
-    let correct = answers[q];
-    let isCorrect = user === correct;
-    let qData = questions[q-1];
-    
-    html += `
-    <div id="res-q-${i}" style="margin-bottom:25px;padding:20px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;text-align:left; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <h4 style="margin-top:0; color: #334155; font-size: 18px; display: flex; align-items: center; gap: 8px;">
-            Câu ${i+1}
-            <span style="font-size: 14px; padding: 3px 8px; border-radius: 6px; background: ${isCorrect ? '#dcfce7' : '#fee2e2'}; color: ${isCorrect ? '#166534' : '#991b1b'};">
-                ${isCorrect ? "✅ Đúng" : "❌ Sai"}
-            </span>
-        </h4>
-        <p style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 10px 0 20px 0; line-height: 1.5;">${qData.question}</p>
-        ${qData.img ? `<div style="text-align:center; margin-bottom: 20px;"><picture><source srcset="${qData.img}" type="image/webp"><img src="${qData.img.replace('.webp', '.png')}" style="max-width:100%; height:auto; border-radius:8px;" loading="lazy" decoding="async"></picture></div>` : ""}
-        
-        <div class="result-options" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 20px;">
-    `;
-    
-    qData.options.forEach((opt, optIdx) => {
-        let isOptCorrect = optIdx === correct;
-        let isOptUser = optIdx === user;
-        
-        let bg = "#f8fafc";
-        let border = "#e2e8f0";
-        let color = "#334155";
-        let fw = "normal";
-        let icon = "";
-        
-        if (isOptCorrect) {
-            bg = "#dcfce7";
-            border = "#22c55e";
-            color = "#166534";
-            fw = "bold";
-            icon = "✓";
-        } else if (isOptUser && !isOptCorrect) {
-            bg = "#fee2e2";
-            border = "#ef4444";
-            color = "#991b1b";
-            fw = "bold";
-            icon = "✗";
-        }
-        
-        html += `
-            <div style="padding: 12px 15px; border: 1px solid ${border}; border-radius: 8px; background: ${bg}; color: ${color}; font-weight: ${fw}; display: flex; gap: 10px;">
-                <b style="min-width: 25px;">${["A","B","C","D"][optIdx] || (optIdx+1)}.</b> 
-                <span>${opt} ${icon ? `<span style="margin-left:5px; font-weight:bold;">${icon}</span>` : ''}</span>
-            </div>
-        `;
-    });
-    
-    html += `</div>`;
-    
-    let userLabel = user != null ? `<b>Bạn chọn:</b> ${["A","B","C","D"][user] || (user+1)} - ${qData.options[user]}` : "<b>Bạn chưa chọn đáp án</b>";
-    let correctLabel = `<b>Đáp án đúng:</b> ${["A","B","C","D"][correct] || (correct+1)} - ${qData.options[correct]}`;
-    
-    html += `
-        <div style="background: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 15px; line-height: 1.6; border-left: 4px solid ${isCorrect ? '#22c55e' : '#ef4444'};">
-            <div style="color: ${isCorrect ? '#166534' : '#991b1b'}; margin-bottom: 8px;">${userLabel}</div>
-            <div style="color: #166534;">${correctLabel}</div>
-        </div>
+    <div style="text-align:center; margin-bottom:20px; font-weight:700; color:#475569; font-size:16px;">
+        <i class="fa-solid fa-arrow-down"></i> XEM CHI TIẾT BÀI THI CỦA BẠN <i class="fa-solid fa-arrow-down"></i>
     </div>
-    `;
-});
-
-html += `
-<div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; margin-bottom: 20px; justify-content: center;">
-    <button onclick="retryExam()" style="padding: 14px 24px; font-size: 16px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(59,130,246,0.3); outline: none;">🔄 Làm Lại Đề Này</button>
-    <button onclick="newExam()" style="padding: 14px 24px; font-size: 16px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(16,185,129,0.3); outline: none;">📝 Thi Đề Ngẫu Nhiên Khác</button>
-    <button onclick="exitHome()" style="padding: 14px 24px; font-size: 16px; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(100,116,139,0.3); outline: none;">🏠 Về Màn Hình Chính</button>
-</div>
-`;
-    html += `</div>`; // End s600-right-panel
-    html += `</div>`; // End s600-layout
+    `
 
     document.getElementById("quiz").innerHTML = html;
+    current = 0;
+    render(); 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function retryExam() {
-    userAns = new Array(quiz.length);
+    isSubmitted = false;
+    userAns = new Array(quiz.length).fill(null);
     current = 0;
     if (mode === "30") {
         timeLeft = 20 * 60;
         startTimer();
     }
-    openQuiz();
+    render();
 }
 
 function newExam() {
