@@ -198,6 +198,14 @@ button:active {
   box-sizing: border-box;
 }
 
+.exam-container-wrapper {
+  max-width: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* ===== NEW PAGE LAYOUT CLASSES ===== */
 .page-section {
   padding: 20px 0;
