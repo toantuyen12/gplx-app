@@ -202,11 +202,11 @@ html+=`
 </div>
 `;
 
-// MODERN GRID NAVIGATION (Hạng B style)
+// MODERN GRID NAVIGATION (Hạng B style) - Tightened for mobile
 html += `
-<div class="s600-layout" style="display: block; margin-bottom: 20px;">
-    <div class="s600-left-panel" style="position: static; max-height: none; padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; margin-bottom: 20px;">
-        <div class="s600-panel-title" style="margin-bottom: 10px; font-weight: 700; font-size: 14px; color: #64748b;">DANH SÁCH 30 CÂU</div>
+<div class="s600-layout" style="display: block; margin-bottom: 10px;">
+    <div class="s600-left-panel" style="position: static; max-height: none; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; margin-bottom: 10px;">
+        <div class="s600-panel-title" style="margin-bottom: 8px; font-weight: 700; font-size: 13px; color: #64748b;">DANH SÁCH 30 CÂU</div>
         <div class="s600-grid" style="display: flex; flex-wrap: wrap; gap: 6px;">
 `;
 
@@ -214,12 +214,12 @@ for(let i=0; i<quiz.length; i++){
     let statusCls = "s600-grid-btn";
     if(i === current) statusCls += " s600-grid-current";
     else if(userAns[i] != null) statusCls += " s600-grid-answered";
-    html += `<button class="${statusCls}" style="width: 40px; height: 40px;" onclick="jumpTo(${i})">${i+1}</button>`;
+    html += `<button class="${statusCls}" style="width: 38px; height: 38px;" onclick="jumpTo(${i})">${i+1}</button>`;
 }
 
 html += `
         </div>
-        <div class="s600-legend" style="margin-top: 15px; display: flex; gap: 15px; font-size: 12px;">
+        <div class="s600-legend" style="margin-top: 10px; display: flex; gap: 12px; font-size: 11px;">
             <span class="s600-legend-item"><span class="s600-dot dot-current"></span>Hiện tại</span>
             <span class="s600-legend-item"><span class="s600-dot dot-answered" style="background:#3b82f6;"></span>Đã làm</span>
         </div>
