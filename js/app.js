@@ -61,61 +61,27 @@ function generateCANDExam() {
 
 
 function openQuiz(){
-document.getElementById("home").style.display="none";
-document.getElementById("quiz").style.display="block";
+  const home = document.getElementById("home");
+  if (home) home.style.display="none";
+  
+  const quizEl = document.getElementById("quiz");
+  if (quizEl) quizEl.style.display="block";
 
-// Hide Loading when quiz starts (Keep Hero visible)
-const heroBoundary = document.getElementById("examHero");
-const loading = document.getElementById("loadingDiv");
-if (loading) loading.style.display = "none";
+  // Hide Loading when quiz starts
+  const loading = document.getElementById("loadingDiv");
+  if (loading) loading.style.display = "none";
 
-render();
+  render();
 }
 
 /* ===== HIỂN THỊ ===== */
 
-function render(){
+function render() {
+    let qId = quiz[current];
+    let data = questions[qId - 1];
 
-let q = quiz[current];
-let data = questions[q-1];
-let html="";
-
-if(mode==="500"){
-
-let percent = Math.round(((current+1)/quiz.length)*100);
-
-html+=`
-<div class="header-wrap">
-
-    <div class="search-box">
-    <div class="search-input-wrap">
-        <span class="search-icon">🔍</span>
-        <input type="number"
-        id="gotoInput"
-        min="1"
-        max="${quiz.length}"
-        placeholder="Nhập câu..."
-        onkeydown="if(event.key==='Enter') gotoQuestion()">
-    </div>
-    <button class="goto-btn" onclick="gotoQuestion()">Tới</button>
-</div>
-
-    <div class="right-status">
-        <div class="question-text">
-            Câu ${current+1}/${quiz.length}
-        </div>
-
-        <div class="mini-progress">
-            <div class="mini-fill" style="width:${percent}%"></div>
-        </div>
-    </div>
-
-</div>
-`;
-
-}else{
-
-        let minutes = Math.floor(timeLeft / 60);
+    let html = "";
+    let minutes = Math.floor(timeLeft / 60);
     let seconds = timeLeft % 60;
 
     // START LAYOUT
@@ -124,29 +90,56 @@ html+=`
     // LEFT PANEL: Question Grid (Sticky)
     html += `
     <div class="s600-left-panel">
-        <div class="s600-panel-title">DANH SÁCH 30 CÂU</div>
+        <div class="s600-panel-title">${mode === "30" ? "DANH SÁCH 30 CÂU" : "DANH SÁCH 500 CÂU"}</div>
         <div class="s600-grid">
     `;
+    
     for (let i = 0; i < quiz.length; i++) {
         let statusCls = "s600-grid-btn";
         if (i === current) {
             statusCls += " s600-grid-current";
-        } else if (!isSubmitted) {
-            if (userAns[i] != null) statusCls += " s600-grid-answered";
         } else {
-            // Result Mode: Grid colors
-            const qData = questions[quiz[i]];
-            const correctIdx = answers[qData.id];
-            if (userAns[i] === correctIdx) statusCls += " s600-grid-correct";
-            else statusCls += " s600-grid-wrong";
+            // Check if answered
+            const hasAnswered = userAns[i] != null;
+            if (hasAnswered) {
+                if (mode === "500") {
+                    // Immediate feedback in 500 mode
+                    const qData = questions[quiz[i] - 1];
+                    const correctIdx = answers[qData.id];
+                    if (userAns[i] === correctIdx) statusCls += " s600-grid-correct";
+                    else statusCls += " s600-grid-wrong";
+                } else {
+                    // Exam mode: just show "answered" (blue/gray) unless submitted
+                    if (isSubmitted) {
+                        const qData = questions[quiz[i] - 1];
+                        const correctIdx = answers[qData.id];
+                        if (userAns[i] === correctIdx) statusCls += " s600-grid-correct";
+                        else statusCls += " s600-grid-wrong";
+                    } else {
+                        statusCls += " s600-grid-answered";
+                    }
+                }
+            }
         }
+        
+        // Critical badge hint in grid
+        const qData = questions[quiz[i] - 1];
+        if (qData.is_critical) {
+            statusCls += " s600-grid-critical";
+        }
+
         html += `<button class="${statusCls}" onclick="jumpTo(${i})">${i + 1}</button>`;
     }
+    
     html += `
         </div>
         <div class="s600-legend">
             <span class="s600-legend-item"><span class="s600-dot dot-current"></span>Hiện tại</span>
             <span class="s600-legend-item"><span class="s600-dot" style="background:#3b82f6;"></span>Đã làm</span>
+            ${(mode === "500" || isSubmitted) ? `
+                <span class="s600-legend-item"><span class="s600-dot dot-correct"></span>Đúng</span>
+                <span class="s600-legend-item"><span class="s600-dot dot-wrong"></span>Sai</span>
+            ` : ""}
         </div>
     </div>
     `;
@@ -154,19 +147,34 @@ html+=`
     // RIGHT PANEL: Question Content
     html += `<div class="s600-right-panel">`;
 
-    // Header with Timer and Index
+    // Header with Timer/Status
     html += `
     <div class="s600-q-header">
         <div class="s600-q-header-left">
             <span class="s600-q-index">Câu ${current + 1} / ${quiz.length}</span>
+            ${data.is_critical ? `<span class="s600-critical-badge">⚠️ CÂU ĐIỂM LIỆT</span>` : ""}
         </div>
+    `;
+    
+    if (mode === "30") {
+        html += `
         <div style="font-size:18px; font-weight:bold; color:#ef4444; background:#fee2e2; padding:4px 12px; border-radius:6px;">
             ⏰ <span id="timerText">${minutes}:${seconds.toString().padStart(2, "0")}</span>
         </div>
-    </div>
-    `;
+        `;
+    } else {
+        let percent = Math.round(((current + 1) / quiz.length) * 100);
+        html += `
+        <div class="right-status" style="display:flex; align-items:center; gap:15px;">
+            <div class="mini-progress" style="width:120px; height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">
+                <div class="mini-fill" style="width:${percent}%; height:100%; background:#4f46e5;"></div>
+            </div>
+            <span style="font-size:13px; font-weight:600; color:#64748b;">${percent}%</span>
+        </div>
+        `;
+    }
+    html += `</div>`;
 
-    let data = questions[quiz[current]];
     let qText = data.question.replace(/^Câu \d+:\s*/, "");
 
     html += `
@@ -191,12 +199,15 @@ html+=`
         let cls = 's600-ans-btn';
         let style = '';
         
-        if (!isSubmitted) {
+        // Logic for feedback
+        const showFeedback = mode === "500" ? (userAns[current] != null) : isSubmitted;
+        const correctIdx = answers[data.id];
+
+        if (!showFeedback) {
             if (userAns[current] === i) {
                 style = 'box-shadow: 0 0 0 3px #1d4ed8; border-color:#1d4ed8; background-color:#dbeafe; font-weight:600; color:#1e3a8a;';
             }
         } else {
-            const correctIdx = answers[data.id];
             if (i === correctIdx) cls += ' s600-ans-correct';
             else if (i === userAns[current] && i !== correctIdx) cls += ' s600-ans-wrong';
             style = 'cursor: default;';
@@ -211,7 +222,9 @@ html+=`
     });
     html += `</div>`;
 
-    if (isSubmitted) {
+    // Explanation area
+    const showExplanation = mode === "500" ? (userAns[current] != null) : isSubmitted;
+    if (showExplanation) {
         const correctIdx = answers[data.id];
         const isCorrect = userAns[current] === correctIdx;
         const explClass = isCorrect ? 's600-expl-correct' : 's600-expl-wrong';
@@ -235,8 +248,9 @@ html+=`
     <div class="s600-nav-btns" style="margin-top: 30px;">
         <button class="s600-nav-btn" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Câu trước</button>
         <div style="flex: 1;"></div>
+        ${(mode === "30" && !isSubmitted) ? `<button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444;" onclick="submit()">Nộp Bài</button>` : ""}
+        ${(mode === "500") ? `<button class="s600-nav-btn" style="background-color:#4b5563; color:#fff; border-color:#4b5563;" onclick="exitHome()">Thoát</button>` : ""}
         <button class="s600-nav-btn s600-nav-next" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
-        ${!isSubmitted ? `<button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444;" onclick="submit()">Nộp Bài</button>` : ''}
     </div>
     `;
 
@@ -245,7 +259,7 @@ html+=`
 
     document.getElementById("quiz").innerHTML = html;
 }
-}
+
 function gotoQuestion(){
 
 let num = parseInt(document.getElementById("gotoInput").value);
@@ -266,7 +280,12 @@ function choose(i) {
     
     userAns[current] = i;
     
-    // Update answer buttons visually
+    if (mode === "500") {
+        render(); // Immediate feedback for study
+        return;
+    }
+
+    // Update answer buttons visually (Exam mode only)
     const btns = document.querySelectorAll('.s600-ans-btn');
     btns.forEach((btn, idx) => {
         if (idx === i) {
@@ -284,7 +303,7 @@ function choose(i) {
         }
     });
 
-    // Update Question Nav Grid visually
+    // Update Question Nav Grid visually (Exam mode only)
     const gridBtns = document.querySelectorAll('.s600-grid-btn');
     if (gridBtns[current] && !gridBtns[current].classList.contains('s600-grid-answered')) {
         gridBtns[current].classList.add('s600-grid-answered');

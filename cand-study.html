@@ -95,6 +95,8 @@
     </script>
 </head>
 <body>
+<div class="exam-page-wrapper">
+<div class="exam-page-content">
 
 <header>
 <div class="nav-container">
@@ -128,17 +130,24 @@
 <nav aria-label="breadcrumb" class="breadcrumb-container" style="padding: 10px 20px; font-size: 14px; color: #666; background: #fff; border-bottom: 1px solid #eaeaea;">
   <a href="/" style="color: var(--primary-color); text-decoration: none;">Trang chủ</a> 
   <span style="margin: 0 8px;">/</span> 
-  <span aria-current="page" style="font-weight: 600;">Ôn Tập 500 Câu Hỏi GPLX Ô TÔ CAND</span>
+  <a href="cand-menu.html" style="color: var(--primary-color); text-decoration: none;">Thi GPLX Ô TÔ CAND</a>
+  <span style="margin: 0 8px;">/</span> 
+  <span aria-current="page" style="font-weight: 600;">Ôn Tập 500 Câu Hỏi</span>
 </nav>
 
-
-<div class="container">
-    <div id="home" style="display:none;">
-        <h1>Ôn Tập Lý Thuyết Giấy Phép Lái Xe Ô TÔ CAND</h1>
+<main id="quiz" style="display: flex; flex-direction: column; flex: 1;">
+    <!-- The content here will be replaced by app.js render() -->
+    <div style="display:flex;align-items:center;justify-content:center;min-height:70vh;flex-direction:column;gap:16px;">
+        <div style="width:48px;height:48px;border:4px solid #e2e8f0;border-top-color:#4f46e5;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+        <p style="color:#64748b;font-family:'Be Vietnam Pro',sans-serif;font-size:15px;">Đang tải câu hỏi...</p>
     </div>
-    <div id="quiz" class="card" style="display:none; max-width: 1000px;"></div>
-</div>
+</main>
 
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+</div> <!-- end exam-page-content -->
 
 <div class="related-links-section" style="margin-top: 40px; padding: 20px; background: #f9fafb; border-radius: 8px;">
     <h3><i class="fa-solid fa-link" style="color:var(--primary-color);"></i> Bài viết liên quan (Có thể bạn quan tâm)</h3>
@@ -194,9 +203,7 @@
     <p class="copyright">© 2026 thigplx.site</p>
 </div>
 </footer>
-
-
-
+</div> <!-- end exam-page-wrapper -->
 
 
 <script src="answers.js"></script>
