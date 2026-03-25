@@ -130,18 +130,34 @@
 
 <main id="candExamRoot" style="display:none;"></main>
 
-<div id="loadingDiv" style="text-align:center; padding:100px 20px;">
-    <div style="font-size: 24px; color: #3b82f6; margin-bottom: 20px;"><i class="fa-solid fa-circle-notch fa-spin"></i> Đang tải đề thi...</div>
-    <p>Vui lòng đợi trong giây lát khi hệ thống khởi tạo bộ 30 câu hỏi ngẫu nhiên hạng CAND.</p>
-</div>
-
-<!-- Static SEO Content for Crawlers -->
-<section class="seo-static-content" style="max-width:800px; margin:40px auto; padding:20px; color:#64748b; line-height:1.6; border-top:1px solid #eee;">
-    <h1 style="font-size:20px; color:#1e293b; margin-bottom:15px;">Thi Thử GPLX Ô TÔ CAND Online - 30 Câu Hỏi Sát Hạch</h1>
-    <p>Dành riêng cho lực lượng Công an nhân dân ôn luyện sát hạch GPLX hạng B, C với bộ đề <strong>30 câu hỏi</strong> ngẫu nhiên trích xuất từ ngân hàng 500 câu hỏi CAND.</p>
-    <p><strong>Thời gian làm bài:</strong> 20 phút. <strong>Điều kiện đạt:</strong> 27/30 câu và tuyệt đối không được sai câu điểm liệt.</p>
-    <p>Hệ thống tự động chấm điểm, lưu lại lịch sử làm bài và cung cấp hướng dẫn giải chi tiết cho từng câu hỏi.</p>
+<!-- Hero Section (Standardized UI) -->
+<section id="examHero" class="exam-hero">
+    <h1 id="heroTitle">Thi Thử GPLX CAND Online – 30 Câu Hỏi Sát Hạch</h1>
+    <p id="heroDesc">Chào mừng bạn đến với hệ thống thi thử lý thuyết lái xe dành cho lực lượng Công an nhân dân. Bộ đề thi bao gồm <strong>30 câu hỏi</strong> chuẩn, bám sát bộ đề thi thực tế.</p>
+    
+    <div class="exam-hero-grid">
+        <div class="exam-hero-card">
+            <i class="fa-solid fa-stopwatch"></i>
+            <span class="label">Thời gian</span>
+            <span class="value">20 Phút</span>
+        </div>
+        <div class="exam-hero-card">
+            <i class="fa-solid fa-list-check"></i>
+            <span class="label">Số câu hỏi</span>
+            <span class="value">30 Câu</span>
+        </div>
+        <div class="exam-hero-card">
+            <i class="fa-solid fa-circle-check"></i>
+            <span class="label">Điều kiện đạt</span>
+            <span id="passingScoreHero" class="value">--/30</span>
+        </div>
+    </div>
 </section>
+
+<div id="loadingDiv" style="text-align:center; padding:80px 20px;">
+    <div style="font-size: 24px; color: #3b82f6; margin-bottom: 20px;"><i class="fa-solid fa-circle-notch fa-spin"></i> <span id="loadingText">Đang tải đề thi...</span></div>
+    <p id="loadingSubtext">Vui lòng đợi trong giây lát khi hệ thống khởi tạo bộ 30 câu hỏi ngẫu nhiên.</p>
+</div>
 <nav aria-label="breadcrumb" class="breadcrumb-container" style="padding: 10px 20px; font-size: 14px; color: #666; background: #fff; border-bottom: 1px solid #eaeaea;">
   <a href="/" style="color: var(--primary-color); text-decoration: none;">Trang chủ</a> 
   <span style="margin: 0 8px;">/</span> 

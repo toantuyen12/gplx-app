@@ -14,6 +14,8 @@ let current=0;
 let mode="";
 let timeLeft = 0;
 let timerInterval = null;
+let candType = "C";
+let passingScore = 28;
 
 /* ===== START ===== */
 
@@ -26,6 +28,29 @@ openQuiz();
 }
 
 function start30(){
+const urlParams = new URLSearchParams(window.location.search);
+candType = (urlParams.get('type') || 'C').toUpperCase();
+
+// Update Hero UI based on type
+const heroTitle = document.getElementById("heroTitle");
+const heroDesc = document.getElementById("heroDesc");
+const passingScoreHero = document.getElementById("passingScoreHero");
+
+if (candType === 'B') {
+    passingScore = 26;
+    if (heroTitle) heroTitle.innerText = "Thi Thử GPLX HẠNG B CAND – 30 Câu Hỏi Sát Hạch";
+    if (passingScoreHero) passingScoreHero.innerText = "26/30";
+} else {
+    passingScore = 28;
+    if (heroTitle) heroTitle.innerText = "Thi Thử GPLX HẠNG C CAND – 30 Câu Hỏi Sát Hạch";
+    if (passingScoreHero) passingScoreHero.innerText = "28/30";
+}
+
+// Ensure Hero is visible and loading is still there (though start30 is called on load)
+const hero = document.getElementById("examHero");
+const loading = document.getElementById("loadingDiv");
+if (hero) hero.style.display = "block";
+if (loading) loading.style.display = "block";
 
 mode="30";
 
@@ -96,12 +121,30 @@ current=0;
 timeLeft = 20 * 60; // 20 phút
 startTimer();
 
-openQuiz();
+// Hide loading early if questions are ready (usually start30 is sync here)
+if (typeof questions !== 'undefined' && questions.length > 0) {
+    openQuiz();
+} else {
+    // If questions load later, wait for them
+    let checkInterval = setInterval(() => {
+        if (typeof questions !== 'undefined' && questions.length > 0) {
+            clearInterval(checkInterval);
+            openQuiz();
+        }
+    }, 100);
+}
 }
 
 function openQuiz(){
 document.getElementById("home").style.display="none";
 document.getElementById("quiz").style.display="block";
+
+// Hide Hero and Loading when quiz starts
+const hero = document.getElementById("examHero");
+const loading = document.getElementById("loadingDiv");
+if (hero) hero.style.display = "none";
+if (loading) loading.style.display = "none";
+
 render();
 }
 
@@ -360,7 +403,7 @@ quiz.forEach((q,i)=>{
 
 let total = quiz.length;
 let wrong = total - score;
-let isPass = score >= 28; // Chuẩn 28/30 cho CAND
+let isPass = score >= passingScore; 
 
 let html = `
 <div class="result-summary" style="text-align:center; padding: 20px; background: #f8fafc; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
