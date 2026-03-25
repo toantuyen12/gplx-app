@@ -154,6 +154,11 @@ button:active {
   box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
   width: 100%;
   margin: 8px 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 }
 
 .primary-btn:hover {
