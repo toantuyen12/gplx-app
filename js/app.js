@@ -223,7 +223,7 @@ function render() {
     html += `</div>`;
 
     // Explanation area
-    const showExplanation = mode === "500" ? (userAns[current] != null) : isSubmitted;
+    const showExplanation = (mode === "30" && isSubmitted);
     if (showExplanation) {
         const correctIdx = answers[data.id];
         const isCorrect = userAns[current] === correctIdx;
@@ -258,6 +258,14 @@ function render() {
     html += `</div>`; // End s600-layout
 
     document.getElementById("quiz").innerHTML = html;
+
+    // Fix scroll issue: scroll current question into view in the sidebar
+    setTimeout(() => {
+        const gridBtn = document.querySelector('.s600-grid-current');
+        if (gridBtn) {
+            gridBtn.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+        }
+    }, 0);
 }
 
 function gotoQuestion(){
