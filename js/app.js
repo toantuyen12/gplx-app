@@ -262,11 +262,15 @@ function render() {
     }
 
     html += `
-    <div class="s600-nav-btns" style="margin-top: 30px; display:flex; gap:12px; align-items:center;">
-        <button class="s600-nav-btn" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Câu trước</button>
-        ${(mode === "30" && !isSubmitted) ? `<button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444; flex:1;" onclick="submit()">Nộp Bài</button>` : ""}
-        ${(mode === "500") ? `<button class="s600-nav-btn" style="background-color:#4b5563; color:#fff; border-color:#4b5563;" onclick="exitHome()">Thoát</button>` : ""}
-        <button class="s600-nav-btn s600-nav-next" style="flex:${(mode === "30" && !isSubmitted) ? "0" : "1"};" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
+    <div class="s600-nav-btns" style="margin-top: 30px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center;">
+        <button class="s600-nav-btn" style="grid-column: 1; justify-self: start; width: auto; margin: 0;" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Câu trước</button>
+        
+        <div style="grid-column: 2; justify-self: center; display: flex; justify-content: center; gap: 12px;">
+            ${(mode === "30" && !isSubmitted) ? `<button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444; width: auto; margin: 0;" onclick="submit()">Nộp Bài</button>` : ""}
+            ${(mode === "500") ? `<button class="s600-nav-btn" style="background-color:#4b5563; color:#fff; border-color:#4b5563; width: auto; margin: 0;" onclick="exitHome()">Thoát</button>` : ""}
+        </div>
+
+        <button class="s600-nav-btn s600-nav-next" style="grid-column: 3; justify-self: end; width: auto; margin: 0; background-color: var(--primary); color: #fff; border-color: var(--primary);" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
     </div>
     `;
 
