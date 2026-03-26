@@ -44,6 +44,22 @@ function start30(){
     userAns = new Array(30).fill(null);
     current = 0;
     timeLeft = 20 * 60;
+
+    // Update Titles and Hero
+    const titleText = candType === 'B' 
+        ? "Thi Thử GPLX Hạng B Online CAND – 30 Câu Hỏi Sát Hạch" 
+        : "Thi Thử GPLX Hạng C Online CAND – 30 Câu Hỏi Sát Hạch";
+    const heroTitle = candType === 'B' 
+        ? "Thi Thử GPLX Hạng B CAND Online" 
+        : "Thi Thử GPLX Hạng C CAND Online";
+    
+    document.title = titleText + " | thigplx.site";
+    const heroEl = document.getElementById("heroTitle");
+    if (heroEl) heroEl.textContent = heroTitle;
+
+    const passingScoreHero = document.getElementById("passingScoreHero");
+    if (passingScoreHero) passingScoreHero.textContent = `${passingScore}/30`;
+
     startTimer();
     openQuiz();
 }
@@ -166,7 +182,8 @@ function render() {
         let percent = Math.round(((current + 1) / quiz.length) * 100);
         html += `
         <div class="right-status" style="display:flex; align-items:center; gap:15px;">
-            <div class="mini-progress" style="width:120px; height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">
+            ${mode === "30" ? `<span style="font-size:13px; font-weight:700; color:#475569; background:#f1f5f9; padding:4px 10px; border-radius:6px; border:1px solid #e2e8f0;">Điều kiện đạt: ${passingScore}/30</span>` : ""}
+            <div class="mini-progress" style="width:100px; height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden;">
                 <div class="mini-fill" style="width:${percent}%; height:100%; background:#4f46e5;"></div>
             </div>
             <span style="font-size:13px; font-weight:600; color:#64748b;">${percent}%</span>
@@ -245,19 +262,25 @@ function render() {
     }
 
     html += `
-    <div class="s600-nav-btns" style="margin-top: 30px;">
+    <div class="s600-nav-btns" style="margin-top: 30px; display:flex; gap:12px; align-items:center;">
         <button class="s600-nav-btn" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Câu trước</button>
-        <div style="flex: 1;"></div>
-        ${(mode === "30" && !isSubmitted) ? `<button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444;" onclick="submit()">Nộp Bài</button>` : ""}
+        ${(mode === "30" && !isSubmitted) ? `<button class="s600-nav-btn" style="background-color:#ef4444; color:#fff; border-color:#ef4444; flex:1;" onclick="submit()">Nộp Bài</button>` : ""}
         ${(mode === "500") ? `<button class="s600-nav-btn" style="background-color:#4b5563; color:#fff; border-color:#4b5563;" onclick="exitHome()">Thoát</button>` : ""}
-        <button class="s600-nav-btn s600-nav-next" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
+        <button class="s600-nav-btn s600-nav-next" style="flex:${(mode === "30" && !isSubmitted) ? "0" : "1"};" onclick="next()" ${current === quiz.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
     </div>
     `;
 
     html += `</div>`; // End s600-right-panel
     html += `</div>`; // End s600-layout
 
-    document.getElementById("quiz").innerHTML = html;
+    let target = document.getElementById("quiz");
+    if (isSubmitted && mode === "30" && document.getElementById("reviewContent")) {
+        target = document.getElementById("reviewContent");
+    }
+    
+    if (target) {
+        target.innerHTML = html;
+    }
 
     // Fix scroll issue: scroll current question into view in the sidebar
     setTimeout(() => {
@@ -415,10 +438,10 @@ function renderResult(score, isPass) {
     const title = candType === "B" ? "HẠNG B CAND" : "HẠNG C CAND";
     
     let html = `
-    <div class="result-summary" style="padding:24px; background:#fff; border-radius:16px; margin-bottom:24px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1); text-align:center; border: 1px solid #e2e8f0; animation: s600FadeUp 0.4s ease-out;">
-        <h2 style="color:#1e293b; margin-top:0; margin-bottom:20px; font-size:26px; font-weight:800; letter-spacing:-0.5px;">KẾT QUẢ THI LÝ THUYẾT ${title}</h2>
+    <div class="result-summary" style="padding:24px; background:#fff; border-radius:16px; margin-bottom:24px; box-shadow:0 10px 15px -3px rgba(0,0,0,0.1); text-align:center; border: 1px solid #e2e8f0; animation: s600FadeUp 0.4s ease-out; max-width:800px; margin:0 auto 24px;">
+        <h2 style="color:#1e293b; margin-top:0; margin-bottom:20px; font-size:26px; font-weight:800; letter-spacing:-0.5px; text-transform:uppercase;">KẾT QUẢ THI LÝ THUYẾT ${title}</h2>
         
-        <div style="font-size:16px; line-height:1.8; max-width:360px; margin:0 auto; text-align:left; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
+        <div style="font-size:16px; line-height:1.8; max-width:400px; margin:0 auto; text-align:left; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
             <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                 <b style="color:#64748b;">Số câu hỏi:</b> 
                 <span style="font-weight:700; color:#1e293b;">${quiz.length}</span>
@@ -441,15 +464,17 @@ function renderResult(score, isPass) {
         </div>
         
         <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; justify-content:center;">
-            <button class="primary-btn" onclick="retryExam()" style="padding:12px 24px; font-size:15px; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(59,130,246,0.3);"> LÀM LẠI ĐỀ NÀY</button>
-            <button class="secondary-btn" onclick="location.reload()" style="padding:12px 24px; font-size:15px; background:#10b981; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(16,185,129,0.3);"> ĐỀ KHÁC</button>
-            <button class="secondary-btn" onclick="exitHome()" style="padding:12px 24px; font-size:15px; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(100,116,139,0.3);"> VỀ TRANG CHỦ</button>
+            <button class="primary-btn" onclick="retryExam()" style="width:auto; padding:12px 24px; font-size:15px; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(59,130,246,0.3);"> LÀM LẠI ĐỀ NÀY</button>
+            <button class="secondary-btn" onclick="location.reload()" style="width:auto; padding:12px 24px; font-size:15px; background:#10b981; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(16,185,129,0.3);"> ĐỀ KHÁC</button>
+            <button class="secondary-btn" onclick="exitHome()" style="width:auto; padding:12px 24px; font-size:15px; border:none; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 4px 6px -1px rgba(100,116,139,0.3);"> VỀ TRANG CHỦ</button>
         </div>
     </div>
-    <div style="text-align:center; margin-bottom:20px; font-weight:700; color:#475569; font-size:16px;">
-        <i class="fa-solid fa-arrow-down"></i> XEM CHI TIẾT BÀI THI CỦA BẠN <i class="fa-solid fa-arrow-down"></i>
+    
+    <div style="text-align:center; margin-bottom:20px; font-weight:700; color:#475569; font-size:18px; text-transform: uppercase; letter-spacing: 0.5px;">
+        <i class="fa-solid fa-arrow-down"></i> Xem chi tiết bài thi <i class="fa-solid fa-arrow-down"></i>
     </div>
-    `
+    <div id="reviewContent"></div>
+    `;
 
     document.getElementById("quiz").innerHTML = html;
     current = 0;

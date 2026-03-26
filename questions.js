@@ -4635,7 +4635,7 @@ const questions = [
     "question": "Câu 483: Khi người thân của anh (chị) phơi thóc, rơm rạ, nông sản trên đường bộ, anh (chị) nên làm như thế nào?",
     "options": [
       "Để người thân phơi thóc, rơm rạ, nông sản trên đường bộ do chỉ phơi ít ngày và vẫn còn đường để cho xe đi lại.",
-      "Giải thích và nận động người thân không được phơi thóc, rơm nông sản trên đường bộ."
+      "Giải thích và vận động người thân không được phơi thóc, rơm nông sản trên đường bộ."
     ]
   },
   {
@@ -4738,7 +4738,7 @@ const questions = [
     "id": 495,
     "question": "Câu 495: Anh (chị) hãy cho biết các biện pháp phòng cháy đối với phương tiện giao thông cơ giới đường bộ?",
     "options": [
-      "Không lắp đ ặt thêm thiết bị điện, phụ kiện không đúng theo thiết kế của nhà sản xuất; tuân thủ quy trình vận hành bảo trì bảo dưỡng định kỳ; cần thường xuyên kiểm tra phương tiện khi phát hiện thấy dấu hiệu khác lạ cần khắc phục ngay.",
+      "Không lắp đặt thêm thiết bị điện, phụ kiện không đúng theo thiết kế của nhà sản xuất; tuân thủ quy trình vận hành bảo trì bảo dưỡng định kỳ; cần thường xuyên kiểm tra phương tiện khi phát hiện thấy dấu hiệu khác lạ cần khắc phục ngay.",
       "Không mua xăng, dầu ở các điểm bán tự phát, không rõ nguồn gốc; không sử dụng các biện pháp “tiết kiệm nhiên liệu” khi chưa được kiểm chứng về mức độ an toàn có thể gây hỏng xe hoặc dẫn đến nguy cơ xảy cháy cao.",
       "Không để các chất dễ cháy, dễ bắt lửa trong xe, trong khoang động cơ; trong xe cần trang bị bình chữa cháy phù hợp theo qui định của Luật Phòng cháy chữa cháy; ở nơi đỗ xe phải tắt khóa điện, để xa nguồn lửa, nguồn nhiệt.",
       "Cả ba ý trên."
@@ -4774,7 +4774,7 @@ const questions = [
   },
   {
     "id": 499,
-    "question": "Câu 499: Trường hợp xét thấy không có khả năng tự dập tắt đám cháy trên phương tiện gia o thông cơ giới đường bộ thì anh (chị) nên làm gì trước tiên?",
+    "question": "Câu 499: Trường hợp xét thấy không có khả năng tự dập tắt đám cháy trên phương tiện giao thông cơ giới đường bộ thì anh (chị) nên làm gì trước tiên?",
     "options": [
       "Nên tránh xa phương tiện đang bị cháy để phòng, tránh sự cố nổ bình xăng gây nạn cho bản thân.",
       "Nên gọi công ty bảo hiểm ngay để được ghi nhận kịp thời.",
