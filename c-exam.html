@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
 
@@ -204,40 +204,7 @@
 <script src="js/c-exam.js?v=1"></script>
 
 <!-- Global UI Scripts -->
-<script>
-function toggleMenu(e) {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    const mobileMenu = document.querySelector('.mobile-menu');
-    let overlay = document.querySelector('.menu-overlay');
 
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.className = 'menu-overlay';
-        document.body.appendChild(overlay);
-        
-        overlay.addEventListener('click', function() {
-            if (mobileMenu) mobileMenu.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-    }
-
-    if (mobileMenu) {
-        if (mobileMenu.classList.contains('active')) {
-            mobileMenu.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        } else {
-            mobileMenu.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-    }
-}
-</script>
 
 <div id="feedbackContainer"></div>
 <script>
@@ -264,6 +231,6 @@ sendVisit();
 setInterval(sendVisit, 90000);
 </script>
 
-    <script src="js/nav-popup.js"></script>
+    <script src="js/nav-popup.js?v=2"></script>
 </body>
 </html>

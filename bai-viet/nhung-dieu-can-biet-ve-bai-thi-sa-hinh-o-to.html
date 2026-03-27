@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -726,23 +726,8 @@
         }
     </style>
 
-    <script>
-        function toggleMenu() {
-            const mobileMenu = document.querySelector('.mobile-menu');
-            if (mobileMenu) mobileMenu.classList.toggle('active');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const scrollProgress = document.getElementById('scrollProgress');
-            window.onscroll = function () {
-                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (winScroll / height) * 100;
-                if (scrollProgress) scrollProgress.style.width = scrolled + "%";
-            };
-        });
-    </script>
-    <script src="../js/nav-popup.js"></script>
+    
+    <script src="../js/nav-popup.js?v=2"></script>
 </body>
 
 </html>
