@@ -100,32 +100,52 @@
 <div class="exam-page-content">
 
 <header>
-<div class="nav-container">
-<a href="index.html" class="logo" style="display:flex; align-items:center;">
-    <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
-    Thi GPLX
-</a>
-<button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu(event)">
-    <i class="fa-solid fa-bars"></i>
-</button>
-<nav class="main-nav">
-<a href="index.html">Trang chủ</a>
-<a href="cand-menu.html">600 Câu Hỏi</a>
-<a href="meo-thi-gplx.html">Mẹo Thi</a>
-<a href="sahinh.html">Sa Hình</a>
-<a href="signs.html">Biển Báo</a>
-<a href="contact.html">Liên hệ</a>
-</nav>
-</div>
-<!-- Mobile Menu -->
-<nav class="mobile-menu">
-<a href="index.html">Trang chủ</a>
-<a href="cand-menu.html">600 Câu Hỏi</a>
-<a href="meo-thi-gplx.html">Mẹo Thi</a>
-<a href="sahinh.html">Sa Hình</a>
-<a href="signs.html">Biển Báo</a>
-<a href="contact.html">Liên hệ</a>
-</nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo" style="display:flex; align-items:center;">
+            <img src="assets/logo.svg" alt="Logo" style="height:32px; margin-right:10px;">
+            Thi GPLX
+        </a>
+        <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <a href="index.html">Trang chủ</a>
+            <div class="dropdown">
+                <a href="javascript:void(0)">Ôn theo hạng <i class="fa-solid fa-chevron-down"></i></a>
+                <div class="dropdown-menu">
+                    <a href="class-a1-menu.html">Hạng A1</a>
+                    <a href="class-a-menu.html">Hạng A</a>
+                    <a href="class-b-menu.html">Hạng B</a>
+                    <a href="class-c1-menu.html">Hạng C1</a>
+                    <a href="class-c-menu.html">Hạng C</a>
+                </div>
+            </div>
+            <a href="cand-menu.html">Thi thử</a>
+            <a href="signs.html">Biển báo</a>
+            <a href="meo-thi-gplx.html">Mẹo thi</a>
+            <a href="sahinh.html">Sa hình</a>
+            <a href="contact.html">Liên hệ</a>
+        </nav>
+    </div>
+    <!-- Mobile Menu -->
+    <nav class="mobile-menu">
+        <a href="index.html">Trang chủ</a>
+        <div class="accordion-item">
+            <a href="javascript:void(0)" class="accordion-toggle">Ôn theo hạng <i class="fa-solid fa-chevron-down"></i></a>
+            <div class="accordion-menu">
+                <a href="class-a1-menu.html">Hạng A1</a>
+                <a href="class-a-menu.html">Hạng A</a>
+                <a href="class-b-menu.html">Hạng B</a>
+                <a href="class-c1-menu.html">Hạng C1</a>
+                <a href="class-c-menu.html">Hạng C</a>
+            </div>
+        </div>
+        <a href="cand-menu.html">Thi thử</a>
+        <a href="signs.html">Biển báo</a>
+        <a href="meo-thi-gplx.html">Mẹo thi</a>
+        <a href="sahinh.html">Sa hình</a>
+        <a href="contact.html">Liên hệ</a>
+    </nav>
 </header>
 
 <main id="candExamRoot" style="display:none;"></main>
