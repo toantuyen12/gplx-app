@@ -796,6 +796,8 @@
                     const categorySigns = cat.signs.map(s => ({
                         id: s.id,
                         image: '../' + s.image,
+                        webp: '../' + s.image,
+                        png: '../' + s.image,
                         category: cat.name
                     }));
 
@@ -808,6 +810,8 @@
                 loadingOverlay.style.display = 'none';
             } catch (err) {
                 console.error('Init failed:', err);
+                loadingOverlay.style.display = 'none';
+                phaseIndicator.textContent = 'Lỗi tải dữ liệu';
             }
         }
 
@@ -877,8 +881,8 @@
                 const item = document.createElement('div');
                 item.className = 'memorize-item';
                 item.innerHTML = `<picture>
-  <source srcset="${sign.webp" type="image/webp">
-  <img decoding="async" loading="lazy" src="${sign.png" alt="Sign">
+  <source srcset="${sign.webp}" type="image/webp">
+  <img decoding="async" loading="lazy" src="${sign.png}" alt="Sign">
 </picture>`;
                 memorizeGrid.appendChild(item);
             });
@@ -898,20 +902,22 @@
             answerPhase.style.display = 'flex';
 
             const options = [currentCorrectSign, ...distractors].sort(() => Math.random() - 0.5);
+            const startTime = Date.now();
+            optionsGrid.dataset.startTime = startTime;
 
             optionsGrid.innerHTML = '';
             options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerHTML = `<picture>
-  <source srcset="${opt.webp" type="image/webp">
-  <img decoding="async" loading="lazy" src="${opt.png" alt="Sign">
+  <source srcset="${opt.webp}" type="image/webp">
+  <img decoding="async" loading="lazy" src="${opt.png}" alt="Sign">
 </picture>`;
                 btn.onclick = () => handleSelection(opt.id, btn);
                 optionsGrid.appendChild(btn);
             });
 
-            const startTime = Date.now();
+            startTime = Date.now();
             startTimer(ANSWER_TIME, () => {
                 if (!isAnswering) handleSelection(null, null);
             }, startTime);
@@ -952,8 +958,8 @@
             isAnswering = true;
             clearInterval(timerInterval);
 
-            const elapsed = Date.now() - (Date.now() - (5000 - parseFloat(timerBar.style.width) * 50)); // Rough elapsed from bar
-            // Actually better to track it precisely in the answer phase start
+            const elapsed = Date.now() - (btn ? btn.parentElement.dataset.startTime : Date.now());
+            if (isCorrect) totalAnswerTime += elapsed;
 
             const isCorrect = selectedId === currentCorrectSign.id;
             const buttons = optionsGrid.querySelectorAll('.option-btn');

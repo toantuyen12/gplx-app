@@ -717,7 +717,9 @@
                                 name: cleanName,
                                 description: s.description,
                                 category: cat.name,
-                                image: '../' + s.image
+                                image: '../' + s.image,
+                                webp: '../' + s.image,
+                                png: '../' + s.image // Fallback for picture tag
                             };
                         });
 
@@ -730,6 +732,8 @@
                 loadingOverlay.style.display = 'none';
             } catch (err) {
                 console.error('Init failed:', err);
+                loadingOverlay.style.display = 'none';
+                questionText.textContent = 'Không thể tải dữ liệu biển báo. Vui lòng thử lại sau.';
             }
         }
 
@@ -796,8 +800,8 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerHTML = `<picture>
-  <source srcset="${opt.webp" type="image/webp">
-  <img decoding="async" loading="lazy" src="${opt.png" alt="Biển báo">
+  <source srcset="${opt.webp}" type="image/webp">
+  <img decoding="async" loading="lazy" src="${opt.png}" alt="Biển báo">
 </picture>`;
                 btn.onclick = () => handleAnswer(opt.id, btn);
                 optionsGrid.appendChild(btn);
