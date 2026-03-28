@@ -1,11 +1,15 @@
 /**
- * nav-popup.js — Unified Navigation System
- * Handles: mobile drawer, accordion, desktop dropdown, class-selection modal
+ * mobile-drawer.js
+ * Clean implementation for mobile navigation drawer.
  */
 (function () {
     'use strict';
+    // alert('MOBILE DRAWER LOADED v100');
+    console.log('Mobile Drawer v100 Loaded');
 
-    // ── A. Config ──
+    // Remove any previous debug info
+    document.getElementById('debug-z')?.remove();
+
     const url = window.location.href.toLowerCase();
     const isCAND = url.includes('b-cand') || url.includes('c-cand') ||
                    url.includes('cand-study') || url.includes('cand-exam');
@@ -21,60 +25,43 @@
     }
 
     const classData = {
-        'a1': { name: 'Hạng A1', desc: 'Xe máy < 125cm³', icon: 'fa-motorcycle', color: 'card-a1' },
-        'a':  { name: 'Hạng A',  desc: 'Xe máy ≥ 125cm³', icon: 'fa-motorcycle', color: 'card-a'  },
-        'b':  { name: 'Hạng B',  desc: 'Ô tô 4 – 9 chỗ',  icon: 'fa-car',        color: 'card-b'  },
-        'c1': { name: 'Hạng C1', desc: 'Ô tô tải nhẹ',    icon: 'fa-truck',      color: 'card-c1' },
-        'c':  { name: 'Hạng C',  desc: 'Ô tô tải nặng',   icon: 'fa-truck-moving', color: 'card-c' }
+        'a1': { name: 'H\u1ea1ng A1', desc: 'Xe m\u00e1y < 125cm\u00b3', icon: 'fa-motorcycle', color: 'card-a1' },
+        'a':  { name: 'H\u1ea1ng A',  desc: 'Xe m\u00e1y \u2265 125cm\u00b3', icon: 'fa-motorcycle', color: 'card-a'  },
+        'b':  { name: 'H\u1ea1ng B',  desc: '\u00d4 t\u00f4 4 \u2013 9 ch\u1ed7',  icon: 'fa-car',        color: 'card-b'  },
+        'c1': { name: 'H\u1ea1ng C1', desc: '\u00d4 t\u00f4 t\u1ea3i nh\u1eb9',    icon: 'fa-truck',      color: 'card-c1' },
+        'c':  { name: 'H\u1ea1ng C',  desc: '\u00d4 t\u00f4 t\u1ea3i n\u1eb7ng',   icon: 'fa-truck-moving', color: 'card-c' }
     };
+
     const routeMap = {
         'thithu':  { 'a1': 'class-a1-menu.html', 'a': 'class-a-menu.html', 'b': 'class-b-menu.html', 'c1': 'class-c1-menu.html', 'c': 'class-c-menu.html' },
         'sahinh':  { 'a1': 'sahinh-a1.html',     'a': 'sahinh-a.html',    'b': 'sahinh-b.html',    'c1': 'sahinh-c1.html',    'c': 'sahinh-c.html'    }
     };
+
     let currentContext = 'thithu';
 
-    // ── B. Inject Modal ──
-    if (runModal && !document.getElementById('navPopupOverlay')) {
-        const cardsHTML = Object.entries(classData).map(([key, info]) => `
-            <div class="nav-class-card ${info.color}" data-class="${key}">
-                <div class="nav-class-icon"><i class="fa-solid ${info.icon}"></i></div>
-                <div class="nav-class-info">
-                    <span class="nav-class-name">${info.name}</span>
-                    <span class="nav-class-desc">${info.desc}</span>
-                </div>
-                <div class="nav-class-check"><i class="fa-solid fa-check"></i></div>
-            </div>`).join('');
-
-        document.body.insertAdjacentHTML('beforeend', `
-            <div class="nav-popup-overlay" id="navPopupOverlay">
-                <div class="nav-popup-modal">
-                    <div class="nav-popup-header">
-                        <h2>Chọn hạng xe</h2>
-                        <button class="nav-popup-close" id="navPopupClose" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div class="nav-popup-body">
-                        <div class="nav-popup-grid">${cardsHTML}</div>
-                    </div>
-                </div>
-            </div>`);
-    }
-
-    // ── C. Mobile Drawer ──
     function initMobileDrawer() {
         const toggle = document.querySelector('.menu-toggle');
         const drawer = document.querySelector('.mobile-menu');
         if (!toggle || !drawer) return;
 
+        // Ensure drawer is a direct child of body for correct stacking
+        if (drawer.parentNode !== document.body) {
+            document.body.appendChild(drawer);
+        }
+
         if (!drawer.querySelector('.mobile-menu-close')) {
             const children = Array.from(drawer.childNodes);
             const brand = document.createElement('div');
             brand.className = 'mobile-menu-brand';
-            brand.innerHTML = `<img src="${pathPrefix}assets/logo.svg" alt="Logo" style="height:28px;"><span>Thi GPLX</span>`;
+            brand.innerHTML = `<img src="${pathPrefix}assets/logo.svg" alt="Logo" style="height:32px;"><span>Thi GPLX</span>`;
+            
             const closeBtn = document.createElement('button');
             closeBtn.className = 'mobile-menu-close';
             closeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            
             const divider = document.createElement('div');
             divider.className = 'mobile-menu-divider';
+            
             const nav = document.createElement('div');
             nav.className = 'mobile-menu-nav';
 
@@ -102,69 +89,65 @@
             document.body.appendChild(overlay);
         }
 
-        const openDrawer = () => { drawer.classList.add('active'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; };
-        const closeDrawer = (e) => { 
-            // FINAL SAFEGUARD: never close if the click was on/inside the accordion toggle
-            if (e && e.target && e.target.closest('.accordion-btn-toggle')) return;
+        const openDrawer = () => {
+            drawer.style.display = 'flex';
+            overlay.style.display = 'block';
+            void drawer.offsetWidth;
+            document.body.classList.add('no-scroll');
+            drawer.classList.add('active');
+            overlay.classList.add('active');
+        };
+
+        const closeDrawer = () => { 
             drawer.classList.remove('active'); 
             overlay.classList.remove('active'); 
-            document.body.style.overflow = ''; 
+            document.body.classList.remove('no-scroll');
+            setTimeout(() => {
+                if (!drawer.classList.contains('active')) {
+                    drawer.style.display = 'none';
+                    overlay.style.display = 'none';
+                }
+            }, 300);
         };
 
         const newToggle = toggle.cloneNode(true);
         toggle.parentNode.replaceChild(newToggle, toggle);
-        newToggle.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openDrawer(); });
+        newToggle.addEventListener('click', (e) => { e.preventDefault(); openDrawer(); });
 
-        overlay.addEventListener('click', (e) => closeDrawer(e));
-        drawer.querySelector('.mobile-menu-close')?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeDrawer(e); });
+        overlay.addEventListener('click', closeDrawer);
+        drawer.querySelector('.mobile-menu-close')?.addEventListener('click', closeDrawer);
 
-        // Accordion
+        // Accordion fix
         const accAnchor = drawer.querySelector('.accordion-toggle');
         if (accAnchor) {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'accordion-btn-toggle';
-            btn.innerHTML = `<span class="acc-label"><i class="fa-solid fa-layer-group link-icon"></i> Ôn theo hạng</span><i class="fa-solid fa-chevron-down chevron"></i>`;
+            btn.innerHTML = `<span class="acc-label"><i class="fa-solid fa-layer-group link-icon"></i> \u00D4n theo h\u1EA1ng</span><i class="fa-solid fa-chevron-down chevron"></i>`;
             accAnchor.parentNode.replaceChild(btn, accAnchor);
-
             btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation(); 
-                e.stopImmediatePropagation();
+                e.stopPropagation();
                 const item = btn.closest('.accordion-item');
                 if (item) item.classList.toggle('expanded');
             });
         }
-
-        // Delegate drawer clicks
-        drawer.addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (!link) return;
-            const href = (link.getAttribute('href') || '').trim();
-            if (!href || href === '#' || href.startsWith('javascript')) return;
-            if (link.classList.contains('accordion-toggle') || link.closest('.accordion-btn-toggle')) return;
-            closeDrawer(e);
-        });
     }
 
-    // ── D. Modal Logic ──
     function initModal() {
         if (!runModal) return;
         const overlay = document.getElementById('navPopupOverlay');
         const closeBtn = document.getElementById('navPopupClose');
         const cards = document.querySelectorAll('.nav-class-card');
-        if (!overlay) return;
+        if (!overlay || !closeBtn) return;
 
         const openP = (ctx) => {
             currentContext = ctx;
-            const saved = localStorage.getItem('hangDangHoc');
-            cards.forEach(c => c.classList.toggle('selected', c.dataset.class === saved));
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         };
         const closeP = () => { overlay.classList.remove('active'); document.body.style.overflow = ''; };
 
-        closeBtn?.addEventListener('click', closeP);
+        closeBtn.addEventListener('click', closeP);
         overlay.addEventListener('click', (e) => { if (e.target === overlay) closeP(); });
         cards.forEach(c => c.addEventListener('click', () => {
             const cls = c.dataset.class;
@@ -175,15 +158,14 @@
         }));
 
         document.querySelectorAll('.main-nav a, .mobile-menu a').forEach(a => {
-            if (a.closest('.dropdown-menu') || a.closest('.accordion-menu')) return;
             const txt = a.textContent.trim().toLowerCase();
-            if (txt.includes('thi thử')) a.addEventListener('click', (e) => {
+            if (txt.includes('thi th\u1eed')) a.addEventListener('click', (e) => {
                 e.preventDefault();
                 const s = localStorage.getItem('hangDangHoc');
-                if (s && routeMap['thithu'][s]) window.location.href = pathPrefix+routeMap['thithu'][s];
+                if (s && routeMap['thithu'][s]) window.location.href = pathPrefix + routeMap['thithu'][s];
                 else openP('thithu');
             });
-            else if (txt.includes('sa hình')) a.addEventListener('click', (e) => { e.preventDefault(); openP('sahinh'); });
+            else if (txt.includes('sa h\u00ecnh')) a.addEventListener('click', (e) => { e.preventDefault(); openP('sahinh'); });
         });
     }
 
