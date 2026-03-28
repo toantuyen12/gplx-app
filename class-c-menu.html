@@ -15,7 +15,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style-v3.css">
     <link rel="canonical" href="https://thigplx.site/class-c-menu.html">
     <meta name="robots" content="index, follow">
     
@@ -507,6 +507,54 @@ fetch("/feedback.html?v=3")
 <link rel="stylesheet" href="/css/feedback.css?v=3">
 <script src="/js/feedback.js?v=3"></script>
     <script src="js/nav-popup.js?v=2"></script>
+
+<!-- Class Selection Modal -->
+<div id="navPopupOverlay" class="nav-popup-overlay">
+    <div class="nav-popup-modal">
+        <div class="nav-popup-header">
+            <h3>Chọn hạng xe ôn tập</h3>
+            <button id="navPopupClose" class="nav-popup-close" aria-label="Đóng popup"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="nav-popup-body">
+            <div class="nav-class-card" data-class="a1">
+                <div class="card-icon"><i class="fa-solid fa-bicycle"></i></div>
+                <div class="card-info">
+                    <strong>Hạng A1</strong>
+                    <span>Xe mô tô 2 bánh dung tích từ 50cm³ đến dưới 125cm³</span>
+                </div>
+            </div>
+            <div class="nav-class-card" data-class="a">
+                <div class="card-icon"><i class="fa-solid fa-motorcycle"></i></div>
+                <div class="card-info">
+                    <strong>Hạng A (A2 cũ)</strong>
+                    <span>Xe mô tô 2 bánh dung tích từ 125cm³ trở lên</span>
+                </div>
+            </div>
+            <div class="nav-class-card" data-class="b">
+                <div class="card-icon"><i class="fa-solid fa-car"></i></div>
+                <div class="card-info">
+                    <strong>Hạng B (B1, B2 cũ)</strong>
+                    <span>Ô tô đến 9 chỗ, tải dưới 3.500kg</span>
+                </div>
+            </div>
+            <div class="nav-class-card" data-class="c1">
+                <div class="card-icon"><i class="fa-solid fa-truck"></i></div>
+                <div class="card-info">
+                    <strong>Hạng C1</strong>
+                    <span>Xe tải từ 3.500 kg đến dưới 7.500 kg</span>
+                </div>
+            </div>
+            <div class="nav-class-card" data-class="c">
+                <div class="card-icon"><i class="fa-solid fa-truck-moving"></i></div>
+                <div class="card-info">
+                    <strong>Hạng C</strong>
+                    <span>Ô tô tải kéo trọng tải trên 7.500 kg</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 
 </html>

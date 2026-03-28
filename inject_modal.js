@@ -1,22 +1,8 @@
-<!doctype html>
-<html ng-app="app">
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.3/angular.min.js"></script>
-    <script src="../src/sprintf.js"></script>
-    <script src="../src/angular-sprintf.js"></script>
-</head>
-<body>
-    <pre>{{ "%+010d"|sprintf:-123 }}</pre>
-    <pre>{{ "%+010d"|vsprintf:[-123] }}</pre>
-    <pre>{{ "%+010d"|fmt:-123 }}</pre>
-    <pre>{{ "%+010d"|vfmt:[-123] }}</pre>
-    <pre>{{ "I've got %2$d apples and %1$d oranges."|fmt:4:2 }}</pre>
-    <pre>{{ "I've got %(apples)d apples and %(oranges)d oranges."|fmt:{apples: 2, oranges: 4} }}</pre>
+const fs = require('fs');
+const path = require('path');
 
-    <script>
-        angular.module("app", ["sprintf"])
-    </script>
-
+const directoryPath = __dirname;
+const modalHtml = `
 <!-- Class Selection Modal -->
 <div id="navPopupOverlay" class="nav-popup-overlay">
     <div class="nav-popup-modal">
@@ -63,6 +49,31 @@
         </div>
     </div>
 </div>
+`;
 
-</body>
-</html>
+function processFiles(dir) {
+    const files = fs.readdirSync(dir);
+    for (const file of files) {
+        const fullPath = path.join(dir, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+            if (file !== 'backups' && file !== '.git') {
+                processFiles(fullPath);
+            }
+        } else if (fullPath.endsWith('.html')) {
+            let content = fs.readFileSync(fullPath, 'utf8');
+            if (!content.includes('id="navPopupOverlay"')) {
+                // To safely insert before </body>
+                const newContent = content.replace('</body>', `${modalHtml}\n</body>`);
+                if (newContent !== content) {
+                    fs.writeFileSync(fullPath, newContent, 'utf8');
+                    console.log(`Injected modal into: ${file}`);
+                }
+            } else {
+                console.log(`Modal already exists in: ${file}`);
+            }
+        }
+    }
+}
+
+processFiles(directoryPath);
+console.log('Finished bulk injecting modal.');
