@@ -117,17 +117,13 @@
         overlay.addEventListener('click', closeDrawer);
         drawer.querySelector('.mobile-menu-close')?.addEventListener('click', closeDrawer);
 
-        // Accordion fix
-        const accAnchor = drawer.querySelector('.accordion-toggle');
-        if (accAnchor) {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'accordion-btn-toggle';
-            btn.innerHTML = `<span class="acc-label"><i class="fa-solid fa-layer-group link-icon"></i> \u00D4n theo h\u1EA1ng</span><i class="fa-solid fa-chevron-down chevron"></i>`;
-            accAnchor.parentNode.replaceChild(btn, accAnchor);
-            btn.addEventListener('click', (e) => {
+        // Accordion event binding
+        const accBtn = drawer.querySelector('.accordion-btn-toggle');
+        if (accBtn) {
+            accBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
-                const item = btn.closest('.accordion-item');
+                const item = accBtn.closest('.accordion-item');
                 if (item) item.classList.toggle('expanded');
             });
         }
