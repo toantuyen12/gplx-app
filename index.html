@@ -120,61 +120,6 @@
     }
     </script>
     <link rel="stylesheet" href="css/mobile-drawer-v3.css">
-    <style id="layout-hotfix">
-    /* Desktop Dropdown Absolute Positioning Fix */
-    nav.main-nav { gap: 28px !important; }
-    nav.main-nav a { display: flex; align-items: center; gap: 6px; }
-    nav.main-nav .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
-    nav.main-nav .dropdown-menu {
-        position: absolute !important;
-        top: 100% !important;
-        left: 50% !important;
-        transform: translateX(-50%) translateY(10px) !important;
-        background: white !important;
-        min-width: 200px !important;
-        border-radius: 12px !important;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-        display: flex !important;
-        flex-direction: column !important;
-        padding: 8px 0 !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        z-index: 200 !important;
-    }
-    nav.main-nav .dropdown:hover .dropdown-menu {
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: translateX(-50%) translateY(0) !important;
-    }
-    nav.main-nav .dropdown-menu a {
-        padding: 12px 20px !important;
-        color: #102a43 !important;
-        font-size: 14px !important;
-        display: block !important;
-        text-align: left !important;
-        border: none !important;
-    }
-    nav.main-nav .dropdown-menu a:hover {
-        background: #f8fafc !important;
-        color: #4f46e5 !important;
-    }
-
-    /* Mobile Vertical Drawer Fix */
-    .mobile-menu-nav {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-    }
-    .mobile-menu-nav > a, .accordion-btn-toggle {
-        display: flex !important;
-        align-items: center !important;
-        padding: 14px 24px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        border-bottom: 1px solid #f8fafc !important;
-    }
-    </style>
 </head>
 
 
