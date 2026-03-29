@@ -33,7 +33,7 @@
     };
 
     const routeMap = {
-        'thithu':  { 'a1': 'class-a1-menu.html', 'a': 'class-a-menu.html', 'b': 'class-b-menu.html', 'c1': 'class-c1-menu.html', 'c': 'class-c-menu.html' },
+        'thithu':  { 'a1': 'moto-exam.html?license=a1', 'a': 'moto-exam.html?license=a', 'b': 'b-exam.html', 'c1': 'c1-exam.html', 'c': 'c-exam.html' },
         'sahinh':  { 'a1': 'sahinh-a1.html',     'a': 'sahinh-a.html',    'b': 'sahinh-b.html',    'c1': 'sahinh-c1.html',    'c': 'sahinh-c.html'    }
     };
 
