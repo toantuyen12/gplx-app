@@ -155,13 +155,17 @@
 
         document.querySelectorAll('.main-nav a, .mobile-menu a').forEach(a => {
             const txt = a.textContent.trim().toLowerCase();
-            if (txt.includes('thi th\u1eed')) a.addEventListener('click', (e) => {
-                e.preventDefault();
-                const s = localStorage.getItem('hangDangHoc');
-                if (s && routeMap['thithu'][s]) window.location.href = pathPrefix + routeMap['thithu'][s];
-                else openP('thithu');
-            });
-            else if (txt.includes('sa h\u00ecnh')) a.addEventListener('click', (e) => { e.preventDefault(); openP('sahinh'); });
+            if (txt.includes('thi th\u1eed')) {
+                 a.addEventListener('click', (e) => {
+                     e.preventDefault();
+                     openP('thithu');
+                 });
+            } else if (txt.includes('sa h\u00ecnh')) {
+                 a.addEventListener('click', (e) => { 
+                     e.preventDefault(); 
+                     openP('sahinh'); 
+                 });
+            }
         });
     }
 
