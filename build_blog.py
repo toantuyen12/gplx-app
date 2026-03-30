@@ -73,6 +73,9 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
     html = re.sub(r'<header>.*?</header>', h_html, html, flags=re.DOTALL)
     html = re.sub(r'<footer class="footer">.*?</footer>', f_html, html, flags=re.DOTALL)
     
+    # --- Attributes fix (lazy load) ---
+    html = re.sub(r'(<img\s+[^>]*?)(/?>)', lambda m: m.group(1) + ( ' loading="lazy"' if 'loading=' not in m.group(1) else '' ) + m.group(2), html)
+    
     # --- Sync Modal ---
     stub_pattern = re.compile(r'<!-- Class Selection Modal -->\s*<div id="navPopupOverlay"[^>]*>.*?</div>\s*</div>\s*</div>|<div id="navPopupOverlay"[^>]*>.*?</div>', re.IGNORECASE | re.DOTALL)
     
