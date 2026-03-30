@@ -139,6 +139,16 @@
 
         const openP = (ctx) => {
             currentContext = ctx;
+            const currentSelected = localStorage.getItem('hangDangHoc');
+            if (currentSelected) {
+                cards.forEach(c => {
+                    if (c.dataset.class === currentSelected) {
+                        c.classList.add('is-selected');
+                    } else {
+                        c.classList.remove('is-selected');
+                    }
+                });
+            }
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         };
@@ -147,11 +157,16 @@
         closeBtn.addEventListener('click', closeP);
         overlay.addEventListener('click', (e) => { if (e.target === overlay) closeP(); });
         cards.forEach(c => c.addEventListener('click', () => {
-            const cls = c.dataset.class;
-            localStorage.setItem('hangDangHoc', cls);
-            const t = routeMap[currentContext]?.[cls];
-            if (t) window.location.href = pathPrefix + t;
-            closeP();
+            cards.forEach(card => card.classList.remove('is-selected'));
+            c.classList.add('is-selected');
+            
+            setTimeout(() => {
+                const cls = c.dataset.class;
+                localStorage.setItem('hangDangHoc', cls);
+                const t = routeMap[currentContext]?.[cls];
+                if (t) window.location.href = pathPrefix + t;
+                closeP();
+            }, 100);
         }));
 
         document.querySelectorAll('.main-nav a, .mobile-menu a').forEach(a => {
