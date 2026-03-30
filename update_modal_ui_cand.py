@@ -1,9 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+import os
+import glob
+import re
 
-const directoryPath = __dirname;
-const modalHtml = `
-<!-- Class Selection Modal -->
+html_to_insert = """<!-- Class Selection Modal -->
 <div id="navPopupOverlay" class="nav-popup-overlay">
     <div class="nav-popup-modal modern-popup">
         <div class="nav-popup-header">
@@ -93,32 +92,36 @@ const modalHtml = `
             </div>
         </div>
     </div>
-</div>
-`;
+</div>"""
 
-function processFiles(dir) {
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-        const fullPath = path.join(dir, file);
-        if (fs.statSync(fullPath).isDirectory()) {
-            if (file !== 'backups' && file !== '.git') {
-                processFiles(fullPath);
-            }
-        } else if (fullPath.endsWith('.html')) {
-            let content = fs.readFileSync(fullPath, 'utf8');
-            if (!content.includes('id="navPopupOverlay"')) {
-                // To safely insert before </body>
-                const newContent = content.replace('</body>', `${modalHtml}\n</body>`);
-                if (newContent !== content) {
-                    fs.writeFileSync(fullPath, newContent, 'utf8');
-                    console.log(`Injected modal into: ${file}`);
-                }
-            } else {
-                console.log(`Modal already exists in: ${file}`);
-            }
-        }
-    }
-}
+directory = r"c:\Users\TOANTUYEN\Desktop\gplx-app\gplx-app"
+pattern = re.compile(r'<!-- Class Selection Modal -->\s*<div id="navPopupOverlay" class="nav-popup-overlay">[\s\S]*?</div>\s*</div>\s*</div>', re.IGNORECASE)
 
-processFiles(directoryPath);
-console.log('Finished bulk injecting modal.');
+count = 0
+for root, dirs, files in os.walk(directory):
+    if '.git' in root or 'node_modules' in root:
+        continue
+    for file in files:
+        if file.endswith(".html"):
+            path = os.path.join(root, file)
+            with open(path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            if "navPopupOverlay" in content:
+                new_content = pattern.sub(html_to_insert, content)
+                if new_content != content:
+                    with open(path, 'w', encoding='utf-8') as f:
+                        f.write(new_content)
+                    count += 1
+
+print(f"Updated {count} HTML files with CAND modal.")
+
+# Update inject_modal.js
+js_path = os.path.join(directory, 'inject_modal.js')
+if os.path.exists(js_path):
+    with open(js_path, 'r', encoding='utf-8') as f:
+        js_content = f.read()
+    js_pattern = re.compile(r'const modalHtml = `[\s\S]*?`;')
+    new_js = js_pattern.sub(f'const modalHtml = `\n{html_to_insert}\n`;', js_content)
+    with open(js_path, 'w', encoding='utf-8') as f:
+        f.write(new_js)
+    print("Updated inject_modal.js with CAND modal.")
