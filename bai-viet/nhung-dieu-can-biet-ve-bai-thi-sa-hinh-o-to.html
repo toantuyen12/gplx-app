@@ -79,6 +79,8 @@
 </script>
     <link rel="stylesheet" href="../css/mobile-drawer-v3.css">
 
+    
+    
     <!-- Auto-generated Schema -->
     <script type="application/ld+json">
 {
@@ -103,6 +105,7 @@
 </head>
 
 <body>
+    <div class="reading-progress-container"><div class="reading-progress-bar" id="progressBar"></div></div>
 
     <!-- HEADER -->
     <header>
@@ -135,22 +138,31 @@
     </div>
     <!-- Mobile Menu -->
     <nav class="mobile-menu">
-        <a href="../index.html">Trang chủ</a>
-        <div class="accordion-item">
-            <a href="javascript:void(0)" class="accordion-toggle">Ôn theo hạng <i class="fa-solid fa-chevron-down"></i></a>
-            <div class="accordion-menu">
-                <a href="../class-a1-menu.html">Hạng A1</a>
-                <a href="../class-a-menu.html">Hạng A</a>
-                <a href="../class-b-menu.html">Hạng B</a>
-                <a href="../class-c1-menu.html">Hạng C1</a>
-                <a href="../class-c-menu.html">Hạng C</a>
+        <div class="mobile-menu-header">
+            <div class="mobile-menu-brand">
+                <img src="../assets/logo.svg" alt="Logo" style="height:24px;">
+                Thi GPLX
             </div>
+            <button class="mobile-menu-close" aria-label="Đóng menu"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <a href="../cand-menu.html">Thi thử</a>
-        <a href="../signs.html">Biển báo</a>
-        <a href="../meo-thi-gplx.html">Mẹo thi</a>
-        <a href="../sahinh.html">Sa hình</a>
-        <a href="../contact.html">Liên hệ</a>
+        <div class="mobile-menu-nav">
+            <a href="../index.html">Trang chủ</a>
+            <div class="accordion-item">
+                <a href="javascript:void(0)" class="accordion-btn-toggle">Ôn theo hạng <i class="fa-solid fa-chevron-down chevron"></i></a>
+                <div class="accordion-menu">
+                    <a href="../class-a1-menu.html">Hạng A1</a>
+                    <a href="../class-a-menu.html">Hạng A</a>
+                    <a href="../class-b-menu.html">Hạng B</a>
+                    <a href="../class-c1-menu.html">Hạng C1</a>
+                    <a href="../class-c-menu.html">Hạng C</a>
+                </div>
+            </div>
+            <a href="../cand-menu.html">Thi thử</a>
+            <a href="../signs.html">Biển báo</a>
+            <a href="../meo-thi-gplx.html">Mẹo thi</a>
+            <a href="../sahinh.html">Sa hình</a>
+            <a href="../contact.html">Liên hệ</a>
+        </div>
     </nav>
 </header>
 
@@ -429,6 +441,34 @@
                 <a href="../signs.html">Biển báo giao thông</a>
                 <a href="../class-b-menu.html">Thi thử sát hạch</a>
             </div>
+
+            <div class="footer-seo-text">
+                <p>Luyện thi GPLX online miễn phí với bộ 600 câu hỏi lý thuyết mới nhất. Website cung cấp thi thử sát
+                    hạch lái xe, mẹo thi GPLX, bài sa hình lái xe và hệ thống biển báo giao thông giúp người học ôn
+                    luyện hiệu quả.</p>
+            </div>
+
+            <div class="footer-keywords">
+                <span>Thi GPLX B2</span> • <span>Thi GPLX A1</span> • <span>600 câu hỏi GPLX mới nhất</span> • <span>Mẹo
+                    thi GPLX đậu nhanh</span> • <span>Sa hình lái xe B2</span> • <span>Biển báo giao thông đường
+                    bộ</span>
+            </div>
+
+            <div id="visitorStats">
+                <span>👥 Đang online: <span id="onlineUsers">0</span></span> |
+                <span>📅 Hôm nay: <span id="todayUsers">0</span></span>
+                <span id="totalUsers" style="display:none;">0</span>
+            </div>
+
+            <p class="footer-contact">thigplx.contact@gmail.com</p>
+
+            <div class="footer-bottom-links">
+                <a href="../about.html">Giới thiệu</a> |
+                <a href="../privacy.html">Chính sách bảo mật</a> |
+                <a href="../terms.html">Điều khoản</a> |
+                <a href="../contact.html">Liên hệ</a>
+            </div>
+
             <p class="copyright">© 2026 thigplx.site</p>
         </div>
     </footer>
@@ -846,6 +886,25 @@
 </div>
     </div>
 </div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+    
+
+
+    <!-- Reading Progress Script -->
+    <script>
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            var pb = document.getElementById("progressBar");
+            if(pb) pb.style.width = scrolled + "%";
+        };
+    </script>
 
 </body>
 
