@@ -1,0 +1,245 @@
+/* css/blog.css */
+/* Minimal, highly readable, modern typography and layout for the SEO blog */
+
+.blog-hero {
+    background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 0 0 32px 32px;
+    margin-bottom: 40px;
+}
+
+.blog-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.blog-hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.blog-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #f1f5f9;
+}
+
+.blog-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.blog-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.blog-card-desc {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.blog-card-meta {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: auto;
+}
+
+/* ARTICLE LAYOUT */
+.article-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.article-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.article-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.article-meta {
+    color: #64748b;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.article-thumbnail {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.article-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #334155;
+}
+
+.article-content h2 {
+    font-size: 1.8rem;
+    color: #0f172a;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.article-content h3 {
+    font-size: 1.4rem;
+    color: #1e293b;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.article-content p {
+    margin-bottom: 20px;
+}
+
+.article-content ul, .article-content ol {
+    margin-bottom: 25px;
+    padding-left: 20px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+.article-content img {
+    width: 100%;
+    border-radius: 16px;
+    margin: 30px 0;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.cta-box {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    margin: 40px 0;
+}
+
+.cta-box p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.cta-box .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #3b82f6;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.cta-box .btn:hover {
+    background: #2563eb;
+}
+
+/* Callouts in article */
+.callout {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 30px 0;
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.faq-section {
+    margin-top: 50px;
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+}
+
+.faq-q {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.faq-a {
+    color: #475569;
+}
+
+@media (max-width: 768px) {
+    .blog-hero h1 { font-size: 2rem; }
+    .article-title { font-size: 1.8rem; }
+    .article-content { font-size: 1.05rem; }
+}
