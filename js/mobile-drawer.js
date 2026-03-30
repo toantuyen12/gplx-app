@@ -34,6 +34,7 @@
 
     const routeMap = {
         'thithu':  { 'a1': 'moto-exam.html?license=a1', 'a': 'moto-exam.html?license=a', 'b': 'b-exam.html', 'c1': 'c1-exam.html', 'c': 'c-exam.html' },
+        'onthuyet': { 'a1': 'study600.html?license=a1', 'a': 'study600.html?license=a', 'b': 'study600.html?license=b', 'c1': 'study600.html?license=c1', 'c': 'study600.html?license=c' },
         'sahinh':  { 'a1': 'sahinh-a1.html',     'a': 'sahinh-a.html',    'b': 'sahinh-b.html',    'c1': 'sahinh-c1.html',    'c': 'sahinh-c.html'    }
     };
 
@@ -166,6 +167,14 @@
                      openP('sahinh'); 
                  });
             }
+        });
+
+        // Universal trigger based on attributes
+        document.querySelectorAll('[data-popup-trigger]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openP(btn.getAttribute('data-popup-trigger'));
+            });
         });
     }
 

@@ -120,6 +120,7 @@
     }
     </script>
     <link rel="stylesheet" href="css/mobile-drawer-v3.css">
+    <link rel="stylesheet" href="css/home-v4.css">
 </head>
 
 
@@ -187,148 +188,166 @@
 
     <div class="container">
         <div id="home">
-            <div class="hero-header">
-                <h1>Luyện Thi Lý Thuyết GPLX Các Hạng</h1>
-                <p>WEBSITE thi thử bằng lái xe online mô phỏng 100% đề thi sát hạch thực tế của Cục Cảnh sát giao thông
-                    ban hành</p>
+            <!-- HEADER SEO TEXT -->
+            <p class="seo-text-v4">Thi GPLX Online – Nền tảng ôn thi bằng lái xe các hạng A1, A, B, C1, C với bộ đề thi lấy từ 600 câu hỏi chuẩn Bộ GTVT. Hỗ trợ thi thử gplx online giống đề thật, tăng tỷ lệ đậu trung tâm sát hạch.</p>
+
+            <div class="hero-v4">
+                <h1 style="display: none;">Thi GPLX Online – Ôn Thi Bằng Lái Xe</h1> <!-- Hidden H1 for SEO -->
+                <h1>Ôn thi GPLX dễ dàng<br><span style="color:#dcfce7">Đậu ngay lần đầu</span></h1>
+                <p>600 câu hỏi chuẩn Bộ GTVT • Thi thử giống kỳ thi sát hạch thật</p>
+                <div class="hero-cta-group">
+                    <button class="btn-v4 primary" data-popup-trigger="thithu"><i class="fa-solid fa-stopwatch"></i> Thi thử ngay</button>
+                    <button class="btn-v4 secondary" data-popup-trigger="onthuyet"><i class="fa-solid fa-book-open"></i> Ôn lý thuyết</button>
+                </div>
             </div>
 
-
-            <!-- BÀI VIẾT HỮU ÍCH SECTION -->
-            <div class="article-section">
-                <div class="section-header">
-                    <h2 class="category-title">📚 Bài viết hữu ích</h2>
-                    <p class="section-subtitle">Những hướng dẫn và kinh nghiệm giúp bạn học và thi GPLX dễ dàng hơn.</p>
+            <!-- QUICK ACTIONS -->
+            <div class="quick-actions-v4">
+                <div class="q-action-card" data-popup-trigger="thithu">
+                    <div class="q-action-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="q-action-title">Thi thử nhanh</div>
+                    <div class="q-action-desc">Đề thi ngẫu nhiên cấu trúc chuẩn. Có chấm điểm và báo lỗi ngay.</div>
                 </div>
+                <div class="q-action-card" data-popup-trigger="onthuyet">
+                    <div class="q-action-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+                    <div class="q-action-title">Ôn lý thuyết</div>
+                    <div class="q-action-desc">Học 600 câu hỏi chia theo chương. Luyện câu điểm liệt dễ nhớ.</div>
+                </div>
+                <div class="q-action-card" data-popup-trigger="sahinh">
+                    <div class="q-action-icon"><i class="fa-solid fa-car-side"></i></div>
+                    <div class="q-action-title">Học sa hình</div>
+                    <div class="q-action-desc">Mô phỏng 11 bài thi sa hình thực hành chi tiết từng bước.</div>
+                </div>
+            </div>
 
-                <div class="carousel-container">
-                    <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)"><i
-                            class="fa-solid fa-chevron-left"></i></button>
+            <!-- CLASS CARDS -->
+            <div class="section-v4">
+                <div class="section-header-v4">
+                    <h2 class="section-title-v4">Chọn Hạng Bằng Lái</h2>
+                    <p class="section-subtitle-v4">Ôn luyện đúng trọng tâm theo từ hạng giấy phép lái xe (GPLX)</p>
+                </div>
+                <div class="class-grid-v4">
+                    <a href="class-a1-menu.html" class="class-card-v4">
+                        <div class="class-card-icon"><i class="fa-solid fa-bicycle"></i></div>
+                        <div class="class-card-title">Hạng A1</div>
+                        <div class="class-card-desc">Xe máy dưới 125cm³</div>
+                    </a>
+                    <a href="class-a-menu.html" class="class-card-v4">
+                        <div class="class-card-icon"><i class="fa-solid fa-motorcycle"></i></div>
+                        <div class="class-card-title">Hạng A (A2 cũ)</div>
+                        <div class="class-card-desc">Xe phân khối lớn ≥ 125cm³</div>
+                    </a>
+                    <a href="class-b-menu.html" class="class-card-v4">
+                        <div class="class-card-icon"><i class="fa-solid fa-car"></i></div>
+                        <div class="class-card-title">Hạng B</div>
+                        <div class="class-card-desc">Ô tô chở người đến 9 chỗ</div>
+                    </a>
+                    <a href="class-c1-menu.html" class="class-card-v4">
+                        <div class="class-card-icon"><i class="fa-solid fa-truck"></i></div>
+                        <div class="class-card-title">Hạng C1</div>
+                        <div class="class-card-desc">Tải trọng 3.5 tấn - 7.5 tấn</div>
+                    </a>
+                    <a href="class-c-menu.html" class="class-card-v4">
+                        <div class="class-card-icon"><i class="fa-solid fa-truck-moving"></i></div>
+                        <div class="class-card-title">Hạng C</div>
+                        <div class="class-card-desc">Tải trọng trên 7.5 tấn</div>
+                    </a>
+                </div>
+            </div>
 
-                    <div class="carousel-wrapper" id="articleCarousel">
-                        <div class="carousel-track">
+            <!-- 3 STEPS TO STUDY -->
+            <div class="section-v4" style="background:#f8fafc; border-radius: 24px;">
+                <div class="section-header-v4">
+                    <h2 class="section-title-v4">Lộ Trình Ôn Tập 3 Bước</h2>
+                    <p class="section-subtitle-v4">Phương pháp giúp bạn thuộc nhanh 600 câu và tự tin đậu 100%</p>
+                </div>
+                <div class="steps-v4">
+                    <div class="step-card">
+                        <div class="step-num">1</div>
+                        <i class="fa-solid fa-bullseye" style="font-size:32px; color:#10b981; margin-top: 10px;"></i>
+                        <h3 class="step-title">Chọn Hạng Xe</h3>
+                        <p class="q-action-desc">Chọn đúng loại bằng lái (A1, B, C...) để học bộ đề tương ứng.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">2</div>
+                        <i class="fa-solid fa-book" style="font-size:32px; color:#0ea5e9; margin-top: 10px;"></i>
+                        <h3 class="step-title">Ôn Lý Thuyết</h3>
+                        <p class="q-action-desc">Học theo từng chương, làm quen với 60 câu điểm liệt bắt buộc.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">3</div>
+                        <i class="fa-solid fa-laptop" style="font-size:32px; color:#8b5cf6; margin-top: 10px;"></i>
+                        <h3 class="step-title">Thi Thử Như Thật</h3>
+                        <p class="q-action-desc">Làm đề thi ngẫu nhiên như giao diện thi thật tại sân sát hạch.</p>
+                    </div>
+                </div>
+            </div>
 
-                            <a class="article-card" href="meo-thi-gplx.html">
-                                <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
-                                <h3>Mẹo thi lý thuyết GPLX</h3>
-                                <p>Các mẹo giúp bạn ghi nhớ nhanh và vượt qua kỳ thi lý thuyết lái xe dễ dàng</p>
-                                <div class="card-cta">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></div>
-                            </a>
-
-                            <a class="article-card" href="bien-bao-giao-thong.html">
-                                <div class="card-icon"><i class="fa-solid fa-signs-post"></i></div>
-                                <h3>Các loại biển báo giao thông</h3>
-                                <p>Tổng hợp các nhóm biển báo quan trọng trong luật giao thông đường bộ</p>
-                                <div class="card-cta">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></div>
-                            </a>
-
-                            <a class="article-card" href="kinh-nghiem-hoc-gplx.html">
-                                <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                                <h3>Kinh nghiệm học lý thuyết</h3>
-                                <p>Những kinh nghiệm giúp việc ôn tập 500 câu hỏi hiệu quả hơn</p>
-                                <div class="card-cta">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></div>
-                            </a>
-
-                            <a class="article-card" href="bai-viet/nhung-dieu-can-biet-ve-bai-thi-sa-hinh-o-to.html">
-                                <div class="card-icon"><i class="fa-solid fa-car-side"></i></div>
-                                <h3>Sa hình ô tô trọn bộ</h3>
-                                <p>Tổng hợp 11 bài thi sa hình GPLX, hướng dẫn chi tiết và mẹo thi dễ đậu.</p>
-                                <div class="card-cta">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></div>
-                            </a>
-
-                            <a class="article-card" href="kinh-nghiem-hoc-gplx.html">
-                                <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                                <h3>Lưu ý kỳ thi CAND</h3>
-                                <p>Những điểm khác biệt và trọng tâm ôn tập dành cho lực lượng vũ trang</p>
-                                <div class="card-cta">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></div>
-                            </a>
-
+            <!-- TÍNH NĂNG NỔI BẬT -->
+            <div class="section-v4">
+                <div class="section-header-v4">
+                    <h2 class="section-title-v4">Nền Tảng Giúp Bạn Đậu GPLX</h2>
+                </div>
+                <div class="features-grid-v4">
+                    <div class="feature-item-v4">
+                        <div class="feature-icon-v4"><i class="fa-solid fa-layer-group"></i></div>
+                        <div>
+                            <h3 class="q-action-title">Cấu trúc đề thi chuẩn</h3>
+                            <p class="q-action-desc">Đề thi bao gồm 250 câu (A1) và 600 câu (B, C) chuẩn sát với Cục đường bộ.</p>
                         </div>
                     </div>
-
-                    <button class="carousel-btn next-btn" onclick="moveCarousel(1)"><i
-                            class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </div>
-
-            <!-- MÔ TÔ -->
-            <div class="category-wrapper">
-                <h2 class="category-title"><i class="fa-solid fa-motorcycle"></i> Bằng lái xe Mô tô</h2>
-                <div class="category-grid" style="max-width: 800px; margin: 0 auto;">
-                    <a class="cat-card" href="class-a1-menu.html">
-                        <div class="cat-icon"><i class="fa-solid fa-bicycle"></i></div>
-                        <div class="cat-title">HẠNG A1</div>
-                        <div class="cat-desc">Xe mô tô 2 bánh dung tích từ 50cm3 đến dưới 125cm3</div>
-                        <button class="primary-btn">Thi thử ngay</button>
-                    </a>
-                    <a class="cat-card" href="class-a-menu.html">
-                        <div class="cat-icon"><i class="fa-solid fa-motorcycle"></i></div>
-                        <div class="cat-title">HẠNG A (A2 cũ)</div>
-                        <div class="cat-desc">Xe mô tô 2 bánh dung tích từ 125cm3 trở lên</div>
-                        <button class="primary-btn">Thi thử ngay</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Ô TÔ -->
-            <div class="category-wrapper">
-                <h2 class="category-title"><i class="fa-solid fa-car"></i> Bằng lái xe Ô tô</h2>
-                <div class="category-grid">
-                    <a class="cat-card" href="class-b-menu.html">
-                        <div class="cat-icon"><i class="fa-solid fa-car"></i></div>
-                        <div class="cat-title">HẠNG B (B1, B2 cũ)</div>
-                        <div class="cat-desc">Ô tô chở người đến 8 chỗ ngồi; xe tải dưới 3.500 kg</div>
-                        <button class="primary-btn">Thi thử ngay</button>
-                    </a>
-                    <a class="cat-card" href="class-c1-menu.html">
-                        <div class="cat-icon"><i class="fa-solid fa-truck"></i></div>
-                        <div class="cat-title">HẠNG C1</div>
-                        <div class="cat-desc">Ô tô tải, máy kéo tải trọng từ 3.500 kg đến 7.500 kg</div>
-                        <button class="primary-btn">Thi thử ngay</button>
-                    </a>
-                    <a class="cat-card" href="class-c-menu.html">
-                        <div class="cat-icon"><i class="fa-solid fa-truck-moving"></i></div>
-                        <div class="cat-title">HẠNG C</div>
-                        <div class="cat-desc">Ô tô tải, máy kéo trọng tải trên 7.500 kg</div>
-                        <button class="primary-btn">Thi thử ngay</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- GPLX Ô TÔ CAND -->
-            <div class="category-wrapper" style="margin-top: 50px;">
-                <h2 class="category-title" style="color: var(--primary);"><i class="fa-solid fa-shield-halved"></i>
-                    Luyện Thi GPLX Ô TÔ CAND</h2>
-                <div class="category-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-
-                    <!-- HẠNG B CAND -->
-                    <div class="cat-card" style="padding: 40px;">
-                        <div class="cat-icon"
-                            style="background: rgba(79, 70, 229, 0.15); width: 100px; height: 100px; font-size: 50px;">
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <div class="cat-title" style="font-size: 28px;">HẠNG B CAND</div>
-                        <div class="cat-desc" style="font-size: 16px;">Bộ đề sát hạch 500 câu dành riêng cho lực lượng Công an nhân dân</div>
-                        <div style="display: flex; gap: 15px; width: 100%; margin-top: 10px; flex-direction: column;">
-                            <a href="b-cand-menu.html" class="primary-btn" style="padding: 18px; font-size: 18px; text-decoration: none; text-align: center;">🚀 Thi thử ngay</a>
+                    <div class="feature-item-v4">
+                        <div class="feature-icon-v4"><i class="fa-solid fa-radiation"></i></div>
+                        <div>
+                            <h3 class="q-action-title">Luyện câu điểm liệt</h3>
+                            <p class="q-action-desc">Nhấn mạnh các câu tình huống nghiêm trọng, giúp bạn tránh bị trượt oan.</p>
                         </div>
                     </div>
-
-                    <!-- HẠNG C CAND -->
-                    <div class="cat-card" style="padding: 40px;">
-                        <div class="cat-icon"
-                            style="background: rgba(79, 70, 229, 0.15); width: 100px; height: 100px; font-size: 50px;">
-                            <i class="fa-solid fa-star"></i>
+                    <div class="feature-item-v4">
+                        <div class="feature-icon-v4"><i class="fa-solid fa-display"></i></div>
+                        <div>
+                            <h3 class="q-action-title">Mô phỏng 100% thi thật</h3>
+                            <p class="q-action-desc">Thi trên giao diện máy tính điện tử tính giờ, chấm điểm tự động.</p>
                         </div>
-                        <div class="cat-title" style="font-size: 28px;">HẠNG C CAND</div>
-                        <div class="cat-desc" style="font-size: 16px;">Bộ đề sát hạch 500 câu dành riêng cho lực lượng Công an nhân dân</div>
-                        <div style="display: flex; gap: 15px; width: 100%; margin-top: 10px; flex-direction: column;">
-                            <a href="cand-menu.html" class="primary-btn" style="padding: 18px; font-size: 18px; text-decoration: none; text-align: center;">🚀 Thi thử ngay</a>
+                    </div>
+                    <div class="feature-item-v4">
+                        <div class="feature-icon-v4"><i class="fa-solid fa-mobile-screen"></i></div>
+                        <div>
+                            <h3 class="q-action-title">Linh hoạt mọi thiết bị</h3>
+                            <p class="q-action-desc">Giao diện tương thích cả máy tính bàn, máy tính bảng và điện thoại.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- TRUST SECTION -->
+            <div class="trust-banner-v4">
+                <div class="trust-item">
+                    <div class="trust-num">100%</div>
+                    <div class="trust-label">Miễn phí hoàn toàn</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-num">600</div>
+                    <div class="trust-label">Câu hỏi mới nhất</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-num">98%</div>
+                    <div class="trust-label">Tỷ lệ thi đậu</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-num">24/7</div>
+                    <div class="trust-label">Ôn thi mọi lúc</div>
+                </div>
+            </div>
+
+            <!-- BOTTOM CTA -->
+            <div class="section-v4">
+                <div class="cta-bottom-v4">
+                    <h2 class="section-title-v4">Bạn Đã Sẵn Sàng Đi Thi Chưa?</h2>
+                    <p class="section-subtitle-v4" style="margin-bottom: 24px;">Hãy thử sức ngay với một đề thi ngẫu nhiên để kiểm tra kiến thức của mình.</p>
+                    <button class="btn-v4 primary" style="background:#0ea5e9; color:white; font-size: 18px; padding: 18px 40px;" data-popup-trigger="thithu">Thi thử ngay bây giờ <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
         </div>
 
         <div id="quiz" class="card" style="display:none; max-width: 1000px;"></div>
