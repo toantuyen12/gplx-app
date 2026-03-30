@@ -2,4 +2,10 @@ User-agent: *
 Content-Signal: search=yes,ai-train=no
 Allow: /
 
+Disallow: /admin/
+Disallow: /api/
+Disallow: /tmp/
+Disallow: /backups/
+Disallow: /functions/
+
 Sitemap: https://thigplx.site/sitemap.xml

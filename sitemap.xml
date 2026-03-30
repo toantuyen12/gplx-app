@@ -1,183 +1,225 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://thigplx.site/</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/class-a-menu.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/class-a1-menu.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/class-b-menu.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/class-c-menu.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/class-c1-menu.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/cand-menu.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://thigplx.site/about.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://thigplx.site/b-cand-menu.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/cand-exam.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/cand-study.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/moto-exam.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thigplx.site/b-exam.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/c-exam.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/c1-exam.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/study600.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/meo-thi-gplx.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/sahinh.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://thigplx.site/bien-bao-giao-thong.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thigplx.site/signs.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <loc>https://thigplx.site/blog.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/c-exam.html</loc>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/c1-exam.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/cand-exam.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/cand-menu.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/cand-study.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/class-a-menu.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/class-a1-menu.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/class-b-menu.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/class-c-menu.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/class-c1-menu.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/contact.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://thigplx.site/duong-truong.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://thigplx.site/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>https://thigplx.site/kinh-nghiem-hoc-gplx.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/meo-thi-gplx.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/moto-exam.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/privacy.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/sahinh-a.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/sahinh-a1.html</loc>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://thigplx.site/sahinh-b-cand.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thigplx.site/about.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://thigplx.site/sahinh-b.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thigplx.site/privacy.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://thigplx.site/sahinh-c-cand.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/sahinh-c.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/sahinh-c1.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/sahinh.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/signs.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/study600.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://thigplx.site/terms.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://thigplx.site/bai-viet/bo-de-thi-gplx-2025-2026-moi-nhat.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thigplx.site/contact.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://thigplx.site/bai-viet/cach-hoc-600-cau-gplx-7-ngay.html</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thigplx.site/games/choose-correct-sign.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <loc>https://thigplx.site/bai-viet/kinh-nghiem-thi-gplx-b-dau-100.html</loc>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thigplx.site/games/memory-challenge.html</loc>
-    <lastmod>2026-03-24</lastmod>
+    <loc>https://thigplx.site/bai-viet/nhung-dieu-can-biet-ve-bai-thi-sa-hinh-o-to.html</loc>
+    <lastmod>2026-03-30</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/games/sign-memory-60s.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thigplx.site/games/sign-puzzle.html</loc>
-    <lastmod>2026-03-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 </urlset>

@@ -118,6 +118,13 @@
         overlay.addEventListener('click', closeDrawer);
         drawer.querySelector('.mobile-menu-close')?.addEventListener('click', closeDrawer);
 
+        // Close drawer on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && drawer.classList.contains('active')) {
+                closeDrawer();
+            }
+        });
+
         // Accordion event binding
         const accBtn = drawer.querySelector('.accordion-btn-toggle');
         if (accBtn) {
@@ -137,7 +144,7 @@
         const cards = document.querySelectorAll('.nav-class-card');
         if (!overlay || !closeBtn) return;
 
-        const openP = (ctx) => {
+        window.openLicensePopup = (ctx = 'thithu') => {
             currentContext = ctx;
             const currentSelected = localStorage.getItem('hangDangHoc');
             if (currentSelected) {
@@ -153,9 +160,18 @@
             document.body.style.overflow = 'hidden';
         };
         const closeP = () => { overlay.classList.remove('active'); document.body.style.overflow = ''; };
+        window.closeLicensePopup = closeP;
 
         closeBtn.addEventListener('click', closeP);
         overlay.addEventListener('click', (e) => { if (e.target === overlay) closeP(); });
+        
+        // ESC key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                closeP();
+            }
+        });
+
         cards.forEach(c => c.addEventListener('click', () => {
             cards.forEach(card => card.classList.remove('is-selected'));
             c.classList.add('is-selected');
@@ -174,12 +190,12 @@
             if (txt.includes('thi th\u1eed')) {
                  a.addEventListener('click', (e) => {
                      e.preventDefault();
-                     openP('thithu');
+                     window.openLicensePopup('thithu');
                  });
             } else if (txt.includes('sa h\u00ecnh')) {
                  a.addEventListener('click', (e) => { 
                      e.preventDefault(); 
-                     openP('sahinh'); 
+                     window.openLicensePopup('sahinh'); 
                  });
             }
         });
@@ -188,7 +204,7 @@
         document.querySelectorAll('[data-popup-trigger]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                openP(btn.getAttribute('data-popup-trigger'));
+                window.openLicensePopup(btn.getAttribute('data-popup-trigger'));
             });
         });
     }

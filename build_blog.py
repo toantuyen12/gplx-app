@@ -12,9 +12,11 @@ dst_img_dir = os.path.join(root_dir, "images", "blog")
 
 print("--- 1. Copying Images ---")
 for prefix in ["blog_*", "kinh_nghiem_*", "cach_hoc_*"]:
-    for img in glob.glob(os.path.join(src_img_dir, f"{prefix}_*.png")):
+    images = glob.glob(os.path.join(src_img_dir, f"{prefix}_*.png"))
+    images.sort(key=os.path.getmtime)
+    for img in images:
         base = os.path.basename(img)
-        # Handle the artifact timestamp `_TIMESTAMP.png` (only removes the last 13-digit chunk)
+        # Handle the artifact timestamp `_TIMESTAMP.png`
         parts = re.split(r'_\d{13}', base)
         target = parts[0] + ".png" if len(parts) > 1 else base
         shutil.copy(img, os.path.join(dst_img_dir, target))
@@ -83,6 +85,34 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
     html = stub_pattern.sub('<div id="navPopupOverlay" class="nav-popup-overlay"></div>', html)
     # Inject 
     html = html.replace('<div id="navPopupOverlay" class="nav-popup-overlay"></div>', modal_html)
+
+    # --- Inject Sticky CTA ---
+    sticky_cta = """
+<!-- Sticky Mobile CTA -->
+<div class="mobile-sticky-cta">
+    <button class="btn" style="flex:1;" onclick="openLicensePopup('thithu')"><i class="fa-solid fa-stopwatch"></i> Thi Thử GPLX</button>
+    <button class="btn" style="flex:1; background:#10b981;" onclick="openLicensePopup('onthuyet')"><i class="fa-solid fa-book-open"></i> Ôn Tập</button>
+</div>
+"""
+    # Remove old sticky cta if any
+    html = re.sub(r'<!-- Sticky Mobile CTA -->.*?</div>\s*</div>', '', html, flags=re.IGNORECASE | re.DOTALL)
+    if '<div class="mobile-sticky-cta">' not in html:
+        html = html.replace('</body>', sticky_cta + '\n</body>')
+
+    # --- Convert Inline and Box CTAs ---
+    # Convert data-popup-trigger buttons to exact onclick API
+    html = re.sub(r'<button\s+([^>]*?)data-popup-trigger="thithu"([^>]*?)>', r'<button \1 onclick="openLicensePopup(\'thithu\')" \2>', html)
+    html = re.sub(r'<button\s+([^>]*?)data-popup-trigger="onthuyet"([^>]*?)>', r'<button \1 onclick="openLicensePopup(\'onthuyet\')" \2>', html)
+    
+    # Convert inline <a href="../index.html">thi thử...</a> to functional CTA
+    # Example: <a href="../index.html" style="...">thi thử cấu trúc hệ thống</a>
+    def replace_inline_link(m):
+        full_tag = m.group(0)
+        inner_text = m.group(2).lower()
+        if 'thi thử' in inner_text or 'thi gplx' in inner_text:
+            return f'<a href="javascript:void(0)" onclick="openLicensePopup(\'thithu\')" {m.group(1)}>{m.group(2)}</a>'
+        return full_tag
+    html = re.sub(r'<a\s+href="\.\./index\.html[^"]*"\s*([^>]*)>(.*?)</a>', replace_inline_link, html, flags=re.IGNORECASE)
 
     # --- Progress Bar & Script ---
     if '<div class="reading-progress-container">' not in html:
@@ -173,6 +203,39 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
     if faq_schema:
         schema_script += '    <script type="application/ld+json">\n' + json.dumps(faq_schema, ensure_ascii=False, indent=4) + '\n    </script>\n'
 
+    # --- SEO: robots meta, canonical, Open Graph ---
+    slug = os.path.basename(filepath)  # e.g. bo-de-thi-gplx-2025-2026-moi-nhat.html
+    canonical_url = f"https://thigplx.site/bai-viet/{slug}"
+
+    # First-image in article as og:image (fallback to logo)
+    img_match = re.search(r'<img\s+[^>]*src="([^"]+)"', html, re.IGNORECASE)
+    og_image = img_match.group(1) if img_match else "https://thigplx.site/assets/og-image.png"
+    if og_image.startswith("../images/"):
+        og_image = "https://thigplx.site/images/" + og_image[len("../images/"):]
+    elif og_image.startswith("../assets/"):
+        og_image = "https://thigplx.site/assets/" + og_image[len("../assets/"):]
+
+    seo_injections = [
+        '<meta name="robots" content="index, follow">',
+        f'<link rel="canonical" href="{canonical_url}">',
+        f'<meta property="og:type" content="article">',
+        f'<meta property="og:url" content="{canonical_url}">',
+        f'<meta property="og:title" content="{headline}">',
+        f'<meta property="og:description" content="{description}">',
+        f'<meta property="og:image" content="{og_image}">',
+        '<meta property="og:locale" content="vi_VN">',
+        '<meta property="og:site_name" content="Thi GPLX">',
+    ]
+
+    # Remove duplicate existing tags to keep head clean
+    html = re.sub(r'<meta\s+name="robots"[^>]*>', '', html, flags=re.IGNORECASE)
+    html = re.sub(r'<link\s+rel="canonical"[^>]*/?>', '', html, flags=re.IGNORECASE)
+    html = re.sub(r'<meta\s+property="og:[^"]+"[^>]*>', '', html, flags=re.IGNORECASE)
+
+    seo_block = '\n    ' + '\n    '.join(seo_injections) + '\n'
+    if '</head>' in html:
+        html = html.replace('</head>', seo_block + '</head>')
+
     if '</head>' in html:
         html = html.replace('</head>', schema_script + '</head>')
    
@@ -181,3 +244,12 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
     print(f"-> Successfully built {os.path.basename(filepath)}")
 
 print("Done!")
+
+# --- Auto-rebuild sitemap.xml ---
+print("--- 4. Rebuilding Sitemap ---")
+try:
+    import generate_sitemap
+    generate_sitemap.main()
+except Exception as e:
+    print(f"Warning: Could not auto-regenerate sitemap: {e}")
+

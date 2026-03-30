@@ -1,71 +1,97 @@
+"""
+generate_sitemap.py
+Dynamic SEO Sitemap Generator for thigplx.site
+Auto-discovers all HTML pages and blog articles. No hardcoded URLs.
+Run standalone or called from build_blog.py.
+"""
 import os
+import glob
 from datetime import datetime
 
-def generate_sitemap():
-    base_url = "https://thigplx.site/"
-    directory = "."
-    games_dir = "games"
-    output_file = "sitemap.xml"
-    today = datetime.now().strftime("%Y-%m-%d")
+BASE_URL = "https://thigplx.site"
+ROOT_DIR  = os.path.dirname(os.path.abspath(__file__))
+BLOG_DIR  = os.path.join(ROOT_DIR, "bai-viet")
+OUTPUT    = os.path.join(ROOT_DIR, "sitemap.xml")
+TODAY     = datetime.now().strftime("%Y-%m-%d")
 
-    # Define page categories and SEO settings
-    categories = {
-        "home": {"priority": "1.0", "changefreq": "daily", "files": ["index.html"]},
-        "menus": {"priority": "0.9", "changefreq": "weekly", "files": [
-            "class-a-menu.html", "class-a1-menu.html", "class-b-menu.html", 
-            "class-b1-menu.html", "class-c-menu.html", "class-c1-menu.html", 
-            "cand-menu.html", "b-cand-menu.html"
-        ]},
-        "quizzes": {"priority": "0.8", "changefreq": "weekly", "files": [
-            "cand-exam.html", "cand-study.html", "moto-exam.html", 
-            "b-exam.html", "c-exam.html", "c1-exam.html", "study600.html"
-        ]},
-        "content": {"priority": "0.7", "changefreq": "weekly", "files": [
-            "meo-thi-gplx.html", "sahinh.html", "bien-bao-giao-thong.html", 
-            "signs.html", "duong-truong.html", "kinh-nghiem-hoc-gplx.html",
-            "sahinh-b-cand.html"
-        ]},
-        "static": {"priority": "0.7", "changefreq": "monthly", "files": [
-            "about.html", "privacy.html", "terms.html", "contact.html"
-        ]},
-        "games": {"priority": "0.8", "changefreq": "weekly", "files": []} # To be populated
-    }
+# Pages to explicitly EXCLUDE from sitemap (dev / test / utility files)
+EXCLUDE_FILES = {
+    "test_index.html",
+    "feedback.html",
+}
 
-    # Populate games category
-    if os.path.exists(games_dir):
-        for f in os.listdir(games_dir):
-            if f.endswith(".html"):
-                categories["games"]["files"].append(os.path.join(games_dir, f).replace("\\", "/"))
+def get_priority_and_freq(path: str) -> tuple:
+    """Return (priority, changefreq) based on the page type."""
+    name = os.path.basename(path).lower()
+    if name == "index.html":
+        return ("1.0", "daily")
+    if name in ("blog.html",):
+        return ("0.9", "weekly")
+    if name.startswith("class-") or name.endswith("-menu.html"):
+        return ("0.8", "weekly")
+    if path.startswith("bai-viet/") or path.startswith("bai-viet\\"):
+        return ("0.7", "weekly")
+    # Utility / static pages
+    if name in ("about.html", "privacy.html", "terms.html", "contact.html"):
+        return ("0.5", "monthly")
+    return ("0.7", "weekly")
 
-    xml_header = '<?xml version="1.0" encoding="UTF-8"?>\n'
-    xml_header += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    xml_footer = '</urlset>'
 
-    url_entries = []
+def build_url(filepath: str) -> str:
+    """Convert a local filepath (relative to ROOT_DIR) to a canonical URL."""
+    rel = os.path.relpath(filepath, ROOT_DIR).replace("\\", "/")
+    if rel == "index.html":
+        return BASE_URL + "/"
+    return BASE_URL + "/" + rel
 
-    for cat_name, info in categories.items():
-        for filename in info["files"]:
-            if os.path.exists(filename):
-                # Clean filename for URL
-                url_path = filename
-                if url_path == "index.html":
-                    url_path = ""
-                
-                url = f"{base_url}{url_path}"
-                entry = f"  <url>\n"
-                entry += f"    <loc>{url}</loc>\n"
-                entry += f"    <lastmod>{today}</lastmod>\n"
-                entry += f"    <changefreq>{info['changefreq']}</changefreq>\n"
-                entry += f"    <priority>{info['priority']}</priority>\n"
-                entry += f"  </url>"
-                url_entries.append(entry)
 
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write(xml_header)
-        f.write("\n".join(url_entries))
-        f.write("\n" + xml_footer)
+def main():
+    entries = []
 
-    print(f"Successfully generated {output_file} with {len(url_entries)} URLs.")
+    # ---- Root HTML pages ----
+    for filepath in sorted(glob.glob(os.path.join(ROOT_DIR, "*.html"))):
+        name = os.path.basename(filepath)
+        if name in EXCLUDE_FILES:
+            continue
+        priority, changefreq = get_priority_and_freq(name)
+        entries.append({
+            "loc": build_url(filepath),
+            "lastmod": TODAY,
+            "changefreq": changefreq,
+            "priority": priority,
+        })
+
+    # ---- Blog articles (/bai-viet/) ----
+    if os.path.isdir(BLOG_DIR):
+        for filepath in sorted(glob.glob(os.path.join(BLOG_DIR, "*.html"))):
+            name = os.path.basename(filepath)
+            if name in EXCLUDE_FILES:
+                continue
+            priority, changefreq = get_priority_and_freq("bai-viet/" + name)
+            entries.append({
+                "loc": build_url(filepath),
+                "lastmod": TODAY,
+                "changefreq": changefreq,
+                "priority": priority,
+            })
+
+    # ---- Build XML ----
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for e in entries:
+        lines.append("  <url>")
+        lines.append(f"    <loc>{e['loc']}</loc>")
+        lines.append(f"    <lastmod>{e['lastmod']}</lastmod>")
+        lines.append(f"    <changefreq>{e['changefreq']}</changefreq>")
+        lines.append(f"    <priority>{e['priority']}</priority>")
+        lines.append("  </url>")
+    lines.append("</urlset>")
+
+    with open(OUTPUT, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+    print(f"[OK] sitemap.xml generated — {len(entries)} URLs written to {OUTPUT}")
+
 
 if __name__ == "__main__":
-    generate_sitemap()
+    main()
