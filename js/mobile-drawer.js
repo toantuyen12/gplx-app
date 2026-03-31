@@ -158,7 +158,11 @@
             }
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Auto-focus first card for accessibility if needed
+            // cards[0]?.focus();
         };
+
         const closeP = () => { overlay.classList.remove('active'); document.body.style.overflow = ''; };
         window.closeLicensePopup = closeP;
 
@@ -185,27 +189,39 @@
             }, 100);
         }));
 
-        document.querySelectorAll('.main-nav a, .mobile-menu a').forEach(a => {
-            const txt = a.textContent.trim().toLowerCase();
-            if (txt.includes('thi th\u1eed')) {
-                 a.addEventListener('click', (e) => {
-                     e.preventDefault();
-                     window.openLicensePopup('thithu');
-                 });
-            } else if (txt.includes('sa h\u00ecnh')) {
-                 a.addEventListener('click', (e) => { 
-                     e.preventDefault(); 
-                     window.openLicensePopup('sahinh'); 
-                 });
-            }
-        });
+        // Global Event Delegation for all CTA triggers
+        document.addEventListener('click', (e) => {
+            // Target elements that are likely CTA triggers
+            // We now include generic 'a' tags within .article-content for universal keyword detection
+            const el = e.target.closest('[data-popup-trigger], .btn, .btn-v4, .cta-box button, .mobile-sticky-cta button, .main-nav a, .mobile-menu a, .article-content a');
+            if (!el) return;
 
-        // Universal trigger based on attributes
-        document.querySelectorAll('[data-popup-trigger]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.openLicensePopup(btn.getAttribute('data-popup-trigger'));
-            });
+            // 1. Explicit trigger via attribute (priority)
+            let trigger = el.getAttribute('data-popup-trigger');
+            
+            // 2. Fallback to text matching if no trigger attribute
+            if (!trigger) {
+                const text = el.textContent.trim().toLowerCase();
+                if (text.includes('thi th\u1eed') || text.includes('luy\u1ec7n \u0111\u1ec1') || text.includes('s\u00e1t h\u1ea1ch')) {
+                    trigger = 'thithu';
+                } else if (text.includes('sa h\u00ecnh')) {
+                    trigger = 'sahinh';
+                } else if (text.includes('\u00f4n t\u1eadp') || text.includes('\u00f4n l\u00fd thuy\u1ebft') || text.includes('\u00f4n luy\u1ec7n') || text.includes('c\u1ee7ng c\u1ed1 ki\u1ebfn th\u1ee9c')) {
+                    trigger = 'onthuyet';
+                }
+            }
+
+            if (trigger) {
+                // If it's a contextual link that should trigger a popup, prevent default
+                // But only if it's not a direct link to another page (unless it's the index.html fallback)
+                const href = el.getAttribute('href');
+                if (!href || href.includes('index.html') || href.includes('javascript') || href.includes('#')) {
+                    e.preventDefault();
+                    if (window.openLicensePopup) {
+                        window.openLicensePopup(trigger);
+                    }
+                }
+            }
         });
     }
 

@@ -90,27 +90,46 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
     sticky_cta = """
 <!-- Sticky Mobile CTA -->
 <div class="mobile-sticky-cta">
-    <button class="btn" style="flex:1;" onclick="openLicensePopup('thithu')"><i class="fa-solid fa-stopwatch"></i> Thi Thử GPLX</button>
-    <button class="btn" style="flex:1; background:#10b981;" onclick="openLicensePopup('onthuyet')"><i class="fa-solid fa-book-open"></i> Ôn Tập</button>
+    <button class="btn" style="flex:1;" data-popup-trigger="thithu"><i class="fa-solid fa-stopwatch"></i> Thi Thử GPLX</button>
+    <button class="btn" style="flex:1; background:#10b981;" data-popup-trigger="onthuyet"><i class="fa-solid fa-book-open"></i> Ôn Tập</button>
 </div>
 """
-    # Remove old sticky cta if any
-    html = re.sub(r'<!-- Sticky Mobile CTA -->.*?</div>\s*</div>', '', html, flags=re.IGNORECASE | re.DOTALL)
+    # Remove old sticky cta accurately
+    html = re.sub(r'<!-- Sticky Mobile CTA -->.*?</div>', '', html, flags=re.IGNORECASE | re.DOTALL)
     if '<div class="mobile-sticky-cta">' not in html:
         html = html.replace('</body>', sticky_cta + '\n</body>')
 
     # --- Convert Inline and Box CTAs ---
-    # Convert data-popup-trigger buttons to exact onclick API
-    html = re.sub(r'<button\s+([^>]*?)data-popup-trigger="thithu"([^>]*?)>', r'<button \1 onclick="openLicensePopup(\'thithu\')" \2>', html)
-    html = re.sub(r'<button\s+([^>]*?)data-popup-trigger="onthuyet"([^>]*?)>', r'<button \1 onclick="openLicensePopup(\'onthuyet\')" \2>', html)
+    # 1. Convert broken or existing onclick to data-popup-trigger
+    html = re.sub(r'onclick=["\']openLicensePopup\(\\?[\'"]thithu\\?[\'"]\)\s?["\']', 'data-popup-trigger="thithu"', html)
+    html = re.sub(r'onclick=["\']openLicensePopup\(\\?[\'"]onthuyet\\?[\'"]\)\s?["\']', 'data-popup-trigger="onthuyet"', html)
     
-    # Convert inline <a href="../index.html">thi thử...</a> to functional CTA
-    # Example: <a href="../index.html" style="...">thi thử cấu trúc hệ thống</a>
+    # 2. Tag by ID (fallback for already stripped buttons)
+    html = re.sub(r'(id="cta-thithu")(?!.*?data-popup-trigger)', r'\1 data-popup-trigger="thithu"', html)
+    html = re.sub(r'(id="cta-onthuyet")(?!.*?data-popup-trigger)', r'\1 data-popup-trigger="onthuyet"', html)
+
+    # 3. Tag by text for .btn elements that don't have a trigger yet
+    def tag_by_text(m):
+        tag_start = m.group(1)
+        tag_body = m.group(2)
+        inner_text = m.group(3).lower()
+        if 'data-popup-trigger' in tag_start or 'data-popup-trigger' in tag_body:
+            return m.group(0)
+        
+        if 'thi thử' in inner_text or 'thi gplx' in inner_text:
+            return f'<{tag_start} data-popup-trigger="thithu" {tag_body}>{m.group(3)}</{tag_start}>'
+        if 'ôn tập' in inner_text or 'ôn lý thuyết' in inner_text:
+            return f'<{tag_start} data-popup-trigger="onthuyet" {tag_body}>{m.group(3)}</{tag_start}>'
+        return m.group(0)
+
+    html = re.sub(r'<(button|a)\s+([^>]*?class="[^"]*?btn[^"]*?"[^>]*?)>(.*?)</\1>', tag_by_text, html, flags=re.IGNORECASE | re.DOTALL)
+    
+    # 4. Convert inline <a href="../index.html">thi thử...</a> to functional CTA
     def replace_inline_link(m):
         full_tag = m.group(0)
         inner_text = m.group(2).lower()
         if 'thi thử' in inner_text or 'thi gplx' in inner_text:
-            return f'<a href="javascript:void(0)" onclick="openLicensePopup(\'thithu\')" {m.group(1)}>{m.group(2)}</a>'
+            return f'<a href="javascript:void(0)" data-popup-trigger="thithu" {m.group(1)}>{m.group(2)}</a>'
         return full_tag
     html = re.sub(r'<a\s+href="\.\./index\.html[^"]*"\s*([^>]*)>(.*?)</a>', replace_inline_link, html, flags=re.IGNORECASE)
 
