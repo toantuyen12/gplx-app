@@ -99,6 +99,10 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
     if '<div class="mobile-sticky-cta">' not in html:
         html = html.replace('</body>', sticky_cta + '\n</body>')
 
+    # --- Automated CTA Refinement (Renaming & Normalization) ---
+    # Rename legacy "Vào Thi Thử 35 Câu" to the more accurate "Vào thi thử lý thuyết"
+    html = re.sub(r'Vào Thi Thử\s+\d+\s+Câu', r'Vào thi thử lý thuyết', html, flags=re.IGNORECASE)
+
     # --- Convert Inline and Box CTAs ---
     # 1. Convert broken or existing onclick to data-popup-trigger
     html = re.sub(r'onclick=["\']openLicensePopup\(\\?[\'"]thithu\\?[\'"]\)\s?["\']', 'data-popup-trigger="thithu"', html)
@@ -110,18 +114,20 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
 
     # 3. Tag by text for .btn elements that don't have a trigger yet
     def tag_by_text(m):
-        tag_start = m.group(1)
-        tag_body = m.group(2)
-        inner_text = m.group(3).lower()
-        if 'data-popup-trigger' in tag_start or 'data-popup-trigger' in tag_body:
+        tag_name = m.group(1)
+        tag_attrs = m.group(2)
+        inner_content = m.group(3)
+        inner_text_lower = inner_content.lower()
+        
+        if 'data-popup-trigger' in tag_attrs:
             return m.group(0)
         
-        if any(k in inner_text for k in ['thi thử', 'thi gplx', 'vào thi', 'bắt đầu', 'đề thi']):
-            return f'<{tag_start} data-popup-trigger="thithu" {tag_body}>{m.group(3)}</{tag_start}>'
-        if any(k in inner_text for k in ['ôn tập', 'ôn lý thuyết', 'luyện tập', 'mẹo', 'điểm liệt', 'bộ đề']):
-            return f'<{tag_start} data-popup-trigger="onthuyet" {tag_body}>{m.group(3)}</{tag_start}>'
-        if 'sa hình' in inner_text:
-            return f'<{tag_start} data-popup-trigger="sahinh" {tag_body}>{m.group(3)}</{tag_start}>'
+        if any(k in inner_text_lower for k in ['thi thử', 'thi gplx', 'vào thi', 'bắt đầu', 'đề thi', 'thử sức']):
+            return f'<{tag_name} data-popup-trigger="thithu" {tag_attrs}>{inner_content}</{tag_name}>'
+        if any(k in inner_text_lower for k in ['ôn tập', 'ôn lý thuyết', 'luyện tập', 'mẹo', 'điểm liệt', 'bộ đề', 'củng cố']):
+            return f'<{tag_name} data-popup-trigger="onthuyet" {tag_attrs}>{inner_content}</{tag_name}>'
+        if 'sa hình' in inner_text_lower:
+            return f'<{tag_name} data-popup-trigger="sahinh" {tag_attrs}>{inner_content}</{tag_name}>'
         return m.group(0)
 
     html = re.sub(r'<(button|a)\s+([^>]*?class="[^"]*?btn[^"]*?"[^>]*?)>(.*?)</\1>', tag_by_text, html, flags=re.IGNORECASE | re.DOTALL)

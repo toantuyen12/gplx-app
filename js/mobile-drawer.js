@@ -217,8 +217,8 @@
             if (!trigger) {
                 const text = el.textContent.trim().toLowerCase();
                 // Enhanced keyword registry for all possible CTA variations
-                const matchesThithu = ['thi thử', 'luyện đề', 'sát hạch', 'đề thi', 'vào thi', 'thi ngay', 'bắt đầu', 'thử sức'];
-                const matchesOnthuyet = ['ôn tập', 'ôn lý thuyết', 'luyện tập', 'củng cố kiến thức', 'điểm liệt', 'mẹo thi', 'mẹo học', 'tổng hợp mẹo'];
+                const matchesThithu = ['thi thử', 'luyện đề', 'sát hạch', 'đề thi', 'vào thi', 'thi ngay', 'bắt đầu', 'thử sức', 'vào thi thử lý thuyết'];
+                const matchesOnthuyet = ['ôn tập', 'ôn lý thuyết', 'luyện tập', 'củng cố kiến thức', 'điểm liệt', 'mẹo thi', 'mẹo học', 'tổng hợp mẹo', 'ôn lý thuyết theo nhóm', 'ôn lý thuyết gplx'];
                 const matchesSahinh = ['sa hình', 'thực hành', 'lái xe trong sân', 'kỹ thuật lái'];
 
                 if (matchesThithu.some(k => text.includes(k))) {
