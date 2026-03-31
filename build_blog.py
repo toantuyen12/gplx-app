@@ -78,13 +78,79 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
     # --- Attributes fix (lazy load) ---
     html = re.sub(r'(<img\s+[^>]*?)(/?>)', lambda m: m.group(1) + ( ' loading="lazy"' if 'loading=' not in m.group(1) else '' ) + m.group(2), html)
     
-    # --- Sync Modal ---
-    stub_pattern = re.compile(r'<!-- Class Selection Modal -->\s*<div id="navPopupOverlay"[^>]*>.*?</div>\s*</div>\s*</div>|<div id="navPopupOverlay"[^>]*>.*?</div>', re.IGNORECASE | re.DOTALL)
+    # --- Sync Modals (License Selection & CAND Menu) ---
+    cand_modal_html = """
+<!-- CAND Function Selection Modal -->
+<div id="candMenuPopupOverlay" class="nav-popup-overlay">
+    <div class="nav-popup-modal modern-popup">
+        <div class="nav-popup-header">
+            <div class="header-texts">
+                <h3>Chọn chức năng</h3>
+                <p id="candMenuSubtitle" style="color:#ef4444; font-weight:600;">Hạng B CAND</p>
+            </div>
+            <button class="nav-popup-close" onclick="closeCandMenuPopup()" aria-label="Đóng popup"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="nav-popup-body category-grid" style="grid-template-columns: 1fr; gap: 12px; padding: 15px;">
+            <a id="candMenuStudy" href="#" class="cat-card" style="display:flex; align-items:center; gap: 15px; padding: 15px; text-decoration: none;">
+                <div class="cat-icon" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); width: 44px; height: 44px; display:flex; align-items:center; justify-content:center; border-radius: 10px;"><i class="fa-solid fa-book-open-reader"></i></div>
+                <div style="flex: 1; text-align: left;">
+                    <div style="font-weight: 600; font-size: 16px; color: #0f172a; margin-bottom:4px;">1. Ôn tập 500 câu</div>
+                    <div style="font-size: 13px; color: #64748b;">Học và ghi nhớ lý thuyết cực nhanh</div>
+                </div>
+            </a>
+            <a id="candMenuExam" href="#" class="cat-card" style="display:flex; align-items:center; gap: 15px; padding: 15px; text-decoration: none;">
+                <div class="cat-icon" style="color: #22c55e; background: rgba(34, 197, 94, 0.1); width: 44px; height: 44px; display:flex; align-items:center; justify-content:center; border-radius: 10px;"><i class="fa-solid fa-stopwatch"></i></div>
+                <div style="flex: 1; text-align: left;">
+                    <div style="font-weight: 600; font-size: 16px; color: #0f172a; margin-bottom:4px;">2. Thi đề 30 câu</div>
+                    <div style="font-size: 13px; color: #64748b;">Làm đề thi ngẫu nhiên như thi thật</div>
+                </div>
+            </a>
+            <a id="candMenuSahinh" href="#" class="cat-card" style="display:flex; align-items:center; gap: 15px; padding: 15px; text-decoration: none;">
+                <div class="cat-icon" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); width: 44px; height: 44px; display:flex; align-items:center; justify-content:center; border-radius: 10px;"><i class="fa-solid fa-map-location-dot"></i></div>
+                <div style="flex: 1; text-align: left;">
+                    <div style="font-weight: 600; font-size: 16px; color: #0f172a; margin-bottom:4px;">3. Sa hình</div>
+                    <div style="font-size: 13px; color: #64748b;">Mô phỏng 11 bài thực hành trong sân</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    function openCandMenuPopup(type) {
+        const overlay = document.getElementById('candMenuPopupOverlay');
+        if(!overlay) return;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (type === 'bcand') {
+            document.getElementById('candMenuSubtitle').innerText = 'Hạng B CAND';
+            document.getElementById('candMenuStudy').href = '../cand-study.html';
+            document.getElementById('candMenuExam').href = '../cand-exam.html?type=B';
+            document.getElementById('candMenuSahinh').href = '../sahinh-b-cand.html';
+        } else {
+            document.getElementById('candMenuSubtitle').innerText = 'Hạng C CAND';
+            document.getElementById('candMenuStudy').href = '../cand-study.html';
+            document.getElementById('candMenuExam').href = '../cand-exam.html?type=C';
+            document.getElementById('candMenuSahinh').href = '../sahinh-c-cand.html';
+        }
+    }
+    function closeCandMenuPopup() {
+        const overlay = document.getElementById('candMenuPopupOverlay');
+        if(overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    document.getElementById('candMenuPopupOverlay')?.addEventListener('click', function(e) {
+        if(e.target === this) closeCandMenuPopup();
+    });
+</script>
+"""
+
+    # Cleanup old modals
+    stub_pattern = re.compile(r'<!-- Class Selection Modal -->\s*<div id="navPopupOverlay"[^>]*>.*?</div>\s*</div>\s*</div>|<div id="navPopupOverlay"[^>]*>.*?</div>|<!-- CAND Function Selection Modal -->.*?<script>.*?</script>', re.IGNORECASE | re.DOTALL)
+    html = stub_pattern.sub('', html)
     
-    # Clean old instances
-    html = stub_pattern.sub('<div id="navPopupOverlay" class="nav-popup-overlay"></div>', html)
-    # Inject 
-    html = html.replace('<div id="navPopupOverlay" class="nav-popup-overlay"></div>', modal_html)
+    # Inject modals at bottom
+    modals_stack = f"\n{modal_html}\n{cand_modal_html}\n"
+    html = html.replace('</body>', modals_stack + '</body>')
 
     # --- Inject Sticky CTA ---
     sticky_cta = """

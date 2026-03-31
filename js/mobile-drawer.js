@@ -142,7 +142,11 @@
         const overlay = document.getElementById('navPopupOverlay');
         const closeBtn = document.getElementById('navPopupClose');
         const cards = document.querySelectorAll('.nav-class-card');
-        if (!overlay || !closeBtn) return;
+        
+        if (!overlay || !closeBtn) {
+            console.warn('Navigation popup components not found. Modal functions disabled.');
+            return;
+        }
 
         window.openLicensePopup = (ctx = 'thithu') => {
             currentContext = ctx;
@@ -158,9 +162,6 @@
             }
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            // Auto-focus first card for accessibility if needed
-            // cards[0]?.focus();
         };
 
         const closeP = () => { overlay.classList.remove('active'); document.body.style.overflow = ''; };
@@ -169,7 +170,6 @@
         closeBtn.addEventListener('click', closeP);
         overlay.addEventListener('click', (e) => { if (e.target === overlay) closeP(); });
         
-        // ESC key to close modal
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && overlay.classList.contains('active')) {
                 closeP();
@@ -184,13 +184,11 @@
                 const cls = c.dataset.class;
                 localStorage.setItem('hangDangHoc', cls);
                 
-                // If CAND license is chosen, show the specialized menu instead of direct link
                 if (cls === 'bcand' || cls === 'ccand') {
                     closeP();
                     if (window.openCandMenuPopup) {
                         window.openCandMenuPopup(cls);
                     } else {
-                        // Fallback if the page doesn't have the CAND modal yet
                         const t = routeMap[currentContext]?.[cls] || (cls === 'bcand' ? 'cand-exam.html?type=B' : 'cand-exam.html?type=C');
                         window.location.href = pathPrefix + t;
                     }
@@ -202,21 +200,18 @@
                 closeP();
             }, 100);
         }));
+    }
 
+    function initGlobalDelegation() {
         // Global Event Delegation for all CTA triggers
         document.addEventListener('click', (e) => {
-            // Target elements that are likely CTA triggers
-            // We now include generic 'a' tags within .article-content for universal keyword detection
             const el = e.target.closest('[data-popup-trigger], .btn, .btn-v4, .cta-box button, .mobile-sticky-cta button, .main-nav a, .mobile-menu a, .article-content a');
             if (!el) return;
 
-            // 1. Explicit trigger via attribute (priority)
             let trigger = el.getAttribute('data-popup-trigger');
             
-            // 2. Fallback to text matching if no trigger attribute
             if (!trigger) {
                 const text = el.textContent.trim().toLowerCase();
-                // Enhanced keyword registry for all possible CTA variations
                 const matchesThithu = ['thi thử', 'luyện đề', 'sát hạch', 'đề thi', 'vào thi', 'thi ngay', 'bắt đầu', 'thử sức', 'vào thi thử lý thuyết'];
                 const matchesOnthuyet = ['ôn tập', 'ôn lý thuyết', 'luyện tập', 'củng cố kiến thức', 'điểm liệt', 'mẹo thi', 'mẹo học', 'tổng hợp mẹo', 'ôn lý thuyết theo nhóm', 'ôn lý thuyết gplx'];
                 const matchesSahinh = ['sa hình', 'thực hành', 'lái xe trong sân', 'kỹ thuật lái'];
@@ -231,20 +226,24 @@
             }
 
             if (trigger) {
-                // If it's a contextual link that should trigger a popup, prevent default
-                // But only if it's not a direct link to another page (unless it's the index.html fallback)
                 const href = el.getAttribute('href');
                 if (!href || href.includes('index.html') || href.includes('javascript') || href.includes('#')) {
                     e.preventDefault();
                     if (window.openLicensePopup) {
                         window.openLicensePopup(trigger);
+                    } else {
+                        console.warn('License popup function not available. Trigger:', trigger);
                     }
                 }
             }
         });
     }
 
-    const boot = () => { initMobileDrawer(); initModal(); };
+    const boot = () => { 
+        initMobileDrawer(); 
+        initModal(); 
+        initGlobalDelegation();
+    };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
     else boot();
 })();
