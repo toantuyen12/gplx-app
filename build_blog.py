@@ -116,10 +116,12 @@ for filepath in glob.glob(os.path.join(blog_dir, "*.html")):
         if 'data-popup-trigger' in tag_start or 'data-popup-trigger' in tag_body:
             return m.group(0)
         
-        if 'thi thử' in inner_text or 'thi gplx' in inner_text:
+        if any(k in inner_text for k in ['thi thử', 'thi gplx', 'vào thi', 'bắt đầu', 'đề thi']):
             return f'<{tag_start} data-popup-trigger="thithu" {tag_body}>{m.group(3)}</{tag_start}>'
-        if 'ôn tập' in inner_text or 'ôn lý thuyết' in inner_text:
+        if any(k in inner_text for k in ['ôn tập', 'ôn lý thuyết', 'luyện tập', 'mẹo', 'điểm liệt', 'bộ đề']):
             return f'<{tag_start} data-popup-trigger="onthuyet" {tag_body}>{m.group(3)}</{tag_start}>'
+        if 'sa hình' in inner_text:
+            return f'<{tag_start} data-popup-trigger="sahinh" {tag_body}>{m.group(3)}</{tag_start}>'
         return m.group(0)
 
     html = re.sub(r'<(button|a)\s+([^>]*?class="[^"]*?btn[^"]*?"[^>]*?)>(.*?)</\1>', tag_by_text, html, flags=re.IGNORECASE | re.DOTALL)

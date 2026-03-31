@@ -33,9 +33,9 @@
     };
 
     const routeMap = {
-        'thithu':  { 'a1': 'moto-exam.html?license=a1', 'a': 'moto-exam.html?license=a', 'b': 'b-exam.html', 'c1': 'c1-exam.html', 'c': 'c-exam.html', 'bcand': 'cand-exam.html?type=B', 'ccand': 'cand-exam.html?type=C' },
+        'thithu': { 'a1': 'moto-exam.html?license=a1', 'a': 'moto-exam.html?license=a', 'b': 'b-exam.html', 'c1': 'c1-exam.html', 'c': 'c-exam.html' },
         'onthuyet': { 'a1': 'study600.html?license=a1', 'a': 'study600.html?license=a', 'b': 'study600.html?license=b', 'c1': 'study600.html?license=c1', 'c': 'study600.html?license=c', 'bcand': 'cand-study.html', 'ccand': 'cand-study.html' },
-        'sahinh':  { 'a1': 'sahinh-a1.html',     'a': 'sahinh-a.html',    'b': 'sahinh-b.html',    'c1': 'sahinh-c1.html',    'c': 'sahinh-c.html', 'bcand': 'sahinh-b-cand.html', 'ccand': 'sahinh-c-cand.html' }
+        'sahinh': { 'a1': 'sahinh-a1.html', 'a': 'sahinh-a.html', 'b': 'sahinh-b.html', 'c1': 'sahinh-c1.html', 'c': 'sahinh-c.html', 'bcand': 'sahinh-b-cand.html', 'ccand': 'sahinh-c-cand.html' }
     };
 
     let currentContext = 'thithu';
@@ -183,6 +183,20 @@
             setTimeout(() => {
                 const cls = c.dataset.class;
                 localStorage.setItem('hangDangHoc', cls);
+                
+                // If CAND license is chosen, show the specialized menu instead of direct link
+                if (cls === 'bcand' || cls === 'ccand') {
+                    closeP();
+                    if (window.openCandMenuPopup) {
+                        window.openCandMenuPopup(cls);
+                    } else {
+                        // Fallback if the page doesn't have the CAND modal yet
+                        const t = routeMap[currentContext]?.[cls] || (cls === 'bcand' ? 'cand-exam.html?type=B' : 'cand-exam.html?type=C');
+                        window.location.href = pathPrefix + t;
+                    }
+                    return;
+                }
+
                 const t = routeMap[currentContext]?.[cls];
                 if (t) window.location.href = pathPrefix + t;
                 closeP();
@@ -202,11 +216,16 @@
             // 2. Fallback to text matching if no trigger attribute
             if (!trigger) {
                 const text = el.textContent.trim().toLowerCase();
-                if (text.includes('thi th\u1eed') || text.includes('luy\u1ec7n \u0111\u1ec1') || text.includes('s\u00e1t h\u1ea1ch')) {
+                // Enhanced keyword registry for all possible CTA variations
+                const matchesThithu = ['thi thử', 'luyện đề', 'sát hạch', 'đề thi', 'vào thi', 'thi ngay', 'bắt đầu', 'thử sức'];
+                const matchesOnthuyet = ['ôn tập', 'ôn lý thuyết', 'luyện tập', 'củng cố kiến thức', 'điểm liệt', 'mẹo thi', 'mẹo học', 'tổng hợp mẹo'];
+                const matchesSahinh = ['sa hình', 'thực hành', 'lái xe trong sân', 'kỹ thuật lái'];
+
+                if (matchesThithu.some(k => text.includes(k))) {
                     trigger = 'thithu';
-                } else if (text.includes('sa h\u00ecnh')) {
+                } else if (matchesSahinh.some(k => text.includes(k))) {
                     trigger = 'sahinh';
-                } else if (text.includes('\u00f4n t\u1eadp') || text.includes('\u00f4n l\u00fd thuy\u1ebft') || text.includes('\u00f4n luy\u1ec7n') || text.includes('c\u1ee7ng c\u1ed1 ki\u1ebfn th\u1ee9c')) {
+                } else if (matchesOnthuyet.some(k => text.includes(k))) {
                     trigger = 'onthuyet';
                 }
             }
