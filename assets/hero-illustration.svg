@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+    <defs>
+        <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3"/>
+        </linearGradient>
+        
+        <linearGradient id="primary-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8"/>
+            <stop offset="100%" stop-color="#0ea5e9"/>
+        </linearGradient>
+
+        <linearGradient id="success-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#34d399"/>
+            <stop offset="100%" stop-color="#10b981"/>
+        </linearGradient>
+
+        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.1"/>
+        </filter>
+        <filter id="shadow-soft" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="5" stdDeviation="10" flood-opacity="0.05"/>
+        </filter>
+    </defs>
+
+    <!-- Main UI Card representing the testing app -->
+    <rect x="250" y="50" width="280" height="320" rx="20" fill="#ffffff" filter="url(#shadow)"/>
+    
+    <!-- Header of UI card -->
+    <rect x="250" y="50" width="280" height="20" fill="url(#primary-grad)" fill-opacity="0.1" rx="20"/>
+    <rect x="250" y="50" width="280" height="10" fill="url(#primary-grad)" fill-opacity="0.1"/>
+    
+    <circle cx="270" cy="70" r="5" fill="#e2e8f0"/>
+    <circle cx="285" cy="70" r="5" fill="#e2e8f0"/>
+    
+    <!-- Top banner in UI card -->
+    <rect x="270" y="90" width="240" height="60" rx="12" fill="url(#primary-grad)" filter="url(#shadow-soft)"/>
+    <rect x="290" y="105" width="80" height="8" rx="4" fill="#ffffff" fill-opacity="0.8"/>
+    <rect x="290" y="125" width="120" height="6" rx="3" fill="#ffffff" fill-opacity="0.5"/>
+    <circle cx="480" cy="120" r="16" fill="#ffffff" fill-opacity="0.2"/>
+
+    <!-- Content Items in UI -->
+    <!-- Item 1 -->
+    <rect x="270" y="170" width="240" height="40" rx="10" fill="#f8fafc" stroke="#f1f5f9" stroke-width="2"/>
+    <rect x="285" y="185" width="16" height="16" rx="4" fill="url(#success-grad)"/>
+    <path d="M289 193 l3 3 l6 -6" stroke="#ffffff" fill="none" stroke-width="2" stroke-linecap="round"/>
+    <rect x="315" y="186" width="140" height="6" rx="3" fill="#cbd5e1"/>
+    <rect x="315" y="196" width="80" height="4" rx="2" fill="#e2e8f0"/>
+
+    <!-- Item 2 -->
+    <rect x="270" y="220" width="240" height="40" rx="10" fill="#f8fafc" stroke="#f1f5f9" stroke-width="2"/>
+    <rect x="285" y="235" width="16" height="16" rx="4" fill="url(#success-grad)"/>
+    <path d="M289 243 l3 3 l6 -6" stroke="#ffffff" fill="none" stroke-width="2" stroke-linecap="round"/>
+    <rect x="315" y="236" width="110" height="6" rx="3" fill="#cbd5e1"/>
+    <rect x="315" y="246" width="60" height="4" rx="2" fill="#e2e8f0"/>
+
+    <!-- Item 3 -->
+    <rect x="270" y="270" width="240" height="40" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <circle cx="293" cy="290" r="7" fill="#cbd5e1"/>
+    <rect x="315" y="286" width="130" height="6" rx="3" fill="#94a3b8"/>
+    <rect x="315" y="296" width="70" height="4" rx="2" fill="#cbd5e1"/>
+    
+    <!-- CTA Button -->
+    <rect x="270" y="330" width="240" height="24" rx="12" fill="url(#primary-grad)"/>
+
+    <!-- Floating secondary card on left -->
+    <rect x="180" y="120" width="140" height="160" rx="16" fill="#ffffff" filter="url(#shadow)"/>
+    
+    <!-- Circle progress in floating card -->
+    <circle cx="250" cy="180" r="30" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+    <path d="M250 150 A30 30 0 1 1 220 180" fill="none" stroke="url(#success-grad)" stroke-width="8" stroke-linecap="round"/>
+    
+    <text x="250" y="185" font-family="Arial, sans-serif" font-weight="bold" font-size="16" text-anchor="middle" fill="#1e293b">100%</text>
+    
+    <rect x="210" y="230" width="80" height="6" rx="3" fill="#94a3b8"/>
+    <rect x="220" y="245" width="60" height="4" rx="2" fill="#cbd5e1"/>
+    
+    <!-- Floating elements around -->
+    <circle cx="540" cy="70" r="20" fill="url(#success-grad)" fill-opacity="0.8" filter="url(#shadow-soft)"/>
+    <rect x="190" y="320" width="40" height="40" rx="12" fill="url(#primary-grad)" fill-opacity="0.8" filter="url(#shadow-soft)"/>
+</svg>
