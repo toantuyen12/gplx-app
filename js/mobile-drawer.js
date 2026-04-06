@@ -25,8 +25,8 @@
     }
 
     const classData = {
-        'a1': { name: 'H\u1ea1ng A1', desc: 'Xe m\u00e1y < 125cm\u00b3', icon: 'fa-motorcycle', color: 'card-a1' },
-        'a':  { name: 'H\u1ea1ng A',  desc: 'Xe m\u00e1y \u2265 125cm\u00b3', icon: 'fa-motorcycle', color: 'card-a'  },
+        'a1': { name: 'H\u1ea1ng A1', desc: 'Xe m\u00e1y c\u00f3 dung t\u00edch xi-lanh \u0111\u1ebfn 125cc', icon: 'fa-motorcycle', color: 'card-a1' },
+        'a':  { name: 'H\u1ea1ng A',  desc: 'Xe m\u00e1y c\u00f3 dung t\u00edch xi-lanh tr\u00ean 125cc (g\u1ed3m c\u1ea3 A1)', icon: 'fa-motorcycle', color: 'card-a'  },
         'b':  { name: 'H\u1ea1ng B',  desc: '\u00d4 t\u00f4 4 \u2013 9 ch\u1ed7',  icon: 'fa-car',        color: 'card-b'  },
         'c1': { name: 'H\u1ea1ng C1', desc: '\u00d4 t\u00f4 t\u1ea3i nh\u1eb9',    icon: 'fa-truck',      color: 'card-c1' },
         'c':  { name: 'H\u1ea1ng C',  desc: '\u00d4 t\u00f4 t\u1ea3i n\u1eb7ng',   icon: 'fa-truck-moving', color: 'card-c' }
