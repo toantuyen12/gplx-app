@@ -446,4 +446,14 @@
     .section-title-v4 {
         font-size: 26px;
     }
+    
+    .seo-content-section {
+        padding: 24px 16px !important;
+        margin-top: 20px !important;
+        border-radius: 16px !important;
+    }
+    
+    .seo-content-section h2 {
+        font-size: 1.3rem !important;
+    }
 }
