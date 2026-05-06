@@ -197,6 +197,7 @@ function generateMotoExam() {
 }
 
 function startExam() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     isSubmitted = false;
     generateMotoExam();
     userAns = new Array(25).fill(null);
@@ -205,14 +206,17 @@ function startExam() {
     timeLeft = EXAM_DURATION;
     startTimer();
     
-    document.getElementById("loadingDiv").style.display = "none";
-    document.getElementById("motoExamRoot").style.display = "block";
+    const ld = document.getElementById("loadingDiv");
+    if (ld) ld.style.display = "none";
+    const root = document.getElementById("motoExamRoot");
+    if (root) root.style.display = "block";
     
     renderGrid();
     renderQuestion();
 }
 
 window.exitHome = function() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     window.location.href = `class-${license}-menu.html`;
 };
 
@@ -369,7 +373,8 @@ function renderQuestion() {
 
     // Only if result mode show summary at top of index 0
     if (isSubmitted && current === 0) {
-        document.getElementById("examResultSummary").style.display = 'block';
+        const examResultSummary = document.getElementById("examResultSummary");
+        if (examResultSummary) examResultSummary.style.display = 'block';
     } else if (isSubmitted) {
         // Keep it displayed or scroll to it
         document.getElementById("examResultSummary").style.display = 'block';
@@ -384,6 +389,7 @@ function choose(optId) {
 }
 
 function jumpTo(e, i) {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     if (e) e.preventDefault();
     current = i;
     renderGrid();
@@ -391,6 +397,7 @@ function jumpTo(e, i) {
 }
 
 function next() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     if (current < quiz.length - 1) {
         current++;
         renderGrid();
@@ -426,6 +433,7 @@ function startTimer() {
 }
 
 function submit() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     if (isSubmitted) return;
     
     // Confirm logic
@@ -495,7 +503,8 @@ function renderResult(score, isPass, wrongCritical) {
     </div>
     `;
 
-    document.getElementById("examResultSummary").innerHTML = summaryHtml;
+    const examResultSummary = document.getElementById("examResultSummary");
+    if (examResultSummary) examResultSummary.innerHTML = summaryHtml;
     
     current = 0;
     renderGrid();
@@ -509,14 +518,16 @@ function retryExam() {
     current = 0;
     timeLeft = EXAM_DURATION;
     startTimer();
-    document.getElementById("examResultSummary").style.display = 'none';
+    const examResultSummary = document.getElementById("examResultSummary");
+    if (examResultSummary) examResultSummary.style.display = 'none';
     renderGrid();
     renderQuestion();
 }
 
 // Keydown listeners for navigation/options
 document.addEventListener("keydown", function(event) {
-    if (document.getElementById("motoExamRoot").style.display === "none") return;
+    const root = document.getElementById("motoExamRoot");
+    if (!root || root.style.display === "none") return;
     if (document.activeElement.tagName === "INPUT") return;
 
     if (event.key === "ArrowRight") {

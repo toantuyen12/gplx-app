@@ -61,10 +61,13 @@ const GameUI = (function() {
         }
 
         // Add event listeners
-        document.getElementById('modalRestartBtn').onclick = () => {
-            hideResult();
-            if (onRestart) onRestart();
-        };
+        const restartBtn = document.getElementById('modalRestartBtn');
+        if (restartBtn) {
+            restartBtn.onclick = () => {
+                hideResult();
+                if (onRestart) onRestart();
+            };
+        }
 
         // Show with a slight delay for animation
         setTimeout(() => {

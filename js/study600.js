@@ -202,6 +202,7 @@ function updateModalProgress() {
 }
 
 function startChapter(chapterId) {
+  if (window.safeTriggerAd) window.safeTriggerAd();
   console.log("CLICKED CHAPTER:", chapterId);
   // Intentionally leaving the modal open so BFCache restores it upon back navigation
   console.log("NAVIGATE TO:", chapterId);
@@ -288,6 +289,7 @@ function getReferrerMenu() {
 }
 
 window.handleStudyBack = function(e) {
+  if (window.safeTriggerAd) window.safeTriggerAd();
   if (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -443,6 +445,7 @@ function selectAnswer(optId) {
 }
 
 function jumpToQuestion(idx) {
+  if (window.safeTriggerAd) window.safeTriggerAd();
   _studyState.currentIdx = idx;
   const qId = _studyState.questions[idx];
   _studyState.progress.lastQuestion = qId;
@@ -452,10 +455,12 @@ function jumpToQuestion(idx) {
 }
 
 function prevQuestion() {
+  if (window.safeTriggerAd) window.safeTriggerAd();
   if (_studyState.currentIdx > 0) jumpToQuestion(_studyState.currentIdx - 1);
 }
 
 function nextQuestion() {
+  if (window.safeTriggerAd) window.safeTriggerAd();
   if (_studyState.currentIdx < _studyState.questions.length - 1) jumpToQuestion(_studyState.currentIdx + 1);
 }
 

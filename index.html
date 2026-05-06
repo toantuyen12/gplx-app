@@ -187,6 +187,7 @@
     <meta property="og:site_name" content="Thi GPLX">
     <!-- Monetag -->
 <script src="https://quge5.com/88/tag.min.js" data-zone="236798" async data-cfasync="false"></script>
+<script src="js/monetag-helper.js"></script>
 </head>
 
 
@@ -747,104 +748,111 @@
 
     <script>
         // ===== CAROUSEL LOGIC =====
-        const track = document.querySelector('.carousel-track');
-        const cards = document.querySelectorAll('.article-card');
-        let currentIndex = 0;
-        let cardWidth;
-        let autoSlideInterval;
-        let articlesPerView;
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.querySelector('.carousel-track');
+            const cards = document.querySelectorAll('.article-card');
+            
+            if (!track || cards.length === 0) return;
 
-        function updateCarouselSettings() {
-            const width = window.innerWidth;
-            if (width <= 768) {
-                articlesPerView = 1;
-            } else if (width <= 1024) {
-                articlesPerView = 2;
-            } else {
-                articlesPerView = 4;
+            let currentIndex = 0;
+            let cardWidth;
+            let autoSlideInterval;
+            let articlesPerView;
+
+            function updateCarouselSettings() {
+                if (!track || !track.parentElement) return;
+                
+                const width = window.innerWidth;
+                if (width <= 768) {
+                    articlesPerView = 1;
+                } else if (width <= 1024) {
+                    articlesPerView = 2;
+                } else {
+                    articlesPerView = 4;
+                }
+
+                if (width <= 768) {
+                    // Force 100% width on mobile so 1 card is shown exactly
+                    cardWidth = track.parentElement.clientWidth;
+                    cards.forEach(card => {
+                        card.style.flex = `0 0 100%`;
+                        card.style.maxWidth = `100%`;
+                    });
+                } else {
+                    // Adjust track padding/gap calculation if necessary
+                    cardWidth = (track.parentElement.clientWidth - (20 * (articlesPerView - 1))) / articlesPerView;
+                    cards.forEach(card => {
+                        card.style.flex = `0 0 ${cardWidth}px`;
+                        card.style.maxWidth = `${cardWidth}px`;
+                    });
+                }
+                moveCarousel(0); // reset position
             }
 
-            if (width <= 768) {
-                // Force 100% width on mobile so 1 card is shown exactly
-                cardWidth = track.parentElement.clientWidth;
-                cards.forEach(card => {
-                    card.style.flex = `0 0 100%`;
-                    card.style.maxWidth = `100%`;
-                });
-            } else {
-                // Adjust track padding/gap calculation if necessary
-                cardWidth = (track.parentElement.clientWidth - (20 * (articlesPerView - 1))) / articlesPerView;
-                cards.forEach(card => {
-                    card.style.flex = `0 0 ${cardWidth}px`;
-                    card.style.maxWidth = `${cardWidth}px`;
-                });
-            }
-            moveCarousel(0); // reset position
-        }
+            function moveCarousel(direction) {
+                if (!track) return;
+                const totalItems = cards.length;
+                currentIndex += direction;
 
-        function moveCarousel(direction) {
-            const totalItems = cards.length;
-            currentIndex += direction;
+                // Looping logic
+                if (currentIndex < 0) {
+                    currentIndex = totalItems - articlesPerView;
+                    if (currentIndex < 0) currentIndex = 0;
+                } else if (currentIndex > totalItems - articlesPerView) {
+                    currentIndex = 0;
+                }
 
-            // Looping logic
-            if (currentIndex < 0) {
-                currentIndex = totalItems - articlesPerView;
-                if (currentIndex < 0) currentIndex = 0;
-            } else if (currentIndex > totalItems - articlesPerView) {
-                currentIndex = 0;
+                // Always translate by pixel width of 1 card for safety and precision.
+                // On mobile, cardWidth is exactly the wrapper width (equivalent to moving 100% of 1 card).
+                track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+
+                // Pause auto slide if interacted manually
+                if (direction !== 0 && direction !== 99) {
+                    resetAutoSlide();
+                }
             }
 
-            // Always translate by pixel width of 1 card for safety and precision.
-            // On mobile, cardWidth is exactly the wrapper width (equivalent to moving 100% of 1 card).
-            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-
-            // Pause auto slide if interacted manually
-            if (direction !== 0 && direction !== 99) {
-                resetAutoSlide();
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(() => {
+                    moveCarousel(1);
+                }, 5000);
             }
-        }
 
-        function startAutoSlide() {
-            autoSlideInterval = setInterval(() => {
-                moveCarousel(1);
-            }, 5000);
-        }
+            function resetAutoSlide() {
+                clearInterval(autoSlideInterval);
+                startAutoSlide();
+            }
 
-        function resetAutoSlide() {
-            clearInterval(autoSlideInterval);
-            startAutoSlide();
-        }
+            window.addEventListener('resize', updateCarouselSettings);
+            window.addEventListener('load', () => {
+                updateCarouselSettings();
+                startAutoSlide();
+            });
 
-        window.addEventListener('resize', updateCarouselSettings);
-        window.addEventListener('load', () => {
-            updateCarouselSettings();
-            startAutoSlide();
+            // Touch tracking for Carousel Swiping
+            let carouselTouchStartX = 0;
+            let carouselTouchEndX = 0;
+
+            track.addEventListener('touchstart', e => {
+                carouselTouchStartX = e.changedTouches[0].screenX;
+                clearInterval(autoSlideInterval); // Pause on touch
+            }, { passive: true });
+
+            track.addEventListener('touchend', e => {
+                carouselTouchEndX = e.changedTouches[0].screenX;
+                handleCarouselSwipe();
+                startAutoSlide(); // Resume on release
+            }, { passive: true });
+
+            track.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+            track.addEventListener('mouseleave', startAutoSlide);
+
+            function handleCarouselSwipe() {
+                let diff = carouselTouchEndX - carouselTouchStartX;
+                if (diff < -50) moveCarousel(1); // Swipe left -> Next
+                if (diff > 50) moveCarousel(-1); // Swipe right -> Prev
+            }
         });
-
-        // Touch tracking for Carousel Swiping
-        let carouselTouchStartX = 0;
-        let carouselTouchEndX = 0;
-
-        track.addEventListener('touchstart', e => {
-            carouselTouchStartX = e.changedTouches[0].screenX;
-            clearInterval(autoSlideInterval); // Pause on touch
-        }, { passive: true });
-
-        track.addEventListener('touchend', e => {
-            carouselTouchEndX = e.changedTouches[0].screenX;
-            handleCarouselSwipe();
-            startAutoSlide(); // Resume on release
-        }, { passive: true });
-
-        track.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-        track.addEventListener('mouseleave', startAutoSlide);
-
-
-        function handleCarouselSwipe() {
-            let diff = carouselTouchEndX - carouselTouchStartX;
-            if (diff < -50) moveCarousel(1); // Swipe left -> Next
-            if (diff > 50) moveCarousel(-1); // Swipe right -> Prev
-        }
     </script>
 
 

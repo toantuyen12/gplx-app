@@ -77,6 +77,7 @@ function generateCANDExam() {
 
 
 function openQuiz(){
+  if (window.safeTriggerAd) window.safeTriggerAd();
   const home = document.getElementById("home");
   if (home) home.style.display="none";
   
@@ -297,7 +298,9 @@ function render() {
 
 function gotoQuestion(){
 
-let num = parseInt(document.getElementById("gotoInput").value);
+const gotoInput = document.getElementById("gotoInput");
+if (!gotoInput) return;
+let num = parseInt(gotoInput.value);
 
 if(isNaN(num) || num<1 || num>quiz.length){
     alert("Số câu không hợp lệ!");
@@ -383,6 +386,7 @@ function handleOptionTouchEnd(e, index) {
 }
 
 function jumpTo(i){
+    if (window.safeTriggerAd) window.safeTriggerAd();
     current = i;
     render();
 }
@@ -390,7 +394,7 @@ function jumpTo(i){
 /* ===== NAV ===== */
 
 function next(){
-
+if (window.safeTriggerAd) window.safeTriggerAd();
 if(current<quiz.length-1){
 
 current++;
@@ -402,7 +406,7 @@ requestAnimationFrame(render);
 }
 
 function prev(){
-
+if (window.safeTriggerAd) window.safeTriggerAd();
 if(current>0){
 
 current--;
@@ -416,6 +420,7 @@ requestAnimationFrame(render);
 /* ===== NỘP ===== */
 
 function submit() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     if (isSubmitted) return;
 
     const answeredCount = userAns.filter(a => a !== null).length;
@@ -480,7 +485,8 @@ function renderResult(score, isPass) {
     <div id="reviewContent"></div>
     `;
 
-    document.getElementById("quiz").innerHTML = html;
+    const quizEl = document.getElementById("quiz");
+    if (quizEl) quizEl.innerHTML = html;
     current = 0;
     render(); 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -504,6 +510,7 @@ function newExam() {
 /* ===== EXIT ===== */
 
 function exitHome(){
+    if (window.safeTriggerAd) window.safeTriggerAd();
 location.reload();
 }
 
@@ -512,7 +519,8 @@ location.reload();
 document.addEventListener("keydown", function(event){
 
 // Nếu đang ở màn hình Home thì không làm gì
-if(document.getElementById("quiz").style.display === "none") return;
+const quizEl = document.getElementById("quiz");
+if(!quizEl || quizEl.style.display === "none") return;
 
 // Nếu đang nhập trong input thì không xử lý
 if(document.activeElement.tagName === "INPUT") return;
@@ -544,8 +552,10 @@ window.addEventListener("load", function(){
 
 if(sessionStorage.getItem("loggedIn")==="true"){
 
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("app").style.display="block";
+    const loginBox = document.getElementById("loginBox");
+    if (loginBox) loginBox.style.display="none";
+    const appEl = document.getElementById("app");
+    if (appEl) appEl.style.display="block";
 
 }
 

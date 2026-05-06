@@ -1,9 +1,11 @@
 function openFeedback(){
-document.getElementById("feedbackModal").style.display = "flex";
+const modal = document.getElementById("feedbackModal");
+if (modal) modal.style.display = "flex";
 }
 
 function closeFeedback(){
-document.getElementById("feedbackModal").style.display = "none";
+const modal = document.getElementById("feedbackModal");
+if (modal) modal.style.display = "none";
 }
 
 let rating = 0;
@@ -23,10 +25,10 @@ if(e.target.id === "feedbackForm"){
 e.preventDefault();
 
 let data = {
-type: document.getElementById("type").value,
-title: document.getElementById("title").value,
-message: document.getElementById("message").value,
-email: document.getElementById("email").value,
+type: document.getElementById("type")?.value || "",
+title: document.getElementById("title")?.value || "",
+message: document.getElementById("message")?.value || "",
+email: document.getElementById("email")?.value || "",
 rating: rating
 };
 
@@ -41,7 +43,8 @@ data,
 
 alert("Cảm ơn bạn đã góp ý!");
 
-document.getElementById("feedbackForm").reset();
+const form = document.getElementById("feedbackForm");
+if (form) form.reset();
 
 rating = 0;
 

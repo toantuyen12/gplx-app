@@ -183,6 +183,7 @@ function generateC1Exam() {
 
 // ===== EXAM STATE =====
 function startExam() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     isSubmitted = false;
     generateC1Exam();
     userAns = new Array(EXAM_TOTAL).fill(null);
@@ -190,14 +191,17 @@ function startExam() {
     timeLeft = EXAM_DURATION;
     startTimer();
 
-    document.getElementById("initialLoading").style.display = "none";
-    document.getElementById("c1ExamRoot").style.display = "block";
+    const ld = document.getElementById("initialLoading");
+    if (ld) ld.style.display = "none";
+    const root = document.getElementById("c1ExamRoot");
+    if (root) root.style.display = "block";
 
     renderGrid();
     renderQuestion();
 }
 
 window.exitHome = function() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     window.location.href = 'class-c1-menu.html';
 };
 
@@ -325,7 +329,8 @@ function renderQuestion() {
     `;
 
     if (isSubmitted) {
-        document.getElementById("examResultSummary").style.display = 'block';
+        const examResultSummary = document.getElementById("examResultSummary");
+        if (examResultSummary) examResultSummary.style.display = 'block';
     }
 }
 
@@ -338,6 +343,7 @@ function choose(optId) {
 }
 
 function jumpTo(e, i) {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     if (e) e.preventDefault();
     current = i;
     renderGrid();
@@ -345,6 +351,7 @@ function jumpTo(e, i) {
 }
 
 function next() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     if (current < quiz.length - 1) { current++; renderGrid(); renderQuestion(); }
 }
 
@@ -370,6 +377,7 @@ function startTimer() {
 
 // ===== SUBMIT =====
 function submit() {
+    if (window.safeTriggerAd) window.safeTriggerAd();
     if (isSubmitted) return;
 
     const answered = userAns.filter(a => a !== null).length;
@@ -408,7 +416,8 @@ function submit() {
 // ===== RESULT =====
 function renderResult(score, isPass, wrongCritical) {
     const wrong = EXAM_TOTAL - score;
-    document.getElementById("examResultSummary").innerHTML = `
+    const examResultSummary = document.getElementById("examResultSummary");
+    if (examResultSummary) examResultSummary.innerHTML = `
     <div class="result-summary" style="padding:20px;background:#fff;border-radius:12px;margin-bottom:20px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);text-align:center;">
       <h2 style="color:#1e293b;margin-top:0;margin-bottom:15px;font-size:24px;">KẾT QUẢ THI LÝ THUYẾT HẠNG C1</h2>
       <div style="font-size:16px;line-height:1.8;max-width:320px;margin:0 auto;text-align:left;background:#f8fafc;padding:15px;border-radius:8px;border:1px solid #e2e8f0;">
@@ -439,14 +448,16 @@ function retryExam() {
     current = 0;
     timeLeft = EXAM_DURATION;
     startTimer();
-    document.getElementById("examResultSummary").style.display = 'none';
+    const examResultSummary = document.getElementById("examResultSummary");
+    if (examResultSummary) examResultSummary.style.display = 'none';
     renderGrid();
     renderQuestion();
 }
 
 // ===== KEYBOARD =====
 document.addEventListener("keydown", function(event) {
-    if (!document.getElementById("c1ExamRoot") || document.getElementById("c1ExamRoot").style.display === "none") return;
+    const root = document.getElementById("c1ExamRoot");
+    if (!root || root.style.display === "none") return;
     if (document.activeElement.tagName === "INPUT") return;
     if (event.key === "ArrowRight") { event.preventDefault(); next(); }
     if (event.key === "ArrowLeft") { event.preventDefault(); prev(); }
