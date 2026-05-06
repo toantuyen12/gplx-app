@@ -197,7 +197,7 @@ function generateMotoExam() {
 }
 
 function startExam() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
+    if (window.showAdSafely) window.showAdSafely();
     isSubmitted = false;
     generateMotoExam();
     userAns = new Array(25).fill(null);
@@ -216,7 +216,6 @@ function startExam() {
 }
 
 window.exitHome = function() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
     window.location.href = `class-${license}-menu.html`;
 };
 
@@ -389,7 +388,6 @@ function choose(optId) {
 }
 
 function jumpTo(e, i) {
-    if (window.safeTriggerAd) window.safeTriggerAd();
     if (e) e.preventDefault();
     current = i;
     renderGrid();
@@ -397,7 +395,6 @@ function jumpTo(e, i) {
 }
 
 function next() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
     if (current < quiz.length - 1) {
         current++;
         renderGrid();
@@ -433,7 +430,7 @@ function startTimer() {
 }
 
 function submit() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
+    if (window.showAdSafely) window.showAdSafely();
     if (isSubmitted) return;
     
     // Confirm logic

@@ -183,7 +183,7 @@ function generateCExam() {
 
 // ===== EXAM STATE =====
 function startExam() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
+    if (window.showAdSafely) window.showAdSafely();
     isSubmitted = false;
     generateCExam();
     userAns = new Array(EXAM_TOTAL).fill(null);
@@ -201,7 +201,6 @@ function startExam() {
 }
 
 window.exitHome = function() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
     window.location.href = 'class-c-menu.html';
 };
 
@@ -343,7 +342,6 @@ function choose(optId) {
 }
 
 function jumpTo(e, i) {
-    if (window.safeTriggerAd) window.safeTriggerAd();
     if (e) e.preventDefault();
     current = i;
     renderGrid();
@@ -351,12 +349,10 @@ function jumpTo(e, i) {
 }
 
 function next() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
     if (current < quiz.length - 1) { current++; renderGrid(); renderQuestion(); }
 }
 
 function prev() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
     if (current > 0) { current--; renderGrid(); renderQuestion(); }
 }
 
@@ -378,7 +374,7 @@ function startTimer() {
 
 // ===== SUBMIT =====
 function submit() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
+    if (window.showAdSafely) window.showAdSafely();
     if (isSubmitted) return;
 
     const answered = userAns.filter(a => a !== null).length;

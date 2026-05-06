@@ -77,7 +77,7 @@ function generateCANDExam() {
 
 
 function openQuiz(){
-  if (window.safeTriggerAd) window.safeTriggerAd();
+  if (window.showAdSafely) window.showAdSafely();
   const home = document.getElementById("home");
   if (home) home.style.display="none";
   
@@ -386,7 +386,6 @@ function handleOptionTouchEnd(e, index) {
 }
 
 function jumpTo(i){
-    if (window.safeTriggerAd) window.safeTriggerAd();
     current = i;
     render();
 }
@@ -394,7 +393,6 @@ function jumpTo(i){
 /* ===== NAV ===== */
 
 function next(){
-if (window.safeTriggerAd) window.safeTriggerAd();
 if(current<quiz.length-1){
 
 current++;
@@ -406,7 +404,6 @@ requestAnimationFrame(render);
 }
 
 function prev(){
-if (window.safeTriggerAd) window.safeTriggerAd();
 if(current>0){
 
 current--;
@@ -420,7 +417,7 @@ requestAnimationFrame(render);
 /* ===== NỘP ===== */
 
 function submit() {
-    if (window.safeTriggerAd) window.safeTriggerAd();
+    if (window.showAdSafely) window.showAdSafely();
     if (isSubmitted) return;
 
     const answeredCount = userAns.filter(a => a !== null).length;
@@ -510,7 +507,6 @@ function newExam() {
 /* ===== EXIT ===== */
 
 function exitHome(){
-    if (window.safeTriggerAd) window.safeTriggerAd();
 location.reload();
 }
 
