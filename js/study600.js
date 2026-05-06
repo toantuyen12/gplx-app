@@ -202,7 +202,7 @@ function updateModalProgress() {
 }
 
 function startChapter(chapterId) {
-  if (window.showAdSafely) window.showAdSafely();
+  if (window.showAd) window.showAd();
   console.log("CLICKED CHAPTER:", chapterId);
   // Intentionally leaving the modal open so BFCache restores it upon back navigation
   console.log("NAVIGATE TO:", chapterId);

@@ -1,24 +1,25 @@
 /**
- * Monetag Helper
- * Provides a globally accessible, rate-limited ad trigger function.
+ * Monetag Helper - Vignette
  */
 
-window.lastAdTime = 0;
+let adScriptLoaded = false;
 
-window.canShowAd = function() {
-    const now = Date.now();
-    return now - window.lastAdTime > 30000; // 30 seconds
-};
+function loadAdScript() {
+  if (adScriptLoaded) return;
+  adScriptLoaded = true;
 
-window.showAdSafely = function() {
-    if (!window.canShowAd()) return;
+  const script = document.createElement("script");
+  script.dataset.zone = "10971955";
+  script.src = "https://n6wxm.com/vignette.min.js";
+  document.body.appendChild(script);
+}
 
-    try {
-        if (typeof window !== "undefined" && window.monetag) {
-            window.monetag();
-            window.lastAdTime = Date.now();
-        }
-    } catch (e) {
-        console.log("Ad error", e);
-    }
+let lastAdTime = 0;
+
+window.showAd = function() {
+  const now = Date.now();
+  if (now - lastAdTime < 30000) return;
+
+  loadAdScript(); // chỉ load 1 lần
+  lastAdTime = now;
 };

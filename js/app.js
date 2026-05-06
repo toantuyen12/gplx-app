@@ -77,7 +77,7 @@ function generateCANDExam() {
 
 
 function openQuiz(){
-  if (window.showAdSafely) window.showAdSafely();
+  if (window.showAd) window.showAd();
   const home = document.getElementById("home");
   if (home) home.style.display="none";
   
@@ -417,7 +417,7 @@ requestAnimationFrame(render);
 /* ===== NỘP ===== */
 
 function submit() {
-    if (window.showAdSafely) window.showAdSafely();
+    if (window.showAd) window.showAd();
     if (isSubmitted) return;
 
     const answeredCount = userAns.filter(a => a !== null).length;

@@ -183,7 +183,7 @@ function generateCExam() {
 
 // ===== EXAM STATE =====
 function startExam() {
-    if (window.showAdSafely) window.showAdSafely();
+    if (window.showAd) window.showAd();
     isSubmitted = false;
     generateCExam();
     userAns = new Array(EXAM_TOTAL).fill(null);
@@ -374,7 +374,7 @@ function startTimer() {
 
 // ===== SUBMIT =====
 function submit() {
-    if (window.showAdSafely) window.showAdSafely();
+    if (window.showAd) window.showAd();
     if (isSubmitted) return;
 
     const answered = userAns.filter(a => a !== null).length;

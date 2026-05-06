@@ -197,7 +197,7 @@ function generateMotoExam() {
 }
 
 function startExam() {
-    if (window.showAdSafely) window.showAdSafely();
+    if (window.showAd) window.showAd();
     isSubmitted = false;
     generateMotoExam();
     userAns = new Array(25).fill(null);
@@ -430,7 +430,7 @@ function startTimer() {
 }
 
 function submit() {
-    if (window.showAdSafely) window.showAdSafely();
+    if (window.showAd) window.showAd();
     if (isSubmitted) return;
     
     // Confirm logic
