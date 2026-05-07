@@ -78,6 +78,8 @@ function generateCANDExam() {
 
 function openQuiz(){
   if (window.showAd) window.showAd();
+  // Block onclick/popunder trong suốt thời gian làm bài
+  if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
   const home = document.getElementById("home");
   if (home) home.style.display="none";
   
@@ -417,6 +419,8 @@ requestAnimationFrame(render);
 /* ===== NỘP ===== */
 
 function submit() {
+    // Tắt exam mode → cho phép onclick/popunder khi xem kết quả
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(false);
     if (window.showAd) window.showAd();
     if (isSubmitted) return;
 
@@ -490,6 +494,8 @@ function renderResult(score, isPass) {
 }
 
 function retryExam() {
+    // Block onclick/popunder lại khi làm lại đề
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
     isSubmitted = false;
     userAns = new Array(quiz.length).fill(null);
     current = 0;

@@ -194,7 +194,10 @@ function generateBExam() {
 
 // ===== EXAM STATE =====
 function startExam() {
+    // Vignette trigger tại điểm bắt đầu thi
     if (window.showAd) window.showAd();
+    // Block onclick/popunder trong suốt thời gian làm bài
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
     isSubmitted = false;
     generateBExam();
     userAns = new Array(EXAM_TOTAL).fill(null);
@@ -385,6 +388,8 @@ function startTimer() {
 
 // ===== SUBMIT =====
 function submit() {
+    // Tắt exam mode → cho phép onclick/popunder khi xem kết quả
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(false);
     if (window.showAd) window.showAd();
     if (isSubmitted) return;
 
@@ -451,6 +456,8 @@ function renderResult(score, isPass, wrongCritical) {
 }
 
 function retryExam() {
+    // Block onclick/popunder lại khi làm lại đề
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
     isSubmitted = false;
     userAns = new Array(EXAM_TOTAL).fill(null);
     current = 0;

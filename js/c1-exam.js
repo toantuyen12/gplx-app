@@ -184,6 +184,7 @@ function generateC1Exam() {
 // ===== EXAM STATE =====
 function startExam() {
     if (window.showAd) window.showAd();
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
     isSubmitted = false;
     generateC1Exam();
     userAns = new Array(EXAM_TOTAL).fill(null);
@@ -374,6 +375,7 @@ function startTimer() {
 
 // ===== SUBMIT =====
 function submit() {
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(false);
     if (window.showAd) window.showAd();
     if (isSubmitted) return;
 
@@ -440,6 +442,7 @@ function renderResult(score, isPass, wrongCritical) {
 }
 
 function retryExam() {
+    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
     isSubmitted = false;
     userAns = new Array(EXAM_TOTAL).fill(null);
     current = 0;
