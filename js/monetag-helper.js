@@ -1,14 +1,17 @@
 /**
- * Monetag Ad Manager v8 – HARD BLOCK Edition
- * ==========================================
- * This version implements a zero-tolerance policy for intrusive ads during exam/study.
+ * Monetag Ad Manager v9 – Precision Shield (Stack Trace Filtering)
+ * ==============================================================
  * 
- * BLOCKING STRATEGY:
- * 1. Capture Phase Interception: Block events at the document level BEFORE they reach any script.
- * 2. Re-dispatch Logic: Carefully re-dispatch non-bubbling events to keep app logic working.
- * 3. AddEventListener Wrappers: Intercept and block Monetag's attempts to hook into events.
- * 4. Zone Blacklist: Explicitly block any activity from zone 236798 in exam mode.
- * 5. Blacklist Containers: Force stop propagation on all relevant UI areas.
+ * THE CHALLENGE:
+ * We need to allow APP logic (popups, exam answers) to run while 
+ * blocking AD logic (popunders) on the SAME click event.
+ * 
+ * THE SOLUTION:
+ * 1. Universal addEventListener wrapper that uses Stack Trace Analysis
+ *    to identify and neutralize only listeners coming from ad domains.
+ * 2. Hard block blacklist zones (.exam-page, [data-popup-trigger], etc.)
+ *    specifically for identified ad handlers.
+ * 3. Session-based onclick limiting (max 5 per session).
  */
 (function () {
   'use strict';
@@ -19,62 +22,92 @@
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
                  || window.innerWidth < 768;
   var ONCLICK_COOLDOWN  = isMobile ? 50000 : 90000;
-  var VIGNETTE_COOLDOWN = isMobile ? 60000 : 90000;
   var SESSION_MAX = 5;
-  var SESSION_KEY = 'mtg_onclick_n';
-  
-  // All event types that ad scripts typically hook into
-  var AD_EVENT_TYPES = [
-    'click', 'mousedown', 'mouseup', 
-    'touchstart', 'touchend', 
-    'pointerdown', 'pointerup'
-  ];
+  var SESSION_KEY = 'mtg_v9_cnt';
 
-  /* ── State ───────────────────────────────────────────────────────── */
-  var _examMode = false;
-  var _vigLoaded = false;
-  var _lastVigTs = 0;
-  var _lastAdTs  = 0;
-  window.__monetagExamMode = false;
+  var AD_DOMAINS = ['quge5.com', 'monetag', 'n6wxm.com', 'vignette.min.js'];
+  var AD_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'pointerup'];
 
-  /* ── Blacklist Containers (Selectors) ───────────────────────────── */
   var BLACKLIST_SELECTORS = [
+    '[data-popup-trigger]', '.nav-class-card', '#navPopupClose', '.nav-popup-modal',
+    '.class-card-v4', '.q-action-card', '.btn-v4',
     '#quiz', '#cExamRoot', '#c1ExamRoot', '#motoExamRoot', '#bExamRoot', '#s600StudyRoot',
     '.exam-container', '.study-container', '.question-area', '.answers-area', 
     '.question-navigation', '.practice-page', '.exam-page', '.s600-layout', 
     '.s600-study-wrap', '.exam-container-wrapper'
   ];
 
-  /* ── Session helpers ─────────────────────────────────────────────── */
+  /* ── State ───────────────────────────────────────────────────────── */
+  var _examMode = false;
+  var _lastAdTs  = 0;
+  window.__monetagExamMode = false;
+
+  /* ── Helpers ─────────────────────────────────────────────────────── */
   function _cnt()    { try { return +sessionStorage.getItem(SESSION_KEY)||0; } catch(e){return 0;} }
   function _incCnt() { try { sessionStorage.setItem(SESSION_KEY, _cnt()+1); } catch(e){} }
 
-  /* ── Gate: kiểm tra mọi điều kiện trước khi cho ad chạy ─────────── */
-  function _allow(e) {
-    if (_examMode) return false;
-    
-    // Check if event originated from a blacklisted area
-    if (e && e.target && _isInBlacklistArea(e.target)) return false;
-
-    if (_cnt() >= SESSION_MAX) return false;
-    
-    var now = Date.now();
-    if (now - _lastAdTs < ONCLICK_COOLDOWN) return false;
-    
-    _lastAdTs = now; 
-    _incCnt();
-    console.log('[Mtg] Ad allowed. Count: ' + _cnt() + '/' + SESSION_MAX);
-    return true;
-  }
-
-  function _isInBlacklistArea(target) {
-    if (!target || !target.closest) return false;
+  function _isAdStack() {
     try {
-      for (var i = 0; i < BLACKLIST_SELECTORS.length; i++) {
-        if (target.closest(BLACKLIST_SELECTORS[i])) return true;
+      var stack = new Error().stack || '';
+      for (var i = 0; i < AD_DOMAINS.length; i++) {
+        if (stack.indexOf(AD_DOMAINS[i]) !== -1) return true;
       }
     } catch(e) {}
     return false;
+  }
+
+  function _isInBlacklist(target) {
+    if (!target || !target.closest) return false;
+    for (var i = 0; i < BLACKLIST_SELECTORS.length; i++) {
+      try { if (target.closest(BLACKLIST_SELECTORS[i])) return true; } catch(e) {}
+    }
+    return false;
+  }
+
+  /**
+   * Quyết định xem có cho phép một ad-listener chạy hay không.
+   */
+  function _allowAdClick(e) {
+    // Xác định xem đây có phải là action ưu tiên không
+    var isPriority = false;
+    if (e && e.target) {
+      var el = e.target.closest('button, .btn, .btn-v4, [data-popup-trigger]');
+      if (el) {
+        var oc = el.getAttribute('onclick') || '';
+        if (oc.indexOf('startExam') !== -1 || oc.indexOf('submit') !== -1 || 
+            oc.indexOf('retryExam') !== -1 || oc.indexOf('openQuiz') !== -1 ||
+            el.dataset.popupTrigger === 'thithu' || el.dataset.popupTrigger === 'onthuyet') {
+          isPriority = true;
+        }
+      }
+    }
+
+    // 1. Nếu là priority action: bỏ qua session limit, chỉ check cooldown ngắn (20s)
+    if (isPriority) {
+      var now = Date.now();
+      if (now - _lastAdTs < 20000) return false; 
+      _lastAdTs = now;
+      console.log('[Mtg] Priority ad allowed (limit ignored)');
+      return true;
+    }
+
+    // 2. Exam mode hoặc blacklist area -> HARD BLOCK ads
+    if (_examMode || (e && _isInBlacklist(e.target))) {
+      return false;
+    }
+
+    // 3. Normal actions: Check session limit
+    if (_cnt() >= SESSION_MAX) return false;
+
+    // 4. Normal actions: Check standard cooldown
+    var now = Date.now();
+    if (now - _lastAdTs < ONCLICK_COOLDOWN) return false;
+
+    // Allowed
+    _lastAdTs = now;
+    _incCnt(); // Chỉ tăng counter cho các click bình thường
+    console.log('[Mtg] Ad click allowed. Session: ' + _cnt() + '/' + SESSION_MAX);
+    return true;
   }
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -82,116 +115,92 @@
   ═══════════════════════════════════════════════════════════════════ */
   var _origOpen = window.open;
   window.open = function(url, tgt, feat) {
-    var newTab = !tgt || tgt==='_blank' || tgt==='' || tgt==='_new';
-    if (newTab && !_allow()) {
-      console.log('[Mtg] Blocked window.open');
-      return null;
+    // Luôn block window.open nếu trong exam mode hoặc blacklist
+    if (_examMode) return null;
+    
+    // Nếu là click-triggered open (thường Monetag dùng window.open trong click handler)
+    var isNewTab = !tgt || tgt === '_blank' || tgt === '';
+    if (isNewTab) {
+      // Chúng ta không có context 'event' ở đây dễ dàng, 
+      // nhưng nếu đang trong cooldown hoặc quá giới hạn session thì block.
+      if (_cnt() >= SESSION_MAX || (Date.now() - _lastAdTs < ONCLICK_COOLDOWN)) {
+        return null;
+      }
+      // Note: _incCnt sẽ được gọi ở wrapper click.
     }
     return _origOpen.apply(this, arguments);
   };
 
   /* ═══════════════════════════════════════════════════════════════════
-     L2 – EventTarget.prototype.addEventListener override
+     L2 – addEventListener Wrapper (Stack Analysis)
   ═══════════════════════════════════════════════════════════════════ */
   var _origAEL = EventTarget.prototype.addEventListener;
   EventTarget.prototype.addEventListener = function(type, fn, opts) {
-    var isAdEvent = AD_EVENT_TYPES.indexOf(type) !== -1;
-    var isGlobalTarget = this === document || this === window
-                      || this === document.body
-                      || this === document.documentElement;
-                      
-    if (isAdEvent && isGlobalTarget) {
-      var orig = fn;
-      var wrapped = function(e) {
-        if (!_allow(e)) return;
-        return orig.apply(this, arguments);
-      };
-      wrapped._mtgOrig = orig;
-      return _origAEL.call(this, type, wrapped, opts);
+    if (AD_EVENT_TYPES.indexOf(type) !== -1) {
+      if (_isAdStack()) {
+        var orig = fn;
+        var wrapped = function(e) {
+          if (!_allowAdClick(e)) return;
+          return orig.apply(this, arguments);
+        };
+        wrapped._mtgOrig = orig;
+        return _origAEL.call(this, type, wrapped, opts);
+      }
     }
     return _origAEL.call(this, type, fn, opts);
   };
 
   /* ═══════════════════════════════════════════════════════════════════
-     L3 – Document CAPTURE interceptor (HARD BLOCK)
+     L3 – Property Overrides (.onclick, etc.)
   ═══════════════════════════════════════════════════════════════════ */
-  var _safeEvents = typeof WeakSet !== 'undefined' ? new WeakSet() : null;
-
-  function _captureBlocker(e) {
-    if (_safeEvents && _safeEvents.has(e)) return; // Already re-dispatched, allow
-    
-    if (!_examMode && !_isInBlacklistArea(e.target)) return;
-
-    // If we are in exam mode OR the click is in a blacklisted area, stop it!
-    e.stopImmediatePropagation();
-    e.stopPropagation();
-
-    // Re-dispatch a non-bubbling clone for app logic
+  function _wrapProp(obj, prop) {
+    var _val = null;
     try {
-      var opts = {
-        bubbles: false, // CRITICAL: prevent it from bubbling back to document
-        cancelable: e.cancelable,
-        view: window,
-        clientX: e.clientX || 0,
-        clientY: e.clientY || 0,
-        button: e.button  || 0,
-        buttons: e.buttons || 0,
-        detail: e.detail || 0,
-        screenX: e.screenX || 0,
-        screenY: e.screenY || 0,
-        ctrlKey: e.ctrlKey,
-        altKey: e.altKey,
-        shiftKey: e.shiftKey,
-        metaKey: e.metaKey
-      };
-      
-      var safe;
-      if (e instanceof MouseEvent) {
-        safe = new MouseEvent(e.type, opts);
-      } else if (window.PointerEvent && e instanceof PointerEvent) {
-        safe = new PointerEvent(e.type, opts);
-      } else {
-        safe = new Event(e.type, { bubbles: false, cancelable: e.cancelable });
-      }
-
-      if (_safeEvents) _safeEvents.add(safe);
-      e.target.dispatchEvent(safe);
-      // console.log('[Mtg] Hard blocked ad-click and re-dispatched for target');
-    } catch(err) {
-      // Fallback for older browsers or complex events
-    }
+      Object.defineProperty(obj, prop, {
+        configurable: true,
+        set: function(fn) {
+          if (!fn) { _val = null; return; }
+          // Check if the setter is called from an ad script
+          if (_isAdStack()) {
+            var orig = fn;
+            _val = function(e) {
+              if (!_allowAdClick(e)) return;
+              return orig.call(this, e);
+            };
+          } else {
+            _val = fn;
+          }
+        },
+        get: function() { return _val; }
+      });
+    } catch(e) {}
   }
-
-  // Register capture blocker BEFORE any other scripts
-  AD_EVENT_TYPES.forEach(function(type) {
-    _origAEL.call(document, type, _captureBlocker, true);
-    _origAEL.call(window, type, _captureBlocker, true);
+  
+  [window, document, document.body, document.documentElement].forEach(function(o) {
+    if (!o) return;
+    AD_EVENT_TYPES.forEach(function(t) {
+      _wrapProp(o, 'on' + t);
+    });
   });
 
   /* ═══════════════════════════════════════════════════════════════════
-     L4 – Script Injection Guard (Kill Zone 236798)
+     L4 – Node.appendChild Guard (Kill aggressive zone scripts)
   ═══════════════════════════════════════════════════════════════════ */
-  var _origAppendChild = Node.prototype.appendChild;
+  var _origAppend = Node.prototype.appendChild;
   Node.prototype.appendChild = function(node) {
-    if (node && node.tagName === 'SCRIPT' && node.dataset && node.dataset.zone === '236798') {
-      console.log('[Mtg] Blocked dynamic injection of aggressive zone 236798');
-      return node;
+    if (node && node.tagName === 'SCRIPT') {
+      var src = node.src || '';
+      var zone = node.dataset ? node.dataset.zone : '';
+      if (zone === '236798' || src.indexOf('quge5.com') !== -1) {
+        // Nếu trang hiện tại là exam/study, block thẳng tay việc load script mới của Monetag
+        if (_examMode || window.location.search.indexOf('license=') !== -1) {
+           console.log('[Mtg] Blocked dynamic script injection');
+           return node;
+        }
+      }
     }
-    return _origAppendChild.apply(this, arguments);
+    return _origAppend.apply(this, arguments);
   };
-
-  /* ═══════════════════════════════════════════════════════════════════
-     Vignette (zone 10971955)
-  ═══════════════════════════════════════════════════════════════════ */
-  function _loadVig() {
-    if (_vigLoaded) return;
-    _vigLoaded = true;
-    var s = document.createElement('script');
-    s.dataset.zone = '10971955';
-    s.src = 'https://n6wxm.com/vignette.min.js';
-    s.async = true;
-    (document.body || document.head).appendChild(s);
-  }
 
   /* ═══════════════════════════════════════════════════════════════════
      Public API
@@ -203,28 +212,19 @@
       console.log('[Mtg] ExamMode=' + _examMode);
     },
     showAd: function() {
+      // Vignette manual trigger
+      if (window.location.href.indexOf('index.html') !== -1) return; // Không hiện trên home nếu không cần
       var now = Date.now();
-      if (now - _lastVigTs < VIGNETTE_COOLDOWN) return;
-      _lastVigTs = now;
-      _loadVig();
-    },
-    info: function() {
-      return { 
-        examMode: _examMode, 
-        session: _cnt() + '/' + SESSION_MAX,
-        cooldown: Math.max(0, Math.round((ONCLICK_COOLDOWN - (Date.now() - _lastAdTs)) / 1000)) + 's' 
-      };
+      if (now - _lastAdTs < 60000) return; // 60s cooldown cho vignette
+      
+      var s = document.createElement('script');
+      s.dataset.zone = '10971955';
+      s.src = 'https://n6wxm.com/vignette.min.js';
+      s.async = true;
+      document.head.appendChild(s);
     }
   };
 
   window.showAd = function() { window.MoneytagAds.showAd(); };
-
-  // Lazy pre-load vignette
-  var delay = isMobile ? 2000 : 3000;
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function(){ setTimeout(_loadVig, delay); });
-  } else {
-    setTimeout(_loadVig, delay);
-  }
 
 })();
