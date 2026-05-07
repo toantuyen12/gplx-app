@@ -198,7 +198,9 @@ function generateMotoExam() {
 
 function startExam() {
     if (window.showAd) window.showAd();
-    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
+    setTimeout(function() {
+        if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
+    }, 100);
     isSubmitted = false;
     generateMotoExam();
     userAns = new Array(25).fill(null);
@@ -512,7 +514,10 @@ function renderResult(score, isPass, wrongCritical) {
 }
 
 function retryExam() {
-    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
+    if (window.showAd) window.showAd();
+    setTimeout(function() {
+        if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
+    }, 100);
     isSubmitted = false;
     userAns = new Array(25).fill(null);
     current = 0;
