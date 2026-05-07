@@ -1,84 +1,151 @@
 /**
- * Monetag Ad Manager v4
- * =====================
+ * Monetag Ad Manager v5 – 4-Layer Exam Shield
+ * =============================================
+ * LAYER 1: Override window.open        → chặn redirect/tab mới
+ * LAYER 2: Override addEventListener   → wrap click handlers của Monetag trên document/window
+ * LAYER 3: Override document.onclick   → chặn nếu Monetag dùng onclick property
+ * LAYER 4: Bubble stopper trên container → stopPropagation trước khi event lên document
+ *
  * Zones:
- *   236976  - Multitag (banner, in-page push, onclick) – tất cả trang
- *   236798  - Onclick / Popunder zone thứ 2
- *   10971955 - Vignette
+ *   236976  – Multitag (display, in-page, onclick)
+ *   236798  – Onclick / Popunder zone 2
+ *   10971955 – Vignette
  *
- * CHIẾN LƯỢC:
- *   - Banner / In-page Push: hoạt động 100% bình thường, không can thiệp
- *   - Onclick / Popunder (zone 236976 + 236798): BỊ BLOCK trong exam mode
- *     bằng cách override window.open – block redirect/tab mới khi user làm bài
- *   - Vignette (zone 10971955): chỉ trigger thủ công tại startExam() + submit()
+ * Frequency:
+ *   Onclick/Popunder: Mobile 50s / Desktop 120s
+ *   Vignette:         Mobile 60s / Desktop 90s
  *
- * EXAM MODE:
- *   - window.open bị suspend → không thể mở tab mới
- *   - Onclick handler của Monetag không thể redirect
- *   - Banner / display ads vẫn hiển thị bình thường
- *
- * FREQUENCY LIMITS (onclick/popunder):
- *   Mobile : 50 giây
- *   Desktop: 120 giây
- *
- * FREQUENCY LIMITS (vignette):
- *   Mobile : 60 giây
- *   Desktop: 90 giây
- *
- * SPA-SAFE: init chỉ chạy 1 lần (guard __monetagInit)
- * ZONE ALTERNATING: 2 onclick zones không trigger cùng lúc
+ * SPA-safe: chỉ khởi tạo 1 lần (__monetagInit guard)
  */
 
 (function () {
   'use strict';
 
-  // ─── SPA guard – chỉ khởi tạo 1 lần ──────────────────────────────────────
   if (window.__monetagInit) return;
   window.__monetagInit = true;
 
-  // ─── Device detection ─────────────────────────────────────────────────────
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
                   || window.innerWidth < 768;
 
-  // ─── Frequency limits ─────────────────────────────────────────────────────
-  var ONCLICK_COOLDOWN  = isMobile ? 50000  : 120000; // 50s  / 120s
-  var VIGNETTE_COOLDOWN = isMobile ? 60000  :  90000; // 60s  / 90s
+  var ONCLICK_COOLDOWN  = isMobile ? 50000  : 120000;
+  var VIGNETTE_COOLDOWN = isMobile ? 60000  :  90000;
 
-  // ─── State ────────────────────────────────────────────────────────────────
-  var _examMode       = false;   // true khi user đang làm bài
-  var _vignetteLoaded = false;   // vignette script chỉ load 1 lần
-  var _lastVignetteTs = 0;       // timestamp lần trigger vignette gần nhất
-  var _lastOnclickTs  = 0;       // timestamp lần onclick/popunder gần nhất
+  var _examMode       = false;
+  var _vignetteLoaded = false;
+  var _lastVignetteTs = 0;
+  var _lastOnclickTs  = 0;
 
-  // ─── Override window.open ─────────────────────────────────────────────────
-  // Cơ chế chặn HOÀN TOÀN tất cả redirect / tab-mới trong exam mode.
-  // Banner và in-page ads không dùng window.open nên KHÔNG bị ảnh hưởng.
+  // Expose cho cross-script access
+  window.__monetagExamMode = false;
+
+  // ═══════════════════════════════════════════════════════════════
+  // LAYER 1 – Override window.open
+  // ═══════════════════════════════════════════════════════════════
   var _origWindowOpen = window.open;
-
   window.open = function (url, target, features) {
-    // 1. Block trong exam mode
     if (_examMode) {
-      // eslint-disable-next-line no-console
-      console.log('[MoneytagAds] Blocked: window.open suspended (exam mode).');
+      console.log('[MoneytagAds] L1: Blocked window.open (exam mode)');
       return null;
     }
-
-    // 2. Frequency check cho onclick/popunder (thường target = '_blank' hoặc '')
-    var isNewTab = !target || target === '_blank' || target === '_new';
+    var isNewTab = !target || target === '_blank' || target === '_new' || target === '';
     if (isNewTab) {
       var now = Date.now();
       if (now - _lastOnclickTs < ONCLICK_COOLDOWN) {
-        // eslint-disable-next-line no-console
-        console.log('[MoneytagAds] Onclick cooldown active (' + Math.round((ONCLICK_COOLDOWN - (now - _lastOnclickTs)) / 1000) + 's remaining).');
+        console.log('[MoneytagAds] L1: Onclick cooldown active');
         return null;
       }
       _lastOnclickTs = now;
     }
-
     return _origWindowOpen.apply(this, arguments);
   };
 
-  // ─── Vignette loader (zone 10971955) ──────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════
+  // LAYER 2 – Override EventTarget.prototype.addEventListener
+  // Bắt mọi click handler được thêm vào document / window / body
+  // và wrap chúng để kiểm tra exam mode trước khi chạy.
+  // Phải chạy TRƯỚC khi Monetag script load (script async nên OK).
+  // ═══════════════════════════════════════════════════════════════
+  var _origAEL = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function (type, listener, options) {
+    if (type === 'click' &&
+        (this === document || this === window || this === document.body)) {
+      var _origFn = listener;
+      var _wrapped = function (e) {
+        if (_examMode) {
+          console.log('[MoneytagAds] L2: Blocked document click handler (exam mode)');
+          return;
+        }
+        return _origFn.apply(this, arguments);
+      };
+      _wrapped._monetagOrig = _origFn;
+      return _origAEL.call(this, type, _wrapped, options);
+    }
+    return _origAEL.call(this, type, listener, options);
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // LAYER 3 – Override document.onclick property
+  // Một số ad script dùng document.onclick = fn thay vì addEventListener
+  // ═══════════════════════════════════════════════════════════════
+  var _docOnclickFn = null;
+  try {
+    Object.defineProperty(document, 'onclick', {
+      configurable: true,
+      set: function (fn) {
+        if (!fn) { _docOnclickFn = null; return; }
+        var _orig = fn;
+        _docOnclickFn = function (e) {
+          if (_examMode) {
+            console.log('[MoneytagAds] L3: Blocked document.onclick (exam mode)');
+            return;
+          }
+          return _orig.call(document, e);
+        };
+      },
+      get: function () { return _docOnclickFn; }
+    });
+  } catch (e) {
+    console.warn('[MoneytagAds] L3: Could not override document.onclick:', e);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // LAYER 4 – Bubble stopper trên exam containers
+  // Khi event bubble lên đến container → stopPropagation
+  // → Monetag's document-level handler không nhận được event.
+  // ═══════════════════════════════════════════════════════════════
+  var EXAM_CONTAINER_SELECTORS = [
+    '#quiz',
+    '#cExamRoot',
+    '#c1ExamRoot',
+    '#motoExamRoot',
+    '#bExamRoot',
+    '#s600StudyRoot',
+    '.s600-layout',
+    '.s600-study-wrap',
+    '.exam-container-wrapper'
+  ];
+
+  function _installContainerShield() {
+    EXAM_CONTAINER_SELECTORS.forEach(function (sel) {
+      try {
+        document.querySelectorAll(sel).forEach(function (el) {
+          if (el._monetagShielded) return;
+          el._monetagShielded = true;
+          // Bubble phase: event đã được button xử lý, giờ chặn trước khi lên document
+          el.addEventListener('click', function (e) {
+            if (_examMode) {
+              e.stopPropagation();
+            }
+          }, false);
+          console.log('[MoneytagAds] L4: Shield installed on', sel);
+        });
+      } catch (err) { /* selector not found */ }
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Vignette loader (zone 10971955)
+  // ═══════════════════════════════════════════════════════════════
   function _loadVignetteScript() {
     if (_vignetteLoaded) return;
     _vignetteLoaded = true;
@@ -86,34 +153,35 @@
     s.dataset.zone = '10971955';
     s.src = 'https://n6wxm.com/vignette.min.js';
     s.async = true;
-    var parent = document.body || document.head;
-    if (parent) {
-      parent.appendChild(s);
-    } else {
-      document.addEventListener('DOMContentLoaded', function () {
-        document.body.appendChild(s);
-      });
-    }
+    (document.body || document.head).appendChild(s);
   }
 
-  // ─── Public API – window.MoneytagAds ──────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════
+  // Public API – window.MoneytagAds
+  // ═══════════════════════════════════════════════════════════════
   window.MoneytagAds = {
 
     /**
      * Bật / tắt exam mode.
-     *   true  → block tất cả window.open (onclick / popunder không thể mở tab)
-     *   false → cho phép onclick / popunder (có frequency check)
+     * true  → tất cả 4 layer chặn onclick/popunder
+     * false → cho phép, có frequency check
      */
     setExamMode: function (enabled) {
       _examMode = !!enabled;
-      // eslint-disable-next-line no-console
-      console.log('[MoneytagAds] Exam mode:', _examMode ? 'ON – onclick/popunder blocked' : 'OFF – onclick/popunder allowed');
+      window.__monetagExamMode = _examMode;
+      console.log('[MoneytagAds] Exam mode:', _examMode ? 'ON – all ad clicks blocked' : 'OFF');
+
+      if (_examMode) {
+        // Cài shield lên container ngay và sau 500ms (đợi DOM render)
+        _installContainerShield();
+        setTimeout(_installContainerShield, 500);
+        setTimeout(_installContainerShield, 1500);
+      }
     },
 
     /**
      * Trigger vignette thủ công.
-     * Dùng tại: bắt đầu thi (startExam), nộp bài (submit).
-     * Có cooldown để không spam.
+     * Dùng tại: startExam(), submit()
      */
     showAd: function () {
       var now = Date.now();
@@ -123,22 +191,17 @@
     }
   };
 
-  // ─── Backward compatibility ───────────────────────────────────────────────
-  // Các file exam JS cũ dùng window.showAd() → vẫn hoạt động
-  window.showAd = function () {
-    window.MoneytagAds.showAd();
-  };
+  // Backward compat
+  window.showAd = function () { window.MoneytagAds.showAd(); };
 
-  // ─── Auto-load vignette script sau khi trang sẵn sàng ────────────────────
-  // Delay nhỏ để không block LCP / FCP
-  var vignetteInitDelay = isMobile ? 2000 : 3000;
-
+  // Auto-load vignette (lazy, sau khi trang sẵn sàng)
+  var vignetteDelay = isMobile ? 2000 : 3000;
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
-      setTimeout(_loadVignetteScript, vignetteInitDelay);
+      setTimeout(_loadVignetteScript, vignetteDelay);
     });
   } else {
-    setTimeout(_loadVignetteScript, vignetteInitDelay);
+    setTimeout(_loadVignetteScript, vignetteDelay);
   }
 
 })();

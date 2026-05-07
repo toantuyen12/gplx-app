@@ -226,6 +226,9 @@ function updateURL(mode, chapterId, questionId) {
 function renderStudyLayout(chapter, questions, progress, currentIdx) {
   _studyState = { chapter, questions, progress, currentIdx };
 
+  // Bật exam mode – block onclick/popunder trong suốt quá trình ôn tập
+  if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
+
   const root = document.getElementById('s600StudyRoot');
   if (!root) return;
 
@@ -293,6 +296,8 @@ window.handleStudyBack = function(e) {
     e.preventDefault();
     e.stopPropagation();
   }
+  // Tắt exam mode khi rời trang ôn tập
+  if (window.MoneytagAds) window.MoneytagAds.setExamMode(false);
   if (document.referrer) {
     window.history.back();
   } else {
