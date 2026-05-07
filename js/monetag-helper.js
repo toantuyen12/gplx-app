@@ -68,47 +68,50 @@
    * Quyết định xem có cho phép một ad-listener chạy hay không.
    */
   function _allowAdClick(e) {
-    // Xác định xem đây có phải là action ưu tiên không
-    var isPriority = false;
-    if (e && e.target) {
-      var el = e.target.closest('button, .btn, .btn-v4, [data-popup-trigger]');
-      if (el) {
-        var oc = el.getAttribute('onclick') || '';
-        if (oc.indexOf('startExam') !== -1 || oc.indexOf('submit') !== -1 || 
-            oc.indexOf('retryExam') !== -1 || oc.indexOf('openQuiz') !== -1 ||
-            el.dataset.popupTrigger === 'thithu' || el.dataset.popupTrigger === 'onthuyet') {
-          isPriority = true;
-        }
-      }
-    }
-
-    // 1. Nếu là priority action: bỏ qua session limit, chỉ check cooldown ngắn (20s)
-    if (isPriority) {
-      var now = Date.now();
-      if (now - _lastAdTs < 20000) return false; 
-      _lastAdTs = now;
-      console.log('[Mtg] Priority ad allowed (limit ignored)');
-      return true;
-    }
-
-    // 2. Exam mode hoặc blacklist area -> HARD BLOCK ads
-    if (_examMode || (e && _isInBlacklist(e.target))) {
+    // 1. HARD BLOCK tuyệt đối trong flow làm bài (Exam Mode)
+    // Nếu đang làm bài, không cho bất kỳ ad-click nào lọt qua, kể cả priority.
+    // (Priority ads sẽ được kích hoạt sau khi gọi setExamMode(false))
+    if (_examMode) {
+      // console.log('[Mtg] Absolute block during exam/study flow');
       return false;
     }
 
-    // 3. Normal actions: Check session limit
-    if (_cnt() >= SESSION_MAX) return false;
+    // 2. Kiểm tra vùng blacklist (Của các trang ngoài flow thi, ví dụ Home CTAs)
+    if (e && _isInBlacklist(e.target)) {
+      // Cho phép nếu là priority action trên trang chủ/menu
+      var el = e.target.closest('button, .btn, .btn-v4, [data-popup-trigger]');
+      if (el) {
+        var oc = el.getAttribute('onclick') || '';
+        if (oc.indexOf('startExam') !== -1 || oc.indexOf('openQuiz') !== -1 ||
+            el.dataset.popupTrigger === 'thithu' || el.dataset.popupTrigger === 'onthuyet') {
+          return true; 
+        }
+      }
+      return false;
+    }
 
-    // 4. Normal actions: Check standard cooldown
+    // 3. Normal conditions (Ngoài flow thi)
+    if (_cnt() >= SESSION_MAX) return false;
     var now = Date.now();
     if (now - _lastAdTs < ONCLICK_COOLDOWN) return false;
 
     // Allowed
     _lastAdTs = now;
-    _incCnt(); // Chỉ tăng counter cho các click bình thường
-    console.log('[Mtg] Ad click allowed. Session: ' + _cnt() + '/' + SESSION_MAX);
+    _incCnt(); 
     return true;
   }
+
+  /* ── Auto-Shield based on URL ──────────────────────────────────── */
+  function _autoShield() {
+    var path = window.location.pathname.toLowerCase();
+    var search = window.location.search.toLowerCase();
+    if (path.indexOf('exam') !== -1 || path.indexOf('study') !== -1 || 
+        path.indexOf('sahinh') !== -1 || search.indexOf('license=') !== -1) {
+      _examMode = true;
+      console.log('[Mtg] Auto-Shield active for ' + path);
+    }
+  }
+  _autoShield();
 
   /* ═══════════════════════════════════════════════════════════════════
      L1 – window.open override
