@@ -1,17 +1,16 @@
 /**
- * Monetag Ad Manager v9 – Precision Shield (Stack Trace Filtering)
- * ==============================================================
+ * Monetag Ad Manager v12 – NUCLEAR UNLOAD Edition
+ * ===============================================
  * 
  * THE CHALLENGE:
- * We need to allow APP logic (popups, exam answers) to run while 
- * blocking AD logic (popunders) on the SAME click event.
+ * "Blocking" is not enough; the user wants to "UNLOAD" and "REMOVE" 
+ * the scripts and their effects completely from the DOM in exam flows.
  * 
  * THE SOLUTION:
- * 1. Universal addEventListener wrapper that uses Stack Trace Analysis
- *    to identify and neutralize only listeners coming from ad domains.
- * 2. Hard block blacklist zones (.exam-page, [data-popup-trigger], etc.)
- *    specifically for identified ad handlers.
- * 3. Session-based onclick limiting (max 5 per session).
+ * 1. Physical Removal: Actively scan and remove aggressive ad script tags.
+ * 2. Interaction Sterilization: Block ad scripts from creating new elements (iframes, scripts).
+ * 3. Event Purge: Neutralize all click handlers and global hooks from ad domains.
+ * 4. Context Aware: Auto-detect exam flow and engage the "Nuke" immediately.
  */
 (function () {
   'use strict';
@@ -19,33 +18,14 @@
   window.__monetagInit = true;
 
   /* ── Config ─────────────────────────────────────────────────────── */
-  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
-                 || window.innerWidth < 768;
-  var ONCLICK_COOLDOWN  = isMobile ? 50000 : 90000;
-  var SESSION_MAX = 5;
-  var SESSION_KEY = 'mtg_v9_cnt';
-
   var AD_DOMAINS = ['quge5.com', 'monetag', 'n6wxm.com', 'vignette.min.js'];
+  var AGGRESSIVE_ZONES = ['236798'];
   var AD_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'pointerup'];
 
-  var BLACKLIST_SELECTORS = [
-    '[data-popup-trigger]', '.nav-class-card', '#navPopupClose', '.nav-popup-modal',
-    '.class-card-v4', '.q-action-card', '.btn-v4',
-    '#quiz', '#cExamRoot', '#c1ExamRoot', '#motoExamRoot', '#bExamRoot', '#s600StudyRoot',
-    '.exam-container', '.study-container', '.question-area', '.answers-area', 
-    '.question-navigation', '.practice-page', '.exam-page', '.s600-layout', 
-    '.s600-study-wrap', '.exam-container-wrapper'
-  ];
-
-  /* ── State ───────────────────────────────────────────────────────── */
   var _examMode = false;
-  var _lastAdTs  = 0;
-  window.__monetagExamMode = false;
+  var _lastAdTs = 0;
 
   /* ── Helpers ─────────────────────────────────────────────────────── */
-  function _cnt()    { try { return +sessionStorage.getItem(SESSION_KEY)||0; } catch(e){return 0;} }
-  function _incCnt() { try { sessionStorage.setItem(SESSION_KEY, _cnt()+1); } catch(e){} }
-
   function _isAdStack() {
     try {
       var stack = new Error().stack || '';
@@ -56,154 +36,134 @@
     return false;
   }
 
-  function _isInBlacklist(target) {
-    if (!target || !target.closest) return false;
-    for (var i = 0; i < BLACKLIST_SELECTORS.length; i++) {
-      try { if (target.closest(BLACKLIST_SELECTORS[i])) return true; } catch(e) {}
-    }
-    return false;
+  function _nukeAdElements() {
+    // 1. Remove aggressive script tags
+    document.querySelectorAll('script').forEach(function(s) {
+      var src = s.src || '';
+      var zone = s.dataset ? s.dataset.zone : '';
+      if (AGGRESSIVE_ZONES.indexOf(zone) !== -1 || src.indexOf('quge5.com') !== -1) {
+        console.log('[Mtg] Unloading aggressive ad script: ' + (zone || src));
+        s.remove();
+      }
+    });
+
+    // 2. Remove common ad-injected containers
+    var suspects = ['#mtg-popunder', '.mtg-container', 'iframe[src*="monetag"]'];
+    suspects.forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) { el.remove(); });
+    });
   }
 
-  /**
-   * Quyết định xem có cho phép một ad-listener chạy hay không.
-   */
-  function _allowAdClick(e) {
-    // 1. HARD BLOCK tuyệt đối trong flow làm bài (Exam Mode)
-    // Nếu đang làm bài, không cho bất kỳ ad-click nào lọt qua, kể cả priority.
-    // (Priority ads sẽ được kích hoạt sau khi gọi setExamMode(false))
-    if (_examMode) {
-      // console.log('[Mtg] Absolute block during exam/study flow');
-      return false;
-    }
-
-    // 2. Kiểm tra vùng blacklist (Của các trang ngoài flow thi, ví dụ Home CTAs)
-    if (e && _isInBlacklist(e.target)) {
-      // Cho phép nếu là priority action trên trang chủ/menu
-      var el = e.target.closest('button, .btn, .btn-v4, [data-popup-trigger]');
-      if (el) {
-        var oc = el.getAttribute('onclick') || '';
-        if (oc.indexOf('startExam') !== -1 || oc.indexOf('openQuiz') !== -1 ||
-            el.dataset.popupTrigger === 'thithu' || el.dataset.popupTrigger === 'onthuyet') {
-          return true; 
-        }
-      }
-      return false;
-    }
-
-    // 3. Normal conditions (Ngoài flow thi)
-    if (_cnt() >= SESSION_MAX) return false;
+  function _allowAdClick() {
+    if (_examMode) return false;
+    // Session limit (5) & Cooldown (90s) check
+    var cnt = 0; try { cnt = +sessionStorage.getItem('mtg_cnt')||0; } catch(e){}
+    if (cnt >= 5) return false;
     var now = Date.now();
-    if (now - _lastAdTs < ONCLICK_COOLDOWN) return false;
-
-    // Allowed
+    if (now - _lastAdTs < 90000) return false;
+    
     _lastAdTs = now;
-    _incCnt(); 
+    try { sessionStorage.setItem('mtg_cnt', cnt + 1); } catch(e){}
     return true;
   }
 
-  /* ── Auto-Shield based on URL ──────────────────────────────────── */
-  function _autoShield() {
-    var path = window.location.pathname.toLowerCase();
-    var search = window.location.search.toLowerCase();
-    if (path.indexOf('exam') !== -1 || path.indexOf('study') !== -1 || 
-        path.indexOf('sahinh') !== -1 || search.indexOf('license=') !== -1) {
-      _examMode = true;
-      console.log('[Mtg] Auto-Shield active for ' + path);
-    }
-  }
-  _autoShield();
-
   /* ═══════════════════════════════════════════════════════════════════
-     L1 – window.open override
+     L1 – The "Nuke" Core: Resource & Creation Block
   ═══════════════════════════════════════════════════════════════════ */
+  
+  // Patch createElement to prevent ad scripts from making iframes or new scripts
+  var _origCE = document.createElement;
+  document.createElement = function(tag) {
+    var tagName = (tag || '').toLowerCase();
+    if ((tagName === 'script' || tagName === 'iframe') && _examMode && _isAdStack()) {
+      console.log('[Mtg] Blocked ad-originated resource creation: ' + tagName);
+      return _origCE.call(document, 'div'); // Return an inert div instead
+    }
+    return _origCE.apply(this, arguments);
+  };
+
+  // Patch window.open
   var _origOpen = window.open;
-  window.open = function(url, tgt, feat) {
-    // Luôn block window.open nếu trong exam mode hoặc blacklist
-    if (_examMode) return null;
-    
-    // Nếu là click-triggered open (thường Monetag dùng window.open trong click handler)
-    var isNewTab = !tgt || tgt === '_blank' || tgt === '';
-    if (isNewTab) {
-      // Chúng ta không có context 'event' ở đây dễ dàng, 
-      // nhưng nếu đang trong cooldown hoặc quá giới hạn session thì block.
-      if (_cnt() >= SESSION_MAX || (Date.now() - _lastAdTs < ONCLICK_COOLDOWN)) {
-        return null;
-      }
-      // Note: _incCnt sẽ được gọi ở wrapper click.
+  window.open = function() {
+    if (_examMode || (_isAdStack() && !_allowAdClick())) {
+      console.log('[Mtg] Blocked window.open hijack');
+      return null;
     }
     return _origOpen.apply(this, arguments);
   };
 
   /* ═══════════════════════════════════════════════════════════════════
-     L2 – addEventListener Wrapper (Stack Analysis)
+     L2 – Event Sterilization
   ═══════════════════════════════════════════════════════════════════ */
+
+  // Wrap addEventListener for ALL EventTargets
   var _origAEL = EventTarget.prototype.addEventListener;
   EventTarget.prototype.addEventListener = function(type, fn, opts) {
-    if (AD_EVENT_TYPES.indexOf(type) !== -1) {
-      if (_isAdStack()) {
-        var orig = fn;
-        var wrapped = function(e) {
-          if (!_allowAdClick(e)) return;
-          return orig.apply(this, arguments);
-        };
-        wrapped._mtgOrig = orig;
-        return _origAEL.call(this, type, wrapped, opts);
-      }
+    if (AD_EVENT_TYPES.indexOf(type) !== -1 && _isAdStack()) {
+      var orig = fn;
+      var wrapped = function(e) {
+        if (!_allowAdClick()) return;
+        return orig.apply(this, arguments);
+      };
+      return _origAEL.call(this, type, wrapped, opts);
     }
     return _origAEL.call(this, type, fn, opts);
   };
 
-  /* ═══════════════════════════════════════════════════════════════════
-     L3 – Property Overrides (.onclick, etc.)
-  ═══════════════════════════════════════════════════════════════════ */
-  function _wrapProp(obj, prop) {
-    var _val = null;
-    try {
+  // Clean up global onclick properties
+  function _sterilize(obj) {
+    if (!obj) return;
+    AD_EVENT_TYPES.forEach(function(t) {
+      var prop = 'on' + t;
+      var _val = obj[prop];
       Object.defineProperty(obj, prop, {
         configurable: true,
         set: function(fn) {
-          if (!fn) { _val = null; return; }
-          // Check if the setter is called from an ad script
           if (_isAdStack()) {
-            var orig = fn;
-            _val = function(e) {
-              if (!_allowAdClick(e)) return;
-              return orig.call(this, e);
-            };
-          } else {
-            _val = fn;
+            console.log('[Mtg] Sterilized ad property setter: ' + prop);
+            return; 
           }
+          _val = fn;
         },
         get: function() { return _val; }
       });
-    } catch(e) {}
-  }
-  
-  [window, document, document.body, document.documentElement].forEach(function(o) {
-    if (!o) return;
-    AD_EVENT_TYPES.forEach(function(t) {
-      _wrapProp(o, 'on' + t);
     });
-  });
+  }
+  [window, document, document.body].forEach(_sterilize);
 
   /* ═══════════════════════════════════════════════════════════════════
-     L4 – Node.appendChild Guard (Kill aggressive zone scripts)
-  ═══════════════════════════════════════════════════════════════════ */
-  var _origAppend = Node.prototype.appendChild;
-  Node.prototype.appendChild = function(node) {
-    if (node && node.tagName === 'SCRIPT') {
-      var src = node.src || '';
-      var zone = node.dataset ? node.dataset.zone : '';
-      if (zone === '236798' || src.indexOf('quge5.com') !== -1) {
-        // Nếu trang hiện tại là exam/study, block thẳng tay việc load script mới của Monetag
-        if (_examMode || window.location.search.indexOf('license=') !== -1) {
-           console.log('[Mtg] Blocked dynamic script injection');
-           return node;
-        }
-      }
+     L3 – Auto-Mode & Mutation Watch
+  ════════════════════════════════════════─────────────────────── */
+  
+  function _checkMode() {
+    var p = window.location.pathname.toLowerCase();
+    var s = window.location.search.toLowerCase();
+    if (p.indexOf('exam') !== -1 || p.indexOf('study') !== -1 || 
+        p.indexOf('sahinh') !== -1 || s.indexOf('license=') !== -1) {
+      _examMode = true;
+      _nukeAdElements();
     }
-    return _origAppend.apply(this, arguments);
-  };
+  }
+
+  // Monitor the DOM for any new ad-script injections
+  var observer = new MutationObserver(function(mutations) {
+    if (_examMode) {
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (node.tagName === 'SCRIPT' || node.tagName === 'IFRAME') {
+            var src = node.src || '';
+            if (AD_DOMAINS.some(function(d) { return src.indexOf(d) !== -1; })) {
+               node.remove();
+               console.log('[Mtg] MutationObserver killed injected ad node');
+            }
+          }
+        });
+      });
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  _checkMode();
 
   /* ═══════════════════════════════════════════════════════════════════
      Public API
@@ -211,15 +171,12 @@
   window.MoneytagAds = {
     setExamMode: function(on) {
       _examMode = !!on;
-      window.__monetagExamMode = _examMode;
+      if (_examMode) _nukeAdElements();
       console.log('[Mtg] ExamMode=' + _examMode);
     },
     showAd: function() {
-      // Vignette manual trigger
-      if (window.location.href.indexOf('index.html') !== -1) return; // Không hiện trên home nếu không cần
-      var now = Date.now();
-      if (now - _lastAdTs < 60000) return; // 60s cooldown cho vignette
-      
+      // Vignette manual trigger (allowed outside exam)
+      if (_examMode) return;
       var s = document.createElement('script');
       s.dataset.zone = '10971955';
       s.src = 'https://n6wxm.com/vignette.min.js';
@@ -227,7 +184,6 @@
       document.head.appendChild(s);
     }
   };
-
   window.showAd = function() { window.MoneytagAds.showAd(); };
 
 })();
