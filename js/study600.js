@@ -102,7 +102,6 @@ function closeChapterModal() {
 window.openPopup = async function(e, license, mode = 'default') {
   if (e) {
     e.preventDefault();
-    e.stopPropagation();
   }
   _license = license;
   isS600ModalOpen = true;
@@ -294,10 +293,12 @@ function getReferrerMenu() {
 window.handleStudyBack = function(e) {
   if (e) {
     e.preventDefault();
-    e.stopPropagation();
   }
   // Tắt exam mode khi rời trang ôn tập
-  if (window.MoneytagAds) window.MoneytagAds.setExamMode(false);
+  if (window.MoneytagAds) {
+    window.MoneytagAds.setExamMode(false);
+    window.MoneytagAds.reloadOnclick();
+  }
   if (document.referrer) {
     window.history.back();
   } else {

@@ -130,7 +130,6 @@
         if (accBtn) {
             accBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation();
                 const item = accBtn.closest('.accordion-item');
                 if (item) item.classList.toggle('expanded');
             });

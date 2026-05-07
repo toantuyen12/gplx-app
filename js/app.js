@@ -77,11 +77,8 @@ function generateCANDExam() {
 
 
 function openQuiz(){
+  if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
   if (window.showAd) window.showAd();
-  // Block onclick sau 100ms – cho phép click này trigger onclick ad trước
-  setTimeout(function() {
-    if (window.MoneytagAds) window.MoneytagAds.setExamMode(true);
-  }, 100);
   const home = document.getElementById("home");
   if (home) home.style.display="none";
   
@@ -422,7 +419,10 @@ requestAnimationFrame(render);
 
 function submit() {
     // Tắt exam mode → cho phép onclick/popunder khi xem kết quả
-    if (window.MoneytagAds) window.MoneytagAds.setExamMode(false);
+    if (window.MoneytagAds) {
+        window.MoneytagAds.setExamMode(false);
+        window.MoneytagAds.reloadOnclick();
+    }
     if (window.showAd) window.showAd();
     if (isSubmitted) return;
 
